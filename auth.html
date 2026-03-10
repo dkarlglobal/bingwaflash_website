@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bingwa Flash – Account</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Syne:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold:      #F5C518;
+      --gold-dim:  #c9a010;
+      --gold-glow: rgba(245,197,24,0.35);
+      --red:       #ff3b3b;
+      --green:     #00e87a;
+      --dark:      #060608;
+      --card:      #0f0f14;
+      --border:    #1c1c28;
+      --border-hi: #2a2a3a;
+      --text:      #eeeef5;
+      --muted:     #666680;
+      --muted2:    #3a3a50;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--dark); color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh; overflow-x: hidden;
+      display: flex; flex-direction: column;
+    }
+
+    /* BG */
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(245,197,24,0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245,197,24,0.028) 1px, transparent 1px);
+      background-size: 56px 56px;
+      animation: gridMove 22s linear infinite;
+    }
+    @keyframes gridMove { to { background-position: 56px 56px; } }
+    .bg-orb {
+      position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(90px);
+      width: 480px; height: 480px; top: -80px; right: -80px;
+      background: radial-gradient(circle, rgba(245,197,24,0.07) 0%, transparent 70%);
+      animation: orbDrift 14s ease-in-out infinite;
+    }
+    @keyframes orbDrift { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-36px);} }
+    .bg-scan {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      background: repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px);
+    }
+
+    /* HEADER */
+    header {
+      position: relative; z-index: 10;
+      display: flex; align-items: center; padding: 18px 40px;
+      background: rgba(6,6,8,0.88); backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    header::after {
+      content: ''; position: absolute; bottom: -1px; left: 10%; right: 10%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-dim), transparent); opacity: 0.5;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo img { height: 32px; width: auto; filter: drop-shadow(0 0 8px var(--gold-glow)); }
+    .logo-wordmark {
+      font-family: 'Orbitron', monospace; font-size: 1rem; font-weight: 700;
+      letter-spacing: 3px; color: var(--gold); text-shadow: 0 0 20px var(--gold-glow);
+    }
+    .logo-wordmark em { font-style: normal; color: #fff; font-weight: 400; }
+
+    /* MAIN */
+    main {
+      flex: 1; position: relative; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 44px 40px;
+      width: 100%; max-width: 440px;
+      position: relative; overflow: hidden;
+      animation: fadeUp 0.5s ease both;
+    }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    /* corner brackets */
+    .cbrkt { position: absolute; width: 14px; height: 14px; }
+    .cbrkt.tl { top:10px; left:10px;   border-top:1px solid var(--gold-dim); border-left:1px solid var(--gold-dim); }
+    .cbrkt.tr { top:10px; right:10px;  border-top:1px solid var(--gold-dim); border-right:1px solid var(--gold-dim); }
+    .cbrkt.bl { bottom:10px; left:10px;  border-bottom:1px solid var(--gold-dim); border-left:1px solid var(--gold-dim); }
+    .cbrkt.br { bottom:10px; right:10px; border-bottom:1px solid var(--gold-dim); border-right:1px solid var(--gold-dim); }
+
+    .card-logo {
+      display: block; width: 64px; height: 64px; object-fit: contain;
+      margin: 0 auto 20px;
+      filter: drop-shadow(0 0 20px rgba(245,197,24,0.5));
+    }
+
+    .card-tag {
+      font-family: 'Orbitron', monospace; font-size: 0.55rem;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--muted); text-align: center; margin-bottom: 10px;
+    }
+    .card-title {
+      font-family: 'Orbitron', monospace; font-size: 1.3rem;
+      font-weight: 700; letter-spacing: 2px; text-align: center;
+      color: var(--text); margin-bottom: 8px;
+    }
+    .card-title .gold { color: var(--gold); }
+    .card-sub {
+      font-size: 0.85rem; color: var(--muted); text-align: center;
+      line-height: 1.65; margin-bottom: 28px;
+    }
+
+    /* STATUS STATES */
+    .state { display: none; }
+    .state.active { display: block; }
+
+    /* spinner */
+    .spinner-wrap { text-align: center; padding: 10px 0 24px; }
+    .spinner {
+      display: inline-block; width: 40px; height: 40px;
+      border: 2px solid var(--border-hi); border-top-color: var(--gold);
+      border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner-text {
+      margin-top: 14px; font-family: 'Orbitron', monospace;
+      font-size: 0.6rem; letter-spacing: 3px; color: var(--muted); text-transform: uppercase;
+    }
+
+    /* success */
+    .icon-circle {
+      width: 64px; height: 64px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; margin: 0 auto 20px;
+    }
+    .icon-circle.success { background: rgba(0,232,122,0.1); border: 1px solid rgba(0,232,122,0.3); }
+    .icon-circle.error   { background: rgba(255,59,59,0.1);  border: 1px solid rgba(255,59,59,0.3); }
+    .icon-circle.warning { background: rgba(245,197,24,0.1); border: 1px solid rgba(245,197,24,0.3); }
+
+    .msg-title {
+      font-family: 'Orbitron', monospace; font-size: 1rem;
+      font-weight: 700; letter-spacing: 2px; text-align: center;
+      margin-bottom: 10px;
+    }
+    .msg-title.success { color: var(--green); }
+    .msg-title.error   { color: var(--red); }
+    .msg-title.warning { color: var(--gold); }
+
+    .msg-body {
+      font-size: 0.85rem; color: var(--muted); text-align: center;
+      line-height: 1.7; margin-bottom: 28px;
+    }
+
+    /* password input */
+    .field { margin-bottom: 16px; }
+    .field label {
+      display: block; font-family: 'Orbitron', monospace;
+      font-size: 0.58rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 8px;
+    }
+    .field input {
+      width: 100%; background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 13px 16px; color: var(--text);
+      font-family: 'Syne', sans-serif; font-size: 0.92rem;
+      outline: none; transition: border-color 0.2s;
+    }
+    .field input:focus { border-color: var(--gold-dim); }
+    .field input::placeholder { color: var(--muted2); }
+
+    .pw-strength {
+      display: flex; gap: 4px; margin-top: 8px;
+    }
+    .pw-bar {
+      flex: 1; height: 3px; border-radius: 2px;
+      background: var(--border); transition: background 0.3s;
+    }
+    .pw-bar.weak   { background: var(--red); }
+    .pw-bar.fair   { background: #f5a623; }
+    .pw-bar.strong { background: var(--green); }
+
+    /* buttons */
+    .btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 14px 24px; border-radius: 8px;
+      font-family: 'Orbitron', monospace; font-size: 0.78rem;
+      font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      text-decoration: none; cursor: pointer; border: none;
+      transition: transform 0.15s, box-shadow 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .btn::after {
+      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.4s;
+    }
+    .btn:hover::after { left: 100%; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: none; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+      color: #000;
+      box-shadow: 0 4px 20px rgba(245,197,24,0.3);
+    }
+    .btn-gold:hover { box-shadow: 0 8px 28px rgba(245,197,24,0.45); }
+
+    .btn-red {
+      background: linear-gradient(135deg, #d42020, var(--red));
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(255,59,59,0.28);
+    }
+    .btn-red:hover { box-shadow: 0 8px 28px rgba(255,59,59,0.42); }
+
+    .btn-ghost {
+      background: transparent; color: var(--muted);
+      border: 1px solid var(--border); margin-top: 10px;
+    }
+    .btn-ghost:hover { border-color: var(--border-hi); color: var(--text); }
+
+    .divider {
+      width: 100%; height: 1px; background: var(--border); margin: 20px 0;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    @media (max-width: 480px) {
+      .card { padding: 32px 22px; }
+      header { padding: 14px 18px; }
+      .logo-wordmark { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-orb"></div>
+  <div class="bg-scan"></div>
+
+  <header>
+    <a class="logo" href="index.html">
+      <img src="logo.png" alt="Bingwa Flash" />
+      <span class="logo-wordmark">BINGWA <em>FLASH</em></span>
+    </a>
+  </header>
+
+  <main>
+    <div class="card">
+      <div class="cbrkt tl"></div><div class="cbrkt tr"></div>
+      <div class="cbrkt bl"></div><div class="cbrkt br"></div>
+
+      <img src="logo.png" alt="Bingwa Flash" class="card-logo" />
+
+      <!-- LOADING -->
+      <div class="state active" id="state-loading">
+        <div class="card-tag">Bingwa Flash · Account</div>
+        <div class="card-title">Please <span class="gold">Wait</span></div>
+        <div class="spinner-wrap">
+          <div class="spinner"></div>
+          <div class="spinner-text">Processing your request...</div>
+        </div>
+      </div>
+
+      <!-- EMAIL VERIFIED SUCCESS -->
+      <div class="state" id="state-verified">
+        <div class="icon-circle success">✓</div>
+        <div class="msg-title success">Email Verified!</div>
+        <div class="msg-body">
+          Your email has been successfully verified.<br>
+          You can now log in to <strong style="color:var(--text)">Bingwa Flash</strong> on your Android device.
+        </div>
+        <a class="btn btn-gold" href="index.html">← Back to Home</a>
+      </div>
+
+      <!-- PASSWORD RESET FORM -->
+      <div class="state" id="state-reset-form">
+        <div class="card-tag">Security</div>
+        <div class="card-title">New <span class="gold">Password</span></div>
+        <div class="card-sub">Enter a strong new password for your account.</div>
+        <div class="field">
+          <label>New Password</label>
+          <input type="password" id="pw1" placeholder="Min. 8 characters" oninput="checkStrength()" />
+          <div class="pw-strength">
+            <div class="pw-bar" id="bar1"></div>
+            <div class="pw-bar" id="bar2"></div>
+            <div class="pw-bar" id="bar3"></div>
+            <div class="pw-bar" id="bar4"></div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Confirm Password</label>
+          <input type="password" id="pw2" placeholder="Repeat password" />
+        </div>
+        <button class="btn btn-red" id="btn-reset" onclick="doReset()">↺ Reset Password</button>
+        <div id="reset-error" style="display:none;margin-top:12px;font-size:0.8rem;color:var(--red);text-align:center;"></div>
+      </div>
+
+      <!-- PASSWORD RESET SUCCESS -->
+      <div class="state" id="state-reset-done">
+        <div class="icon-circle success">✓</div>
+        <div class="msg-title success">Password Updated!</div>
+        <div class="msg-body">
+          Your password has been changed successfully.<br>
+          Open Bingwa Flash on your device and log in with your new password.
+        </div>
+        <a class="btn btn-gold" href="index.html">← Back to Home</a>
+      </div>
+
+      <!-- EMAIL CHANGE SUCCESS -->
+      <div class="state" id="state-email-changed">
+        <div class="icon-circle success">✓</div>
+        <div class="msg-title success">Email Updated!</div>
+        <div class="msg-body">
+          Your email address has been changed successfully.<br>
+          Use your new email to sign in going forward.
+        </div>
+        <a class="btn btn-gold" href="index.html">← Back to Home</a>
+      </div>
+
+      <!-- ERROR -->
+      <div class="state" id="state-error">
+        <div class="icon-circle error">✕</div>
+        <div class="msg-title error">Link Expired</div>
+        <div class="msg-body" id="error-msg">
+          This link is invalid or has expired.<br>
+          Please request a new one from the app.
+        </div>
+        <a class="btn btn-red" href="index.html">← Back to Home</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getAuth,
+      applyActionCode,
+      verifyPasswordResetCode,
+      confirmPasswordReset
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBMf_Kc6gFA30TiiqTvPGEUOHRD0ikpL9c",
+      authDomain: "bingwa-flash.firebaseapp.com",
+      projectId: "bingwa-flash",
+      storageBucket: "bingwa-flash.firebasestorage.app",
+      messagingSenderId: "141272100218",
+      appId: "1:141272100218:web:bcfc60bfd8e5945cedbac3"
+    };
+
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    function show(id) {
+      document.querySelectorAll('.state').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function showError(msg) {
+      document.getElementById('error-msg').innerHTML = msg;
+      show('state-error');
+    }
+
+    // Parse URL params
+    const params  = new URLSearchParams(window.location.search);
+    const mode    = params.get('mode');
+    const oobCode = params.get('oobCode');
+
+    window._oobCode = oobCode; // expose for reset handler
+
+    if (!mode || !oobCode) {
+      showError('No action code found.<br>Please use the link sent to your email.');
+    } else if (mode === 'verifyEmail') {
+      applyActionCode(auth, oobCode)
+        .then(() => show('state-verified'))
+        .catch(err => showError('Verification link is invalid or has already been used.<br>Please register again or contact support.'));
+
+    } else if (mode === 'resetPassword') {
+      verifyPasswordResetCode(auth, oobCode)
+        .then(() => show('state-reset-form'))
+        .catch(err => showError('This password reset link has expired.<br>Please request a new one from the app.'));
+
+    } else if (mode === 'recoverEmail') {
+      applyActionCode(auth, oobCode)
+        .then(() => show('state-email-changed'))
+        .catch(err => showError('This email change link is invalid or has expired.'));
+
+    } else {
+      showError('Unknown action. Please use the link sent to your email.');
+    }
+
+    // Password reset handler
+    window.doReset = async function() {
+      const pw1 = document.getElementById('pw1').value;
+      const pw2 = document.getElementById('pw2').value;
+      const errEl = document.getElementById('reset-error');
+      const btn   = document.getElementById('btn-reset');
+
+      errEl.style.display = 'none';
+
+      if (pw1.length < 8) {
+        errEl.textContent = 'Password must be at least 8 characters.';
+        errEl.style.display = 'block'; return;
+      }
+      if (pw1 !== pw2) {
+        errEl.textContent = 'Passwords do not match.';
+        errEl.style.display = 'block'; return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Updating...';
+
+      try {
+        await confirmPasswordReset(auth, window._oobCode, pw1);
+        show('state-reset-done');
+      } catch(err) {
+        btn.disabled = false;
+        btn.textContent = '↺ Reset Password';
+        errEl.textContent = 'Failed: ' + (err.message || 'Please try again.');
+        errEl.style.display = 'block';
+      }
+    };
+
+    // Password strength meter
+    window.checkStrength = function() {
+      const pw = document.getElementById('pw1').value;
+      const bars = [document.getElementById('bar1'), document.getElementById('bar2'),
+                    document.getElementById('bar3'), document.getElementById('bar4')];
+      bars.forEach(b => { b.className = 'pw-bar'; });
+
+      let score = 0;
+      if (pw.length >= 8)  score++;
+      if (pw.length >= 12) score++;
+      if (/[A-Z]/.test(pw) && /[0-9]/.test(pw)) score++;
+      if (/[^A-Za-z0-9]/.test(pw)) score++;
+
+      const cls = score <= 1 ? 'weak' : score === 2 ? 'fair' : 'strong';
+      for (let i = 0; i < score; i++) bars[i].classList.add(cls);
+    };
+  </script>
+
+</body>
+</html>
