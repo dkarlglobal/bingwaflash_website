@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy – Bingwa Flash</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="apple-touch-icon" href="logo.png" />
+
+  <!-- Link previews -->
+  <meta property="og:title" content="Privacy Policy – Bingwa Flash" />
+  <meta property="og:image" content="https://bingwaflash.co.ke/logo.png" />
+  <meta property="og:url" content="https://bingwaflash.co.ke/privacy.html" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Syne:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -80,12 +90,22 @@
       opacity: 0.5;
     }
     .logo {
-      font-family: 'Orbitron', monospace;
-      font-size: 1.1rem; font-weight: 700; letter-spacing: 3px;
-      color: var(--gold); text-shadow: 0 0 16px var(--gold-glow);
+      display: flex; align-items: center; gap: 10px;
       text-decoration: none;
     }
-    .logo em { font-style: normal; color: #fff; font-weight: 400; }
+    .logo img {
+      height: 32px; width: auto;
+      filter: drop-shadow(0 0 8px var(--gold-glow));
+      transition: filter 0.3s;
+    }
+    .logo:hover img { filter: drop-shadow(0 0 16px var(--gold-glow)); }
+    .logo-wordmark {
+      font-family: 'Orbitron', monospace;
+      font-size: 1rem; font-weight: 700; letter-spacing: 3px;
+      color: var(--gold); text-shadow: 0 0 16px var(--gold-glow);
+    }
+    .logo-wordmark em { font-style: normal; color: #fff; font-weight: 400; }
+
     .back-link {
       font-family: 'Orbitron', monospace;
       font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase;
@@ -217,8 +237,15 @@
       background: linear-gradient(90deg, transparent, rgba(245,197,24,0.3), transparent);
     }
     .ft-logo {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .ft-logo img {
+      height: 24px; width: auto;
+      filter: drop-shadow(0 0 6px rgba(245,197,24,0.4));
+    }
+    .ft-logo span {
       font-family: 'Orbitron', monospace;
-      font-size: 0.85rem; font-weight: 700; letter-spacing: 3px; color: var(--gold);
+      font-size: 0.82rem; font-weight: 700; letter-spacing: 3px; color: var(--gold);
     }
     .ft-links { display: flex; gap: 20px; }
     .ft-links a {
@@ -235,6 +262,7 @@
       .page-hero { padding: 52px 22px 36px; }
       footer { flex-direction: column; text-align: center; }
       .ft-links { justify-content: center; }
+      .logo-wordmark { display: none; }
     }
   </style>
 </head>
@@ -245,7 +273,10 @@
   <div class="bg-scan"></div>
 
   <header>
-    <a class="logo" href="index.html">BINGWA <em>FLASH</em></a>
+    <a class="logo" href="index.html">
+      <img src="logo.png" alt="Bingwa Flash" />
+      <span class="logo-wordmark">BINGWA <em>FLASH</em></span>
+    </a>
     <a class="back-link" href="index.html">← Back to Home</a>
   </header>
 
@@ -398,7 +429,10 @@
   </main>
 
   <footer>
-    <div class="ft-logo">BINGWA FLASH</div>
+    <div class="ft-logo">
+      <img src="logo.png" alt="Bingwa Flash" />
+      <span>BINGWA FLASH</span>
+    </div>
     <div class="ft-links">
       <a href="index.html">Home</a>
       <a href="index.html#download">Download</a>
