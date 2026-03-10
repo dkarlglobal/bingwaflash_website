@@ -1,10 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bingwa Flash – Download</title>
-  <meta name="description" content="Bingwa Flash – Fast. Reliable Automation App. Built for Agents." />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bingwa Flash – Download</title>
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="logo.png" />
+<link rel="apple-touch-icon" href="logo.png" />
+
+<!-- Link previews (WhatsApp / Telegram) -->
+<meta property="og:title" content="Bingwa Flash – Download" />
+<meta property="og:description" content="Fast. Reliable Automation App. Built for Agents." />
+<meta property="og:image" content="https://bingwaflash.co.ke/logo.png" />
+<meta property="og:url" content="https://bingwaflash.co.ke" />
+<meta property="og:type" content="website" />
+
+<meta name="description" content="Bingwa Flash – Fast. Reliable Automation App. Built for Agents." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Syne:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -92,12 +104,22 @@
       opacity: 0.5;
     }
     .logo {
-      font-family: 'Orbitron', monospace;
-      font-size: 1.15rem; font-weight: 700; letter-spacing: 3px;
-      color: var(--gold); text-shadow: 0 0 20px var(--gold-glow);
+      display: flex; align-items: center; gap: 10px;
       text-decoration: none;
     }
-    .logo em { font-style: normal; color: #fff; font-weight: 400; }
+    .logo img {
+      height: 34px; width: auto;
+      filter: drop-shadow(0 0 8px var(--gold-glow));
+      transition: filter 0.3s;
+    }
+    .logo:hover img { filter: drop-shadow(0 0 16px var(--gold-glow)); }
+    .logo-wordmark {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.05rem; font-weight: 700; letter-spacing: 3px;
+      color: var(--gold); text-shadow: 0 0 20px var(--gold-glow);
+    }
+    .logo-wordmark em { font-style: normal; color: #fff; font-weight: 400; }
+
     nav { display: flex; gap: 28px; }
     nav a {
       font-family: 'Orbitron', monospace;
@@ -115,6 +137,13 @@
       align-items: center; justify-content: center;
       text-align: center;
       padding: 120px 24px 60px;
+    }
+
+    .hero-logo {
+      width: 90px; height: 90px; object-fit: contain;
+      margin-bottom: 28px;
+      filter: drop-shadow(0 0 28px rgba(245,197,24,0.55));
+      animation: fadeUp 0.45s ease both;
     }
 
     .hero-badge {
@@ -418,8 +447,15 @@
       background: linear-gradient(90deg, transparent, rgba(245,197,24,0.3), transparent);
     }
     .ft-logo {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .ft-logo img {
+      height: 26px; width: auto;
+      filter: drop-shadow(0 0 6px rgba(245,197,24,0.4));
+    }
+    .ft-logo span {
       font-family: 'Orbitron', monospace;
-      font-size: 0.88rem; font-weight: 700; letter-spacing: 3px; color: var(--gold);
+      font-size: 0.85rem; font-weight: 700; letter-spacing: 3px; color: var(--gold);
     }
     .ft-links { display: flex; gap: 20px; }
     .ft-links a {
@@ -447,6 +483,7 @@
       .contact-grid { grid-template-columns: 1fr; }
       footer { flex-direction: column; text-align: center; }
       .ft-links { justify-content: center; }
+      .logo-wordmark { display: none; }
     }
   </style>
 </head>
@@ -458,7 +495,10 @@
   <div class="bg-scan"></div>
 
   <header>
-    <a class="logo" href="#">BINGWA <em>FLASH</em></a>
+    <a class="logo" href="#">
+      <img src="logo.png" alt="Bingwa Flash" />
+      <span class="logo-wordmark">BINGWA <em>FLASH</em></span>
+    </a>
     <nav>
       <a href="#download">Download</a>
       <a href="#contact">Contact</a>
@@ -470,6 +510,7 @@
 
     <!-- HERO -->
     <section class="hero">
+      <img src="logo.png" alt="Bingwa Flash" class="hero-logo" />
       <div class="hero-badge">
         <span class="badge-dot"></span>
         <span class="badge-text">v1.0.2 — Live &amp; Stable</span>
@@ -615,7 +656,10 @@
   </main>
 
   <footer>
-    <div class="ft-logo">BINGWA FLASH</div>
+    <div class="ft-logo">
+      <img src="logo.png" alt="Bingwa Flash" />
+      <span>BINGWA FLASH</span>
+    </div>
     <div class="ft-links">
       <a href="#download">Download</a>
       <a href="#contact">Contact</a>
