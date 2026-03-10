@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bingwa Flash – Download</title>
+  <meta name="description" content="Bingwa Flash – Fast. Reliable Automation App. Built for Agents." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Syne:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:      #F5C518;
+      --gold-dim:  #c9a010;
+      --gold-glow: rgba(245,197,24,0.35);
+      --red:       #ff3b3b;
+      --dark:      #060608;
+      --card:      #0f0f14;
+      --card2:     #13131a;
+      --border:    #1c1c28;
+      --border-hi: #2a2a3a;
+      --text:      #eeeef5;
+      --muted:     #666680;
+      --muted2:    #3a3a50;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── BACKGROUND ── */
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(245,197,24,0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245,197,24,0.028) 1px, transparent 1px);
+      background-size: 56px 56px;
+      animation: gridMove 22s linear infinite;
+    }
+    @keyframes gridMove { to { background-position: 56px 56px; } }
+
+    .bg-orb {
+      position: fixed; border-radius: 50%; pointer-events: none;
+      z-index: 0; filter: blur(90px);
+    }
+    .bg-orb-1 {
+      width: 480px; height: 480px; top: -80px; right: -80px;
+      background: radial-gradient(circle, rgba(245,197,24,0.07) 0%, transparent 70%);
+      animation: orbDrift 14s ease-in-out infinite;
+    }
+    .bg-orb-2 {
+      width: 360px; height: 360px; bottom: 120px; left: -80px;
+      background: radial-gradient(circle, rgba(255,59,59,0.05) 0%, transparent 70%);
+      animation: orbDrift 18s ease-in-out infinite reverse;
+    }
+    @keyframes orbDrift {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-36px); }
+    }
+
+    .bg-scan {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg, transparent 0px, transparent 2px,
+        rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px
+      );
+    }
+
+    header, main, footer { position: relative; z-index: 2; }
+
+    /* ── HEADER ── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 40px;
+      background: rgba(6,6,8,0.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    header::after {
+      content: '';
+      position: absolute; bottom: -1px; left: 10%; right: 10%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+      opacity: 0.5;
+    }
+    .logo {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.15rem; font-weight: 700; letter-spacing: 3px;
+      color: var(--gold); text-shadow: 0 0 20px var(--gold-glow);
+      text-decoration: none;
+    }
+    .logo em { font-style: normal; color: #fff; font-weight: 400; }
+    nav { display: flex; gap: 28px; }
+    nav a {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.62rem; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 24px 60px;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(245,197,24,0.07);
+      border: 1px solid rgba(245,197,24,0.22);
+      border-radius: 4px; padding: 6px 18px;
+      margin-bottom: 36px;
+      animation: fadeUp 0.5s ease both;
+    }
+    .badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #00e87a; box-shadow: 0 0 8px #00e87a;
+      animation: blink 2s ease infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+    .badge-text {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.6rem; letter-spacing: 3px;
+      color: var(--gold); text-transform: uppercase;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.6rem; letter-spacing: 5px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 14px;
+      animation: fadeUp 0.55s ease 0.05s both;
+    }
+
+    .hero-h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(3.2rem, 12vw, 8rem);
+      font-weight: 900; line-height: 0.87; letter-spacing: 2px;
+      animation: fadeUp 0.6s ease 0.1s both;
+    }
+    .hero-h1 .gold {
+      display: block; color: var(--gold);
+      text-shadow: 0 0 60px var(--gold-glow), 0 0 120px rgba(245,197,24,0.1);
+    }
+    .hero-h1 .white { display: block; color: var(--text); }
+
+    .hero-sub {
+      margin-top: 24px; color: var(--muted);
+      font-size: 1rem; font-weight: 400; line-height: 1.7; max-width: 400px;
+      animation: fadeUp 0.6s ease 0.15s both;
+    }
+
+    .hero-stats {
+      display: flex; align-items: center;
+      margin-top: 48px; border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
+      animation: fadeUp 0.6s ease 0.2s both;
+    }
+    .stat {
+      padding: 16px 28px; text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.3rem; font-weight: 700; color: var(--gold);
+    }
+    .stat-num sub { font-size: 0.65em; color: var(--muted); vertical-align: baseline; }
+    .stat-lbl {
+      font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); margin-top: 4px;
+    }
+
+    .scroll-cue {
+      margin-top: 56px; display: flex; flex-direction: column;
+      align-items: center; gap: 8px;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.55rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted2);
+      animation: fadeUp 0.6s ease 0.25s both;
+    }
+    .scroll-line {
+      width: 1px; height: 38px;
+      background: linear-gradient(to bottom, var(--gold-dim), transparent);
+      animation: scrollPulse 2s ease infinite;
+    }
+    @keyframes scrollPulse { 0%,100%{opacity:0.3;} 50%{opacity:1;} }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(22px); }
+      to   { opacity:1; transform: none; }
+    }
+
+    /* ── SECTIONS ── */
+    .section { padding: 0 24px 90px; }
+
+    .sec-header { text-align: center; margin-bottom: 36px; }
+    .sec-tag {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.58rem; letter-spacing: 5px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 8px;
+    }
+    .sec-title {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(1.3rem, 4vw, 1.9rem);
+      font-weight: 700; letter-spacing: 2px; color: var(--text);
+    }
+
+    /* ── DOWNLOAD CARD ── */
+    .dl-wrap { display: flex; justify-content: center; }
+
+    .dl-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 34px 30px;
+      width: 100%; max-width: 420px;
+      position: relative; overflow: hidden;
+    }
+    .dl-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .dl-card::after {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse at 50% 0%, rgba(245,197,24,0.05) 0%, transparent 55%);
+    }
+
+    .cbrkt { position: absolute; width: 14px; height: 14px; }
+    .cbrkt.tl { top:9px; left:9px;    border-top:1px solid var(--gold-dim); border-left:1px solid var(--gold-dim); }
+    .cbrkt.tr { top:9px; right:9px;   border-top:1px solid var(--gold-dim); border-right:1px solid var(--gold-dim); }
+    .cbrkt.bl { bottom:9px; left:9px;  border-bottom:1px solid var(--gold-dim); border-left:1px solid var(--gold-dim); }
+    .cbrkt.br { bottom:9px; right:9px; border-bottom:1px solid var(--gold-dim); border-right:1px solid var(--gold-dim); }
+
+    .ver-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .ver-lbl {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.58rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .badge-stable {
+      font-family: 'Orbitron', monospace; font-size: 0.58rem; letter-spacing: 2px;
+      color: #00e87a; border: 1px solid rgba(0,232,122,0.3);
+      background: rgba(0,232,122,0.07); padding: 3px 9px; border-radius: 3px;
+    }
+    .ver-num {
+      font-family: 'Orbitron', monospace;
+      font-size: 1rem; font-weight: 700; color: var(--gold);
+      letter-spacing: 1px; margin-bottom: 22px;
+    }
+
+    .meta-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 8px; margin-bottom: 18px;
+    }
+    .meta-cell {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px;
+    }
+    .meta-lbl {
+      font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--muted2); margin-bottom: 4px;
+    }
+    .meta-val {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.75rem; font-weight: 600; color: var(--text);
+    }
+
+    .changelog {
+      background: rgba(245,197,24,0.03);
+      border: 1px solid rgba(245,197,24,0.12);
+      border-left: 2px solid var(--gold-dim);
+      border-radius: 0 8px 8px 0;
+      padding: 13px 15px; margin-bottom: 22px;
+    }
+    .changelog-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.58rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 8px;
+    }
+    .changelog ul { list-style: none; }
+    .changelog li {
+      font-size: 0.82rem; color: var(--muted);
+      line-height: 1.65; padding-left: 14px; position: relative;
+    }
+    .changelog li::before { content: '›'; position: absolute; left: 0; color: var(--gold-dim); }
+
+    .btn-dl {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%;
+      background: linear-gradient(135deg, #d42020, #ff3b3b);
+      color: #fff;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 16px 24px; border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 4px 24px rgba(255,59,59,0.28), inset 0 1px 0 rgba(255,255,255,0.1);
+      transition: transform 0.15s ease, box-shadow 0.2s ease;
+      position: relative; overflow: hidden;
+    }
+    .btn-dl::after {
+      content: '';
+      position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.4s ease;
+    }
+    .btn-dl:hover::after { left: 100%; }
+    .btn-dl:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(255,59,59,0.42), inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .btn-dl:active { transform: translateY(0); }
+    .dl-arrow { animation: bounce 1.6s ease infinite; display: inline-block; }
+    @keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(3px);} }
+
+    .install-warn {
+      display: flex; gap: 8px; align-items: flex-start;
+      background: rgba(255,59,59,0.05);
+      border: 1px solid rgba(255,59,59,0.15);
+      border-radius: 7px; padding: 10px 12px; margin-top: 12px;
+    }
+    .install-warn-icon { font-size: 0.85rem; flex-shrink: 0; }
+    .install-warn-text { font-size: 0.74rem; color: var(--muted); line-height: 1.55; }
+
+    /* ── PREV VERSIONS ── */
+    .ver-list { max-width: 440px; margin: 0 auto; display: flex; flex-direction: column; gap: 9px; }
+
+    .ver-item {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 13px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .ver-item:hover { border-color: var(--border-hi); background: var(--card2); }
+    .vi-name {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.74rem; font-weight: 600; color: var(--text); margin-bottom: 3px;
+    }
+    .vi-date { font-size: 0.7rem; color: var(--muted); }
+    .btn-ver {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.6rem; font-weight: 600; letter-spacing: 1px;
+      color: var(--red); background: rgba(255,59,59,0.08);
+      border: 1px solid rgba(255,59,59,0.2);
+      padding: 7px 13px; border-radius: 5px;
+      text-decoration: none; white-space: nowrap;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-ver:hover { background: rgba(255,59,59,0.16); border-color: rgba(255,59,59,0.35); }
+
+    /* ── CONTACT ── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px; max-width: 700px; margin: 0 auto;
+    }
+
+    .contact-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 18px;
+      display: flex; align-items: center; gap: 14px;
+      text-decoration: none;
+      transition: border-color 0.2s, transform 0.2s, background 0.2s;
+    }
+    .contact-card:hover { transform: translateY(-3px); background: var(--card2); }
+    .c-phone    { --ac: #00e87a; }
+    .c-email    { --ac: #F5C518; }
+    .c-whatsapp { --ac: #25D366; }
+    .c-telegram { --ac: #229ED9; }
+    .contact-card:hover               { border-color: var(--ac); }
+    .contact-card:hover .ci-wrap      { background: color-mix(in srgb, var(--ac) 12%, transparent); border-color: var(--ac); }
+    .contact-card:hover .ci-name      { color: var(--ac); }
+    .contact-card:hover .ci-arrow     { color: var(--ac); transform: translateX(3px); }
+
+    .ci-wrap {
+      width: 42px; height: 42px; flex-shrink: 0; border-radius: 10px;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border-hi);
+      display: flex; align-items: center; justify-content: center; font-size: 1.25rem;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .ci-info { flex: 1; min-width: 0; }
+    .ci-name {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--text); margin-bottom: 3px; transition: color 0.2s;
+    }
+    .ci-handle { font-size: 0.78rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ci-arrow { color: var(--muted2); font-size: 1rem; transition: color 0.2s, transform 0.2s; }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      border-top: 1px solid var(--border);
+      padding: 32px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 14px;
+    }
+    footer::before {
+      content: '';
+      position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(245,197,24,0.3), transparent);
+    }
+    .ft-logo {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.88rem; font-weight: 700; letter-spacing: 3px; color: var(--gold);
+    }
+    .ft-links { display: flex; gap: 20px; }
+    .ft-links a {
+      font-size: 0.72rem; letter-spacing: 0.5px;
+      color: var(--muted); text-decoration: none; transition: color 0.2s;
+    }
+    .ft-links a:hover { color: var(--gold); }
+    .ft-copy {
+      width: 100%; text-align: center; padding-top: 18px;
+      border-top: 1px solid var(--border);
+      font-size: 0.7rem; color: var(--muted2);
+    }
+
+    /* ── REVEAL ── */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.on { opacity: 1; transform: none; }
+
+    @media (max-width: 560px) {
+      header { padding: 13px 18px; }
+      nav { gap: 16px; }
+      .stat { padding: 14px 18px; }
+      .contact-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; text-align: center; }
+      .ft-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-scan"></div>
+
+  <header>
+    <a class="logo" href="#">BINGWA <em>FLASH</em></a>
+    <nav>
+      <a href="#download">Download</a>
+      <a href="#contact">Contact</a>
+      <a href="privacy.html">Privacy</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span class="badge-text">v1.0.2 — Live &amp; Stable</span>
+      </div>
+      <p class="hero-eyebrow">Android Automation Platform</p>
+      <h1 class="hero-h1">
+        <span class="gold">BINGWA</span>
+        <span class="white">FLASH</span>
+      </h1>
+      <p class="hero-sub">Fast. Reliable Automation App.<br>Built for Agents who move at speed.</p>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">51.6<sub>MB</sub></div>
+          <div class="stat-lbl">App Size</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">6.0<sub>+</sub></div>
+          <div class="stat-lbl">Android</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">100<sub>%</sub></div>
+          <div class="stat-lbl">Free</div>
+        </div>
+      </div>
+      <div class="scroll-cue">
+        <div class="scroll-line"></div>
+        Scroll
+      </div>
+    </section>
+
+    <!-- DOWNLOAD -->
+    <section class="section" id="download">
+      <div class="sec-header reveal">
+        <div class="sec-tag">↓ Latest Build</div>
+        <div class="sec-title">Download</div>
+      </div>
+      <div class="dl-wrap">
+        <div class="dl-card reveal">
+          <div class="cbrkt tl"></div><div class="cbrkt tr"></div>
+          <div class="cbrkt bl"></div><div class="cbrkt br"></div>
+
+          <div class="ver-row">
+            <span class="ver-lbl">Latest Release</span>
+            <span class="badge-stable">● STABLE</span>
+          </div>
+          <div class="ver-num">Version 1.0.2 — Build 2</div>
+
+          <div class="meta-grid">
+            <div class="meta-cell"><div class="meta-lbl">File Size</div><div class="meta-val">51.6 MB</div></div>
+            <div class="meta-cell"><div class="meta-lbl">Platform</div><div class="meta-val">Android 6+</div></div>
+            <div class="meta-cell"><div class="meta-lbl">Released</div><div class="meta-val">Mar 10, 2026</div></div>
+            <div class="meta-cell"><div class="meta-lbl">Format</div><div class="meta-val">APK</div></div>
+          </div>
+
+          <div class="changelog">
+            <div class="changelog-title">What's New</div>
+            <ul>
+              <li>Initial public stable release</li>
+              <li>Core automation engine</li>
+              <li>Export &amp; Import Offers</li>
+              <li>Agent automation alerts</li>
+              <li>SMS Relay feature</li>
+            </ul>
+          </div>
+
+          <a class="btn-dl" href="https://github.com/dkarlglobal/bingwaflash-releases/releases/download/v1.0.2/BingwaFlash_v2.apk">
+            <span class="dl-arrow">⬇</span>
+            Download APK
+          </a>
+
+          <div class="install-warn">
+            <span class="install-warn-icon">⚠️</span>
+            <span class="install-warn-text">Enable <strong style="color:var(--text)">"Install from unknown sources"</strong> in Android Settings → Security before installing.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREV VERSIONS -->
+    <section class="section" style="padding-top:0">
+      <div class="sec-header reveal">
+        <div class="sec-tag">Archive</div>
+        <div class="sec-title">Previous Versions</div>
+      </div>
+      <div class="ver-list">
+        <div class="ver-item reveal">
+          <div>
+            <div class="vi-name">v1.0.1 — Build 1</div>
+            <div class="vi-date">March 8, 2026 · Beta</div>
+          </div>
+          <a class="btn-ver" href="https://github.com/dkarlglobal/bingwaflash-releases/releases/download/v1.0.2/BingwaFlash_v2.apk">↓ APK</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section" id="contact">
+      <div class="sec-header reveal">
+        <div class="sec-tag">Reach Out</div>
+        <div class="sec-title">Contact Us</div>
+      </div>
+      <div class="contact-grid">
+
+        <a class="contact-card c-phone reveal" href="tel:+254748008585">
+          <div class="ci-wrap">📞</div>
+          <div class="ci-info">
+            <div class="ci-name">Phone</div>
+            <div class="ci-handle">+254 748 008 585</div>
+          </div>
+          <span class="ci-arrow">›</span>
+        </a>
+
+        <a class="contact-card c-email reveal" href="mailto:support@bingwaflash.co.ke">
+          <div class="ci-wrap">✉️</div>
+          <div class="ci-info">
+            <div class="ci-name">Email</div>
+            <div class="ci-handle">support@bingwaflash.co.ke</div>
+          </div>
+          <span class="ci-arrow">›</span>
+        </a>
+
+        <a class="contact-card c-whatsapp reveal" href="https://wa.me/254748008585" target="_blank" rel="noopener">
+          <div class="ci-wrap">💬</div>
+          <div class="ci-info">
+            <div class="ci-name">WhatsApp</div>
+            <div class="ci-handle">+254 748 008 585</div>
+          </div>
+          <span class="ci-arrow">›</span>
+        </a>
+
+        <a class="contact-card c-telegram reveal" href="https://t.me/bingwaflash" target="_blank" rel="noopener">
+          <div class="ci-wrap">✈️</div>
+          <div class="ci-info">
+            <div class="ci-name">Telegram</div>
+            <div class="ci-handle">@bingwaflash</div>
+          </div>
+          <span class="ci-arrow">›</span>
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="ft-logo">BINGWA FLASH</div>
+    <div class="ft-links">
+      <a href="#download">Download</a>
+      <a href="#contact">Contact</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+    <div class="ft-copy">© 2026 Bingwa Flash. All rights reserved. · bingwaflash.co.ke</div>
+  </footer>
+
+  <script>
+    const io = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('on'), i * 55);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+
+</body>
+</html>
