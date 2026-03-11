@@ -169,26 +169,56 @@
       font-size: 0.58rem; letter-spacing: 3px; text-transform: uppercase;
       color: var(--muted); margin-bottom: 8px;
     }
-    .field input {
+    .pw-wrap {
+      position: relative; display: flex; align-items: center;
+    }
+    .pw-wrap input {
       width: 100%; background: rgba(255,255,255,0.04);
       border: 1px solid var(--border); border-radius: 8px;
-      padding: 13px 16px; color: var(--text);
+      padding: 13px 46px 13px 16px; color: var(--text);
       font-family: 'Syne', sans-serif; font-size: 0.92rem;
       outline: none; transition: border-color 0.2s;
     }
-    .field input:focus { border-color: var(--gold-dim); }
-    .field input::placeholder { color: var(--muted2); }
+    .pw-wrap input:focus { border-color: var(--gold-dim); }
+    .pw-wrap input::placeholder { color: var(--muted2); }
+    .pw-wrap input.invalid { border-color: var(--red); }
+    .eye-btn {
+      position: absolute; right: 13px;
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: 1.15rem; padding: 4px;
+      transition: color 0.2s; line-height: 1;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .eye-btn:hover { color: var(--gold); }
 
-    .pw-strength {
-      display: flex; gap: 4px; margin-top: 8px;
+    /* requirements checklist */
+    .pw-requirements {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px 16px;
+      margin: 10px 0 16px;
     }
-    .pw-bar {
-      flex: 1; height: 3px; border-radius: 2px;
-      background: var(--border); transition: background 0.3s;
+    .pw-req-title {
+      display: flex; align-items: center; gap: 8px;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.58rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 10px;
     }
-    .pw-bar.weak   { background: var(--red); }
-    .pw-bar.fair   { background: #f5a623; }
-    .pw-bar.strong { background: var(--green); }
+    .req-item {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.82rem; color: var(--muted);
+      padding: 5px 0; transition: color 0.25s;
+    }
+    .req-item.met { color: var(--green); }
+    .req-icon {
+      width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+      border: 1.5px solid var(--muted2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; transition: all 0.25s;
+    }
+    .req-item.met .req-icon {
+      background: var(--green); border-color: var(--green); color: #000;
+    }
 
     /* buttons */
     .btn {
@@ -294,18 +324,42 @@
         <div class="card-sub">Enter a strong new password for your account.</div>
         <div class="field">
           <label>New Password</label>
-          <input type="password" id="pw1" placeholder="Min. 8 characters" oninput="checkStrength()" />
-          <div class="pw-strength">
-            <div class="pw-bar" id="bar1"></div>
-            <div class="pw-bar" id="bar2"></div>
-            <div class="pw-bar" id="bar3"></div>
-            <div class="pw-bar" id="bar4"></div>
+          <div class="pw-wrap">
+            <input type="password" id="pw1" placeholder="Enter new password" oninput="checkRequirements()" />
+            <button class="eye-btn" type="button" onclick="toggleEye('pw1','eye1')" id="eye1" title="Show/hide password">👁</button>
           </div>
         </div>
+
+        <!-- Live requirements checklist -->
+        <div class="pw-requirements">
+          <div class="pw-req-title">🔒 Password requirements</div>
+          <div class="req-item" id="req-len">
+            <div class="req-icon" id="icon-len"></div>
+            At least 6 characters
+          </div>
+          <div class="req-item" id="req-upper">
+            <div class="req-icon" id="icon-upper"></div>
+            Contains an uppercase letter
+          </div>
+          <div class="req-item" id="req-lower">
+            <div class="req-icon" id="icon-lower"></div>
+            Contains a lowercase letter
+          </div>
+          <div class="req-item" id="req-num">
+            <div class="req-icon" id="icon-num"></div>
+            Contains a number
+          </div>
+        </div>
+
         <div class="field">
           <label>Confirm Password</label>
-          <input type="password" id="pw2" placeholder="Repeat password" />
+          <div class="pw-wrap">
+            <input type="password" id="pw2" placeholder="Repeat password" oninput="checkMatch()" />
+            <button class="eye-btn" type="button" onclick="toggleEye('pw2','eye2')" id="eye2" title="Show/hide password">👁</button>
+          </div>
         </div>
+        <div id="match-msg" style="display:none;font-size:0.78rem;margin:-8px 0 12px;padding-left:4px;"></div>
+
         <button class="btn btn-red" id="btn-reset" onclick="doReset()">↺ Reset Password</button>
         <div id="reset-error" style="display:none;margin-top:12px;font-size:0.8rem;color:var(--red);text-align:center;"></div>
       </div>
@@ -406,17 +460,83 @@
       showError('Unknown action. Please use the link sent to your email.');
     }
 
-    // Password reset handler
-    window.doReset = async function() {
+    // ── Eye toggle ──
+    window.toggleEye = function(inputId, btnId) {
+      const inp = document.getElementById(inputId);
+      const btn = document.getElementById(btnId);
+      if (inp.type === 'password') {
+        inp.type = 'text';
+        btn.textContent = '🙈';
+      } else {
+        inp.type = 'password';
+        btn.textContent = '👁';
+      }
+    };
+
+    // ── Live requirements checker (matches Firebase policy) ──
+    window.checkRequirements = function() {
+      const pw = document.getElementById('pw1').value;
+      const rules = [
+        { id: 'req-len',   icon: 'icon-len',   ok: pw.length >= 6 },
+        { id: 'req-upper', icon: 'icon-upper',  ok: /[A-Z]/.test(pw) },
+        { id: 'req-lower', icon: 'icon-lower',  ok: /[a-z]/.test(pw) },
+        { id: 'req-num',   icon: 'icon-num',    ok: /[0-9]/.test(pw) },
+      ];
+      rules.forEach(r => {
+        const row  = document.getElementById(r.id);
+        const icon = document.getElementById(r.icon);
+        if (r.ok) {
+          row.classList.add('met');
+          icon.textContent = '✓';
+        } else {
+          row.classList.remove('met');
+          icon.textContent = '';
+        }
+      });
+      checkMatch();
+    };
+
+    // ── Confirm password match indicator ──
+    window.checkMatch = function() {
       const pw1 = document.getElementById('pw1').value;
       const pw2 = document.getElementById('pw2').value;
+      const msg = document.getElementById('match-msg');
+      if (!pw2) { msg.style.display = 'none'; return; }
+      if (pw1 === pw2) {
+        msg.style.display = 'block';
+        msg.style.color = 'var(--green)';
+        msg.textContent = '✓ Passwords match';
+      } else {
+        msg.style.display = 'block';
+        msg.style.color = 'var(--red)';
+        msg.textContent = '✕ Passwords do not match';
+      }
+    };
+
+    // ── Password reset handler ──
+    window.doReset = async function() {
+      const pw1   = document.getElementById('pw1').value;
+      const pw2   = document.getElementById('pw2').value;
       const errEl = document.getElementById('reset-error');
       const btn   = document.getElementById('btn-reset');
 
       errEl.style.display = 'none';
 
-      if (pw1.length < 8) {
-        errEl.textContent = 'Password must be at least 8 characters.';
+      // Validate all Firebase rules
+      if (pw1.length < 6) {
+        errEl.textContent = 'Password must be at least 6 characters.';
+        errEl.style.display = 'block'; return;
+      }
+      if (!/[A-Z]/.test(pw1)) {
+        errEl.textContent = 'Password must contain at least one uppercase letter.';
+        errEl.style.display = 'block'; return;
+      }
+      if (!/[a-z]/.test(pw1)) {
+        errEl.textContent = 'Password must contain at least one lowercase letter.';
+        errEl.style.display = 'block'; return;
+      }
+      if (!/[0-9]/.test(pw1)) {
+        errEl.textContent = 'Password must contain at least one number.';
         errEl.style.display = 'block'; return;
       }
       if (pw1 !== pw2) {
@@ -436,23 +556,6 @@
         errEl.textContent = 'Failed: ' + (err.message || 'Please try again.');
         errEl.style.display = 'block';
       }
-    };
-
-    // Password strength meter
-    window.checkStrength = function() {
-      const pw = document.getElementById('pw1').value;
-      const bars = [document.getElementById('bar1'), document.getElementById('bar2'),
-                    document.getElementById('bar3'), document.getElementById('bar4')];
-      bars.forEach(b => { b.className = 'pw-bar'; });
-
-      let score = 0;
-      if (pw.length >= 8)  score++;
-      if (pw.length >= 12) score++;
-      if (/[A-Z]/.test(pw) && /[0-9]/.test(pw)) score++;
-      if (/[^A-Za-z0-9]/.test(pw)) score++;
-
-      const cls = score <= 1 ? 'weak' : score === 2 ? 'fair' : 'strong';
-      for (let i = 0; i < score; i++) bars[i].classList.add(cls);
     };
   </script>
 
