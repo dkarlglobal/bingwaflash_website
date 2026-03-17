@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <script>
+    // GitHub Pages 404 → SPA redirect trick
+    // When someone visits bingwaflash.co.ke/order/john,
+    // GitHub Pages returns this 404.html.
+    // This script redirects to index.html with the path as a query param,
+    // and the order page reads it back.
+    //
+    // Alternative: use the Jekyll _config.yml permalink trick (see DEPLOY.md)
+
+    const path = window.location.pathname;
+
+    // If it's an order path, redirect to order page with username param
+    const match = path.match(/^\/order\/([a-z0-9_]+)\/?$/i);
+    if (match) {
+      window.location.replace(
+        `/order/?u=${encodeURIComponent(match[1])}`
+      );
+    } else {
+      // Generic 404 — redirect to home
+      window.location.replace('/');
+    }
+  </script>
+</head>
+<body></body>
+</html>
