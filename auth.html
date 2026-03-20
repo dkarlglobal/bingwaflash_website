@@ -1,563 +1,196 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bingwa Flash – Account</title>
-  <link rel="icon" type="image/png" href="logo.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Syne:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --gold:      #F5C518;
-      --gold-dim:  #c9a010;
-      --gold-glow: rgba(245,197,24,0.35);
-      --red:       #ff3b3b;
-      --green:     #00e87a;
-      --dark:      #060608;
-      --card:      #0f0f14;
-      --border:    #1c1c28;
-      --border-hi: #2a2a3a;
-      --text:      #eeeef5;
-      --muted:     #666680;
-      --muted2:    #3a3a50;
-    }
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--dark); color: var(--text);
-      font-family: 'Syne', sans-serif;
-      min-height: 100vh; overflow-x: hidden;
-      display: flex; flex-direction: column;
-    }
-
-    /* BG */
-    .bg-grid {
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background-image:
-        linear-gradient(rgba(245,197,24,0.028) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(245,197,24,0.028) 1px, transparent 1px);
-      background-size: 56px 56px;
-      animation: gridMove 22s linear infinite;
-    }
-    @keyframes gridMove { to { background-position: 56px 56px; } }
-    .bg-orb {
-      position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(90px);
-      width: 480px; height: 480px; top: -80px; right: -80px;
-      background: radial-gradient(circle, rgba(245,197,24,0.07) 0%, transparent 70%);
-      animation: orbDrift 14s ease-in-out infinite;
-    }
-    @keyframes orbDrift { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-36px);} }
-    .bg-scan {
-      position: fixed; inset: 0; z-index: 1; pointer-events: none;
-      background: repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px);
-    }
-
-    /* HEADER */
-    header {
-      position: relative; z-index: 10;
-      display: flex; align-items: center; padding: 18px 40px;
-      background: rgba(6,6,8,0.88); backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border);
-    }
-    header::after {
-      content: ''; position: absolute; bottom: -1px; left: 10%; right: 10%; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold-dim), transparent); opacity: 0.5;
-    }
-    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .logo img { height: 32px; width: auto; filter: drop-shadow(0 0 8px var(--gold-glow)); }
-    .logo-wordmark {
-      font-family: 'Orbitron', monospace; font-size: 1rem; font-weight: 700;
-      letter-spacing: 3px; color: var(--gold); text-shadow: 0 0 20px var(--gold-glow);
-    }
-    .logo-wordmark em { font-style: normal; color: #fff; font-weight: 400; }
-
-    /* MAIN */
-    main {
-      flex: 1; position: relative; z-index: 2;
-      display: flex; align-items: center; justify-content: center;
-      padding: 40px 20px;
-    }
-
-    .card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 20px; padding: 44px 40px;
-      width: 100%; max-width: 440px;
-      position: relative; overflow: hidden;
-      animation: fadeUp 0.5s ease both;
-    }
-    .card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    }
-    /* corner brackets */
-    .cbrkt { position: absolute; width: 14px; height: 14px; }
-    .cbrkt.tl { top:10px; left:10px;   border-top:1px solid var(--gold-dim); border-left:1px solid var(--gold-dim); }
-    .cbrkt.tr { top:10px; right:10px;  border-top:1px solid var(--gold-dim); border-right:1px solid var(--gold-dim); }
-    .cbrkt.bl { bottom:10px; left:10px;  border-bottom:1px solid var(--gold-dim); border-left:1px solid var(--gold-dim); }
-    .cbrkt.br { bottom:10px; right:10px; border-bottom:1px solid var(--gold-dim); border-right:1px solid var(--gold-dim); }
-
-    .card-logo {
-      display: block; width: 64px; height: 64px; object-fit: contain;
-      margin: 0 auto 20px;
-      filter: drop-shadow(0 0 20px rgba(245,197,24,0.5));
-    }
-
-    .card-tag {
-      font-family: 'Orbitron', monospace; font-size: 0.55rem;
-      letter-spacing: 4px; text-transform: uppercase;
-      color: var(--muted); text-align: center; margin-bottom: 10px;
-    }
-    .card-title {
-      font-family: 'Orbitron', monospace; font-size: 1.3rem;
-      font-weight: 700; letter-spacing: 2px; text-align: center;
-      color: var(--text); margin-bottom: 8px;
-    }
-    .card-title .gold { color: var(--gold); }
-    .card-sub {
-      font-size: 0.85rem; color: var(--muted); text-align: center;
-      line-height: 1.65; margin-bottom: 28px;
-    }
-
-    /* STATUS STATES */
-    .state { display: none; }
-    .state.active { display: block; }
-
-    /* spinner */
-    .spinner-wrap { text-align: center; padding: 10px 0 24px; }
-    .spinner {
-      display: inline-block; width: 40px; height: 40px;
-      border: 2px solid var(--border-hi); border-top-color: var(--gold);
-      border-radius: 50%; animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .spinner-text {
-      margin-top: 14px; font-family: 'Orbitron', monospace;
-      font-size: 0.6rem; letter-spacing: 3px; color: var(--muted); text-transform: uppercase;
-    }
-
-    /* success */
-    .icon-circle {
-      width: 64px; height: 64px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.8rem; margin: 0 auto 20px;
-    }
-    .icon-circle.success { background: rgba(0,232,122,0.1); border: 1px solid rgba(0,232,122,0.3); }
-    .icon-circle.error   { background: rgba(255,59,59,0.1);  border: 1px solid rgba(255,59,59,0.3); }
-    .icon-circle.warning { background: rgba(245,197,24,0.1); border: 1px solid rgba(245,197,24,0.3); }
-
-    .msg-title {
-      font-family: 'Orbitron', monospace; font-size: 1rem;
-      font-weight: 700; letter-spacing: 2px; text-align: center;
-      margin-bottom: 10px;
-    }
-    .msg-title.success { color: var(--green); }
-    .msg-title.error   { color: var(--red); }
-    .msg-title.warning { color: var(--gold); }
-
-    .msg-body {
-      font-size: 0.85rem; color: var(--muted); text-align: center;
-      line-height: 1.7; margin-bottom: 28px;
-    }
-
-    /* password input */
-    .field { margin-bottom: 16px; }
-    .field label {
-      display: block; font-family: 'Orbitron', monospace;
-      font-size: 0.58rem; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 8px;
-    }
-    .pw-wrap {
-      position: relative; display: flex; align-items: center;
-    }
-    .pw-wrap input {
-      width: 100%; background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border); border-radius: 8px;
-      padding: 13px 46px 13px 16px; color: var(--text);
-      font-family: 'Syne', sans-serif; font-size: 0.92rem;
-      outline: none; transition: border-color 0.2s;
-    }
-    .pw-wrap input:focus { border-color: var(--gold-dim); }
-    .pw-wrap input::placeholder { color: var(--muted2); }
-    .pw-wrap input.invalid { border-color: var(--red); }
-    .eye-btn {
-      position: absolute; right: 13px;
-      background: none; border: none; cursor: pointer;
-      color: var(--muted); font-size: 1.15rem; padding: 4px;
-      transition: color 0.2s; line-height: 1;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .eye-btn:hover { color: var(--gold); }
-
-    /* requirements checklist */
-    .pw-requirements {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      border-radius: 10px; padding: 14px 16px;
-      margin: 10px 0 16px;
-    }
-    .pw-req-title {
-      display: flex; align-items: center; gap: 8px;
-      font-family: 'Orbitron', monospace;
-      font-size: 0.58rem; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 10px;
-    }
-    .req-item {
-      display: flex; align-items: center; gap: 10px;
-      font-size: 0.82rem; color: var(--muted);
-      padding: 5px 0; transition: color 0.25s;
-    }
-    .req-item.met { color: var(--green); }
-    .req-icon {
-      width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
-      border: 1.5px solid var(--muted2);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.65rem; transition: all 0.25s;
-    }
-    .req-item.met .req-icon {
-      background: var(--green); border-color: var(--green); color: #000;
-    }
-
-    /* buttons */
-    .btn {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      width: 100%; padding: 14px 24px; border-radius: 8px;
-      font-family: 'Orbitron', monospace; font-size: 0.78rem;
-      font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-      text-decoration: none; cursor: pointer; border: none;
-      transition: transform 0.15s, box-shadow 0.2s;
-      position: relative; overflow: hidden;
-    }
-    .btn::after {
-      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-      transition: left 0.4s;
-    }
-    .btn:hover::after { left: 100%; }
-    .btn:hover { transform: translateY(-2px); }
-    .btn:active { transform: none; }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-    .btn-gold {
-      background: linear-gradient(135deg, var(--gold-dim), var(--gold));
-      color: #000;
-      box-shadow: 0 4px 20px rgba(245,197,24,0.3);
-    }
-    .btn-gold:hover { box-shadow: 0 8px 28px rgba(245,197,24,0.45); }
-
-    .btn-red {
-      background: linear-gradient(135deg, #d42020, var(--red));
-      color: #fff;
-      box-shadow: 0 4px 20px rgba(255,59,59,0.28);
-    }
-    .btn-red:hover { box-shadow: 0 8px 28px rgba(255,59,59,0.42); }
-
-    .btn-ghost {
-      background: transparent; color: var(--muted);
-      border: 1px solid var(--border); margin-top: 10px;
-    }
-    .btn-ghost:hover { border-color: var(--border-hi); color: var(--text); }
-
-    .divider {
-      width: 100%; height: 1px; background: var(--border); margin: 20px 0;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: none; }
-    }
-
-    @media (max-width: 480px) {
-      .card { padding: 32px 22px; }
-      header { padding: 14px 18px; }
-      .logo-wordmark { display: none; }
-    }
-  </style>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Bingwa Flash — Account</title>
+<link rel="icon" type="image/png" href="/logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Syne:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}:root{--gold:#F5C518;--gold-dim:#c9a010;--gold-lo:rgba(245,197,24,0.12);--gold-glow:rgba(245,197,24,0.35);--red:#ff4455;--red-dim:#cc2233;--red-lo:rgba(255,68,85,0.12);--green:#00e87a;--green-dim:#00b85f;--green-lo:rgba(0,232,122,0.12);--r:8px;--rm:14px;--rl:20px}html,[data-theme="dark"]{--bg:#07070c;--bg2:#0c0c14;--card:#10101a;--card2:#14141f;--bdr:#1e1e30;--bhi:#2c2c44;--tx:#eeeef8;--tx2:#c0c0d8;--mt:#64648a;--mt2:#3a3a55;--hbg:rgba(7,7,12,0.92);--sh:0 8px 40px rgba(0,0,0,0.5);--gc:rgba(245,197,24,0.025);--sc:rgba(0,0,0,0.07);--o1:rgba(245,197,24,0.07);--o2:rgba(255,68,85,0.05);--o3:rgba(0,232,122,0.04)}[data-theme="light"]{--bg:#f4f3ee;--bg2:#eae9e0;--card:#fff;--card2:#f8f7f2;--bdr:#dddbd0;--bhi:#c8c5b5;--tx:#18182a;--tx2:#303050;--mt:#7070a0;--mt2:#b5b3d0;--hbg:rgba(244,243,238,0.95);--sh:0 8px 40px rgba(0,0,0,0.12);--gc:rgba(0,0,0,0.035);--sc:rgba(0,0,0,0.018);--o1:rgba(245,197,24,0.12);--o2:rgba(255,68,85,0.07);--o3:rgba(0,232,122,0.07)}html{scroll-behavior:smooth}body{background:var(--bg);color:var(--tx);font-family:'Syne',sans-serif;overflow-x:hidden;transition:background .3s,color .3s}.bg-mesh{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--gc) 1px,transparent 1px),linear-gradient(90deg,var(--gc) 1px,transparent 1px);background-size:52px 52px;animation:meshMove 24s linear infinite}@keyframes meshMove{to{background-position:52px 52px}}.bg-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px)}.bg-orb-1{width:520px;height:520px;top:-100px;right:-100px;background:radial-gradient(circle,var(--o1) 0%,transparent 70%);animation:orbDrift 16s ease-in-out infinite}.bg-orb-2{width:400px;height:400px;bottom:80px;left:-100px;background:radial-gradient(circle,var(--o2) 0%,transparent 70%);animation:orbDrift 20s ease-in-out infinite reverse}.bg-orb-3{width:300px;height:300px;top:40%;left:38%;background:radial-gradient(circle,var(--o3) 0%,transparent 70%);animation:orbDrift 25s ease-in-out infinite 5s}@keyframes orbDrift{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-44px) scale(1.05)}}.bg-noise{position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,var(--sc) 2px,var(--sc) 4px)}header,main,footer{position:relative;z-index:2}header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 40px;background:var(--hbg);backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr);transition:background .3s}.hdr-accent{position:absolute;bottom:-1px;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red) 0%,var(--gold) 50%,var(--green) 100%);opacity:.5}.logo{display:flex;align-items:center;gap:10px;text-decoration:none}.logo img{height:32px;width:auto;filter:drop-shadow(0 0 8px var(--gold-glow));transition:filter .3s}.logo:hover img{filter:drop-shadow(0 0 18px var(--gold-glow))}.logowm{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;letter-spacing:3px;color:var(--gold);text-shadow:0 0 18px var(--gold-glow)}.logowm em{font-style:normal;color:var(--tx);font-weight:400}nav{display:flex;align-items:center;gap:4px}nav a{font-family:'Orbitron',monospace;font-size:0.58rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--mt);text-decoration:none;padding:7px 12px;border-radius:var(--r);transition:color .2s,background .2s}nav a:hover{color:var(--tx);background:var(--card2)}nav a.act{color:var(--gold)}.nav-dl{border:1px solid var(--gold-dim)!important;color:var(--gold)!important}.nav-dl:hover{background:var(--gold-lo)!important}.tbtn{background:var(--card2);border:1px solid var(--bdr);border-radius:var(--r);padding:7px 11px;color:var(--mt);cursor:pointer;font-size:0.95rem;transition:all .2s;line-height:1;margin-left:6px}.tbtn:hover{border-color:var(--gold-dim);color:var(--gold)}footer{border-top:1px solid var(--bdr);padding:28px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;position:relative}.ft-top{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent);opacity:.4}.ft-logo{display:flex;align-items:center;gap:8px;font-family:'Orbitron',monospace;font-size:.8rem;font-weight:700;letter-spacing:3px;color:var(--gold)}.ft-logo img{height:22px}.ft-links{display:flex;gap:20px;flex-wrap:wrap}.ft-links a{font-family:'Orbitron',monospace;font-size:.56rem;letter-spacing:2px;text-transform:uppercase;color:var(--mt);text-decoration:none;transition:color .2s}.ft-links a:hover{color:var(--gold)}.ft-copy{font-size:.68rem;color:var(--mt2)}.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}.reveal.on{opacity:1;transform:none}@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+body{min-height:100vh;display:flex;flex-direction:column}
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:80px 20px 40px}
+.acard{background:var(--card);border:1px solid var(--bdr);border-radius:var(--rl);
+  padding:44px 40px;width:100%;max-width:440px;position:relative;overflow:hidden;animation:fadeUp .5s ease both}
+.acard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--red),var(--gold),var(--green))}
+.cbrkt{position:absolute;width:14px;height:14px}
+.cbrkt.tl{top:10px;left:10px;border-top:1px solid var(--gold-dim);border-left:1px solid var(--gold-dim)}
+.cbrkt.tr{top:10px;right:10px;border-top:1px solid var(--gold-dim);border-right:1px solid var(--gold-dim)}
+.cbrkt.bl{bottom:10px;left:10px;border-bottom:1px solid var(--gold-dim);border-left:1px solid var(--gold-dim)}
+.cbrkt.br{bottom:10px;right:10px;border-bottom:1px solid var(--gold-dim);border-right:1px solid var(--gold-dim)}
+.card-logo{display:block;width:64px;height:64px;object-fit:contain;margin:0 auto 20px;
+  filter:drop-shadow(0 0 20px rgba(245,197,24,.5))}
+.card-tag{font-family:'Orbitron',monospace;font-size:.55rem;letter-spacing:4px;text-transform:uppercase;
+  color:var(--mt);text-align:center;margin-bottom:10px}
+.card-title{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:700;letter-spacing:2px;
+  text-align:center;color:var(--tx);margin-bottom:8px}
+.card-title .g{color:var(--gold)}
+.card-sub{font-size:.85rem;color:var(--mt);text-align:center;line-height:1.65;margin-bottom:28px}
+.state{display:none}.state.active{display:block}
+.sw{text-align:center;padding:10px 0 24px}
+.spin{display:inline-block;width:40px;height:40px;border:2px solid var(--bhi);
+  border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin-txt{margin-top:14px;font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:3px;color:var(--mt);text-transform:uppercase}
+.ico-circle{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 20px}
+.ico-circle.ok{background:var(--green-lo);border:1px solid rgba(0,232,122,.3)}
+.ico-circle.err{background:var(--red-lo);border:1px solid rgba(255,68,85,.3)}
+.ico-circle.warn{background:var(--gold-lo);border:1px solid rgba(245,197,24,.3)}
+.msg-title{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;letter-spacing:2px;text-align:center;margin-bottom:10px}
+.msg-title.ok{color:var(--green)}.msg-title.err{color:var(--red)}.msg-title.warn{color:var(--gold)}
+.msg-body{font-size:.85rem;color:var(--mt);text-align:center;line-height:1.7;margin-bottom:28px}
+.field{margin-bottom:16px}
+.field label{display:block;font-family:'Orbitron',monospace;font-size:.56rem;letter-spacing:3px;text-transform:uppercase;color:var(--mt);margin-bottom:8px}
+.pw-wrap{position:relative;display:flex;align-items:center}
+.pw-wrap input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:var(--r);
+  padding:13px 46px 13px 16px;color:var(--tx);font-family:'Syne',sans-serif;font-size:.92rem;outline:none;transition:border-color .2s}
+[data-theme="light"] .pw-wrap input{background:rgba(0,0,0,.04)}
+.pw-wrap input:focus{border-color:var(--gold-dim)}
+.pw-wrap input::placeholder{color:var(--mt2)}
+.pw-wrap input.invalid{border-color:var(--red)}
+.eye-btn{position:absolute;right:13px;background:none;border:none;cursor:pointer;color:var(--mt);font-size:1.1rem;padding:4px;transition:color .2s;display:flex;align-items:center;justify-content:center}
+.eye-btn:hover{color:var(--gold)}
+.pw-req{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:var(--rm);padding:14px 16px;margin:10px 0 16px}
+[data-theme="light"] .pw-req{background:rgba(0,0,0,.03)}
+.pw-req-title{display:flex;align-items:center;gap:8px;font-family:'Orbitron',monospace;font-size:.56rem;letter-spacing:2px;text-transform:uppercase;color:var(--mt);margin-bottom:10px}
+.req-item{display:flex;align-items:center;gap:10px;font-size:.82rem;color:var(--mt);padding:5px 0;transition:color .25s}
+.req-item.met{color:var(--green)}
+.req-icon{width:18px;height:18px;border-radius:50%;flex-shrink:0;border:1.5px solid var(--mt2);display:flex;align-items:center;justify-content:center;font-size:.62rem;transition:all .25s}
+.req-item.met .req-icon{background:var(--green);border-color:var(--green);color:#000}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px 24px;border-radius:var(--rm);
+  font-family:'Orbitron',monospace;font-size:.76rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  text-decoration:none;cursor:pointer;border:none;transition:transform .15s,box-shadow .2s;position:relative;overflow:hidden}
+.btn::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);transition:left .4s}
+.btn:hover::after{left:100%}
+.btn:hover{transform:translateY(-2px)}.btn:active{transform:none}.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-gold{background:linear-gradient(135deg,var(--gold-dim),var(--gold));color:#000;box-shadow:0 4px 20px var(--gold-lo)}
+.btn-gold:hover{box-shadow:0 8px 28px rgba(245,197,24,.45)}
+.btn-red{background:linear-gradient(135deg,var(--red-dim),var(--red));color:#fff;box-shadow:0 4px 20px var(--red-lo)}
+.btn-red:hover{box-shadow:0 8px 28px rgba(255,68,85,.4)}
+.divider{width:100%;height:1px;background:var(--bdr);margin:20px 0}
+@media(max-width:480px){.acard{padding:32px 22px}header{padding:14px 18px}.logowm{display:none}}
+</style>
 </head>
 <body>
-
-  <div class="bg-grid"></div>
-  <div class="bg-orb"></div>
-  <div class="bg-scan"></div>
-
-  <header>
-    <a class="logo" href="index.html">
-      <img src="logo.png" alt="Bingwa Flash" />
-      <span class="logo-wordmark">BINGWA <em>FLASH</em></span>
-    </a>
-  </header>
-
-  <main>
-    <div class="card">
-      <div class="cbrkt tl"></div><div class="cbrkt tr"></div>
-      <div class="cbrkt bl"></div><div class="cbrkt br"></div>
-
-      <img src="logo.png" alt="Bingwa Flash" class="card-logo" />
-
-      <!-- LOADING -->
-      <div class="state active" id="state-loading">
-        <div class="card-tag">Bingwa Flash · Account</div>
-        <div class="card-title">Please <span class="gold">Wait</span></div>
-        <div class="spinner-wrap">
-          <div class="spinner"></div>
-          <div class="spinner-text">Processing your request...</div>
-        </div>
+<div class="bg-mesh"></div><div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-2"></div><div class="bg-orb bg-orb-3"></div><div class="bg-noise"></div>
+<header><a class="logo" href="/"><img src="/logo.png" alt="Bingwa Flash" /><span class="logowm">BINGWA <em>FLASH</em></span></a><nav><a href="/">Home</a><a href="/#features">Features</a><a href="/privacy.html">Privacy</a><a href="/download/" class="nav-dl">⬇ Downloads</a><button class="tbtn" id="theme-btn" onclick="toggleTheme()" title="Toggle theme">🌙</button></nav><div class="hdr-accent"></div></header>
+<main>
+<div class="acard">
+  <div class="cbrkt tl"></div><div class="cbrkt tr"></div>
+  <div class="cbrkt bl"></div><div class="cbrkt br"></div>
+  <img src="/logo.png" alt="Bingwa Flash" class="card-logo" />
+  <div class="state active" id="state-loading">
+    <div class="card-tag">Bingwa Flash · Account</div>
+    <div class="card-title">Please <span class="g">Wait</span></div>
+    <div class="sw"><div class="spin"></div><div class="spin-txt">Processing your request…</div></div>
+  </div>
+  <div class="state" id="state-verified">
+    <div class="ico-circle ok">✓</div>
+    <div class="msg-title ok">Email Verified!</div>
+    <div class="msg-body">Your email has been successfully verified.<br>You can now log in to <strong style="color:var(--tx)">Bingwa Flash</strong> on your Android device.</div>
+    <a class="btn btn-gold" href="/">← Back to Home</a>
+  </div>
+  <div class="state" id="state-reset-form">
+    <div class="card-tag">Security</div>
+    <div class="card-title">New <span class="g">Password</span></div>
+    <div class="card-sub">Enter a strong new password for your account.</div>
+    <div class="field"><label>New Password</label>
+      <div class="pw-wrap">
+        <input type="password" id="pw1" placeholder="Enter new password" oninput="checkRequirements()" />
+        <button class="eye-btn" type="button" onclick="toggleEye('pw1','eye1')" id="eye1">👁</button>
       </div>
-
-      <!-- EMAIL VERIFIED SUCCESS -->
-      <div class="state" id="state-verified">
-        <div class="icon-circle success">✓</div>
-        <div class="msg-title success">Email Verified!</div>
-        <div class="msg-body">
-          Your email has been successfully verified.<br>
-          You can now log in to <strong style="color:var(--text)">Bingwa Flash</strong> on your Android device.
-        </div>
-        <a class="btn btn-gold" href="index.html">← Back to Home</a>
-      </div>
-
-      <!-- PASSWORD RESET FORM -->
-      <div class="state" id="state-reset-form">
-        <div class="card-tag">Security</div>
-        <div class="card-title">New <span class="gold">Password</span></div>
-        <div class="card-sub">Enter a strong new password for your account.</div>
-        <div class="field">
-          <label>New Password</label>
-          <div class="pw-wrap">
-            <input type="password" id="pw1" placeholder="Enter new password" oninput="checkRequirements()" />
-            <button class="eye-btn" type="button" onclick="toggleEye('pw1','eye1')" id="eye1" title="Show/hide password">👁</button>
-          </div>
-        </div>
-
-        <!-- Live requirements checklist -->
-        <div class="pw-requirements">
-          <div class="pw-req-title">🔒 Password requirements</div>
-          <div class="req-item" id="req-len">
-            <div class="req-icon" id="icon-len"></div>
-            At least 6 characters
-          </div>
-          <div class="req-item" id="req-upper">
-            <div class="req-icon" id="icon-upper"></div>
-            Contains an uppercase letter
-          </div>
-          <div class="req-item" id="req-lower">
-            <div class="req-icon" id="icon-lower"></div>
-            Contains a lowercase letter
-          </div>
-          <div class="req-item" id="req-num">
-            <div class="req-icon" id="icon-num"></div>
-            Contains a number
-          </div>
-        </div>
-
-        <div class="field">
-          <label>Confirm Password</label>
-          <div class="pw-wrap">
-            <input type="password" id="pw2" placeholder="Repeat password" oninput="checkMatch()" />
-            <button class="eye-btn" type="button" onclick="toggleEye('pw2','eye2')" id="eye2" title="Show/hide password">👁</button>
-          </div>
-        </div>
-        <div id="match-msg" style="display:none;font-size:0.78rem;margin:-8px 0 12px;padding-left:4px;"></div>
-
-        <button class="btn btn-red" id="btn-reset" onclick="doReset()">↺ Reset Password</button>
-        <div id="reset-error" style="display:none;margin-top:12px;font-size:0.8rem;color:var(--red);text-align:center;"></div>
-      </div>
-
-      <!-- PASSWORD RESET SUCCESS -->
-      <div class="state" id="state-reset-done">
-        <div class="icon-circle success">✓</div>
-        <div class="msg-title success">Password Updated!</div>
-        <div class="msg-body">
-          Your password has been changed successfully.<br>
-          Open Bingwa Flash on your device and log in with your new password.
-        </div>
-        <a class="btn btn-gold" href="index.html">← Back to Home</a>
-      </div>
-
-      <!-- EMAIL CHANGE SUCCESS -->
-      <div class="state" id="state-email-changed">
-        <div class="icon-circle success">✓</div>
-        <div class="msg-title success">Email Updated!</div>
-        <div class="msg-body">
-          Your email address has been changed successfully.<br>
-          Use your new email to sign in going forward.
-        </div>
-        <a class="btn btn-gold" href="index.html">← Back to Home</a>
-      </div>
-
-      <!-- ERROR -->
-      <div class="state" id="state-error">
-        <div class="icon-circle error">✕</div>
-        <div class="msg-title error">Link Expired</div>
-        <div class="msg-body" id="error-msg">
-          This link is invalid or has expired.<br>
-          Please request a new one from the app.
-        </div>
-        <a class="btn btn-red" href="index.html">← Back to Home</a>
-      </div>
-
     </div>
-  </main>
+    <div class="pw-req">
+      <div class="pw-req-title">🔒 Password requirements</div>
+      <div class="req-item" id="req-len"><div class="req-icon" id="icon-len"></div>At least 6 characters</div>
+      <div class="req-item" id="req-upper"><div class="req-icon" id="icon-upper"></div>Contains an uppercase letter</div>
+      <div class="req-item" id="req-lower"><div class="req-icon" id="icon-lower"></div>Contains a lowercase letter</div>
+      <div class="req-item" id="req-num"><div class="req-icon" id="icon-num"></div>Contains a number</div>
+    </div>
+    <div class="field"><label>Confirm Password</label>
+      <div class="pw-wrap">
+        <input type="password" id="pw2" placeholder="Repeat password" oninput="checkMatch()" />
+        <button class="eye-btn" type="button" onclick="toggleEye('pw2','eye2')" id="eye2">👁</button>
+      </div>
+    </div>
+    <div id="match-msg" style="display:none;font-size:.78rem;margin:-8px 0 12px;padding-left:4px;"></div>
+    <button class="btn btn-red" id="btn-reset" onclick="doReset()">↺ Reset Password</button>
+    <div id="reset-error" style="display:none;margin-top:12px;font-size:.8rem;color:var(--red);text-align:center;"></div>
+  </div>
+  <div class="state" id="state-reset-done">
+    <div class="ico-circle ok">✓</div>
+    <div class="msg-title ok">Password Updated!</div>
+    <div class="msg-body">Your password has been changed successfully.<br>Open Bingwa Flash on your device and log in with your new password.</div>
+    <a class="btn btn-gold" href="/">← Back to Home</a>
+  </div>
+  <div class="state" id="state-email-changed">
+    <div class="ico-circle ok">✓</div>
+    <div class="msg-title ok">Email Updated!</div>
+    <div class="msg-body">Your email address has been changed successfully.<br>Use your new email to sign in going forward.</div>
+    <a class="btn btn-gold" href="/">← Back to Home</a>
+  </div>
+  <div class="state" id="state-error">
+    <div class="ico-circle err">✕</div>
+    <div class="msg-title err">Link Expired</div>
+    <div class="msg-body" id="error-msg">This link is invalid or has expired.<br>Please request a new one from the app.</div>
+    <a class="btn btn-red" href="/">← Back to Home</a>
+  </div>
+</div>
+</main>
+<footer><div class="ft-top"></div><div class="ft-logo"><img src="/logo.png" alt="Bingwa Flash" /> BINGWA FLASH</div><div class="ft-links"><a href="/">Home</a><a href="/#features">Features</a><a href="/download/">Downloads</a><a href="/privacy.html">Privacy</a></div><div class="ft-copy">© 2026 Bingwa Flash. All rights reserved.</div></footer>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,applyActionCode,verifyPasswordResetCode,confirmPasswordReset}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+const FC={apiKey:"AIzaSyBMf_Kc6gFA30TiiqTvPGEUOHRD0ikpL9c",authDomain:"bingwa-flash.firebaseapp.com",projectId:"bingwa-flash",storageBucket:"bingwa-flash.firebasestorage.app",messagingSenderId:"141272100218",appId:"1:141272100218:web:bcfc60bfd8e5945cedbac3"};
+const app=initializeApp(FC);const auth=getAuth(app);
+function show(id){document.querySelectorAll('.state').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function showError(m){document.getElementById('error-msg').innerHTML=m;show('state-error');}
+const params=new URLSearchParams(window.location.search);
+const mode=params.get('mode');const oobCode=params.get('oobCode');
+window._oobCode=oobCode;
+if(!mode||!oobCode){showError('No action code found.<br>Please use the link sent to your email.');}
+else if(mode==='verifyEmail'){applyActionCode(auth,oobCode).then(()=>show('state-verified')).catch(()=>showError('Verification link is invalid or already used.'));}
+else if(mode==='resetPassword'){verifyPasswordResetCode(auth,oobCode).then(()=>show('state-reset-form')).catch(()=>showError('This password reset link has expired.'));}
+else if(mode==='recoverEmail'){applyActionCode(auth,oobCode).then(()=>show('state-email-changed')).catch(()=>showError('This email change link is invalid or expired.'));}
+else{showError('Unknown action. Please use the link sent to your email.');}
+window.toggleEye=function(iid,bid){const i=document.getElementById(iid);const b=document.getElementById(bid);i.type=i.type==='password'?'text':'password';b.textContent=i.type==='password'?'👁':'🙈';};
+window.checkRequirements=function(){
+  const pw=document.getElementById('pw1').value;
+  [['req-len','icon-len',pw.length>=6],['req-upper','icon-upper',/[A-Z]/.test(pw)],
+   ['req-lower','icon-lower',/[a-z]/.test(pw)],['req-num','icon-num',/[0-9]/.test(pw)]
+  ].forEach(([rid,iid,ok])=>{
+    const r=document.getElementById(rid);const ic=document.getElementById(iid);
+    if(ok){r.classList.add('met');ic.textContent='✓';}else{r.classList.remove('met');ic.textContent='';}
+  });
+  checkMatch();
+};
+window.checkMatch=function(){
+  const pw1=document.getElementById('pw1').value;const pw2=document.getElementById('pw2').value;
+  const m=document.getElementById('match-msg');
+  if(!pw2){m.style.display='none';return;}
+  m.style.display='block';
+  if(pw1===pw2){m.style.color='var(--green)';m.textContent='✓ Passwords match';}
+  else{m.style.color='var(--red)';m.textContent='✕ Passwords do not match';}
+};
+window.doReset=async function(){
+  const pw1=document.getElementById('pw1').value;const pw2=document.getElementById('pw2').value;
+  const e=document.getElementById('reset-error');const btn=document.getElementById('btn-reset');
+  e.style.display='none';
+  if(pw1.length<6){e.textContent='Password must be at least 6 characters.';e.style.display='block';return;}
+  if(!/[A-Z]/.test(pw1)){e.textContent='Must contain an uppercase letter.';e.style.display='block';return;}
+  if(!/[a-z]/.test(pw1)){e.textContent='Must contain a lowercase letter.';e.style.display='block';return;}
+  if(!/[0-9]/.test(pw1)){e.textContent='Must contain a number.';e.style.display='block';return;}
+  if(pw1!==pw2){e.textContent='Passwords do not match.';e.style.display='block';return;}
+  btn.disabled=true;btn.textContent='Updating…';
+  try{await confirmPasswordReset(auth,window._oobCode,pw1);show('state-reset-done');}
+  catch(err){btn.disabled=false;btn.textContent='↺ Reset Password';e.textContent='Failed: '+(err.message||'Try again.');e.style.display='block';}
+};
+</script>
 
-  <!-- Firebase SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import {
-      getAuth,
-      applyActionCode,
-      verifyPasswordResetCode,
-      confirmPasswordReset
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+<script>
+const _html=document.documentElement;const _sv=localStorage.getItem('bf-theme')||'dark';_html.setAttribute('data-theme',_sv);function updateBtn(){const b=document.getElementById('theme-btn');if(b)b.textContent=_html.getAttribute('data-theme')==='dark'?'\u2600\ufe0f':'\ud83c\udf19';}function toggleTheme(){const t=_html.getAttribute('data-theme')==='dark'?'light':'dark';_html.setAttribute('data-theme',t);localStorage.setItem('bf-theme',t);updateBtn();}updateBtn();
+const _io=new IntersectionObserver(e=>{e.forEach(v=>{if(v.isIntersecting){v.target.classList.add('on');_io.unobserve(v.target);}});},{threshold:0.08});document.querySelectorAll('.reveal').forEach(el=>_io.observe(el));
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBMf_Kc6gFA30TiiqTvPGEUOHRD0ikpL9c",
-      authDomain: "bingwa-flash.firebaseapp.com",
-      projectId: "bingwa-flash",
-      storageBucket: "bingwa-flash.firebasestorage.app",
-      messagingSenderId: "141272100218",
-      appId: "1:141272100218:web:bcfc60bfd8e5945cedbac3"
-    };
-
-    const app  = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    function show(id) {
-      document.querySelectorAll('.state').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
-
-    function showError(msg) {
-      document.getElementById('error-msg').innerHTML = msg;
-      show('state-error');
-    }
-
-    // Parse URL params
-    const params  = new URLSearchParams(window.location.search);
-    const mode    = params.get('mode');
-    const oobCode = params.get('oobCode');
-
-    window._oobCode = oobCode; // expose for reset handler
-
-    if (!mode || !oobCode) {
-      showError('No action code found.<br>Please use the link sent to your email.');
-    } else if (mode === 'verifyEmail') {
-      applyActionCode(auth, oobCode)
-        .then(() => show('state-verified'))
-        .catch(err => showError('Verification link is invalid or has already been used.<br>Please register again or contact support.'));
-
-    } else if (mode === 'resetPassword') {
-      verifyPasswordResetCode(auth, oobCode)
-        .then(() => show('state-reset-form'))
-        .catch(err => showError('This password reset link has expired.<br>Please request a new one from the app.'));
-
-    } else if (mode === 'recoverEmail') {
-      applyActionCode(auth, oobCode)
-        .then(() => show('state-email-changed'))
-        .catch(err => showError('This email change link is invalid or has expired.'));
-
-    } else {
-      showError('Unknown action. Please use the link sent to your email.');
-    }
-
-    // ── Eye toggle ──
-    window.toggleEye = function(inputId, btnId) {
-      const inp = document.getElementById(inputId);
-      const btn = document.getElementById(btnId);
-      if (inp.type === 'password') {
-        inp.type = 'text';
-        btn.textContent = '🙈';
-      } else {
-        inp.type = 'password';
-        btn.textContent = '👁';
-      }
-    };
-
-    // ── Live requirements checker (matches Firebase policy) ──
-    window.checkRequirements = function() {
-      const pw = document.getElementById('pw1').value;
-      const rules = [
-        { id: 'req-len',   icon: 'icon-len',   ok: pw.length >= 6 },
-        { id: 'req-upper', icon: 'icon-upper',  ok: /[A-Z]/.test(pw) },
-        { id: 'req-lower', icon: 'icon-lower',  ok: /[a-z]/.test(pw) },
-        { id: 'req-num',   icon: 'icon-num',    ok: /[0-9]/.test(pw) },
-      ];
-      rules.forEach(r => {
-        const row  = document.getElementById(r.id);
-        const icon = document.getElementById(r.icon);
-        if (r.ok) {
-          row.classList.add('met');
-          icon.textContent = '✓';
-        } else {
-          row.classList.remove('met');
-          icon.textContent = '';
-        }
-      });
-      checkMatch();
-    };
-
-    // ── Confirm password match indicator ──
-    window.checkMatch = function() {
-      const pw1 = document.getElementById('pw1').value;
-      const pw2 = document.getElementById('pw2').value;
-      const msg = document.getElementById('match-msg');
-      if (!pw2) { msg.style.display = 'none'; return; }
-      if (pw1 === pw2) {
-        msg.style.display = 'block';
-        msg.style.color = 'var(--green)';
-        msg.textContent = '✓ Passwords match';
-      } else {
-        msg.style.display = 'block';
-        msg.style.color = 'var(--red)';
-        msg.textContent = '✕ Passwords do not match';
-      }
-    };
-
-    // ── Password reset handler ──
-    window.doReset = async function() {
-      const pw1   = document.getElementById('pw1').value;
-      const pw2   = document.getElementById('pw2').value;
-      const errEl = document.getElementById('reset-error');
-      const btn   = document.getElementById('btn-reset');
-
-      errEl.style.display = 'none';
-
-      // Validate all Firebase rules
-      if (pw1.length < 6) {
-        errEl.textContent = 'Password must be at least 6 characters.';
-        errEl.style.display = 'block'; return;
-      }
-      if (!/[A-Z]/.test(pw1)) {
-        errEl.textContent = 'Password must contain at least one uppercase letter.';
-        errEl.style.display = 'block'; return;
-      }
-      if (!/[a-z]/.test(pw1)) {
-        errEl.textContent = 'Password must contain at least one lowercase letter.';
-        errEl.style.display = 'block'; return;
-      }
-      if (!/[0-9]/.test(pw1)) {
-        errEl.textContent = 'Password must contain at least one number.';
-        errEl.style.display = 'block'; return;
-      }
-      if (pw1 !== pw2) {
-        errEl.textContent = 'Passwords do not match.';
-        errEl.style.display = 'block'; return;
-      }
-
-      btn.disabled = true;
-      btn.textContent = 'Updating...';
-
-      try {
-        await confirmPasswordReset(auth, window._oobCode, pw1);
-        show('state-reset-done');
-      } catch(err) {
-        btn.disabled = false;
-        btn.textContent = '↺ Reset Password';
-        errEl.textContent = 'Failed: ' + (err.message || 'Please try again.');
-        errEl.style.display = 'block';
-      }
-    };
-  </script>
-
+</script>
 </body>
 </html>
