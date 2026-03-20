@@ -1,53 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8" />
-  <script>
-    // ─── GitHub Pages SPA Routing ─────────────────────────────────────────────
-    //
-    // All unknown paths hit this 404.html. We inspect the path and redirect:
-    //
-    //   /downloads          → /downloads/
-    //   /privacy            → /privacy.html  (or /privacy/ if you make a folder)
-    //   /features           → /features/
-    //   /john               → /order/?u=john   (agent username)
-    //   anything else       → /
-    //
-    // Known reserved paths are listed in KNOWN_PATHS so they are never
-    // mistaken for agent usernames.
-    // ─────────────────────────────────────────────────────────────────────────
-
-    const KNOWN_PATHS = ['download', 'privacy', 'features', 'order', 'contact', '404'];
-
-    const segments = window.location.pathname
-      .split('/')
-      .filter(Boolean)
-      .map(s => s.toLowerCase());
-
-    const first = segments[0] || '';
-
-    if (!first) {
-      // bare / — shouldn't land here but just in case
-      window.location.replace('/');
-
-    } else if (first === 'download') {
-      window.location.replace('/download/');
-
-    } else if (first === 'privacy') {
-      window.location.replace('/privacy.html');
-
-    } else if (first === 'features') {
-      window.location.replace('/features/');
-
-    } else if (!KNOWN_PATHS.includes(first) && /^[a-z0-9_]{2,32}$/.test(first)) {
-      // Looks like a username — send to order page with ?u= param
-      window.location.replace('/order/?u=' + encodeURIComponent(first));
-
-    } else {
-      // Truly unknown — go home
-      window.location.replace('/');
-    }
-  </script>
-</head>
-<body></body>
-</html>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><script>
+const segs=window.location.pathname.split('/').filter(Boolean);
+const first=(segs[0]||'').toLowerCase();
+if(!first)window.location.replace('/');
+else if(first==='download')window.location.replace('/download/');
+else if(first==='privacy')window.location.replace('/privacy.html');
+else if(first==='auth')window.location.replace('/auth.html');
+else if(first==='features')window.location.replace('/#features');
+else if(!/^(order|contact|404)$/.test(first)&&/^[a-z0-9_]{2,32}$/.test(first))window.location.replace('/order/?u='+encodeURIComponent(first));
+else window.location.replace('/');
+</script></head><body></body></html>
