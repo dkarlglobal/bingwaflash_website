@@ -3,275 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Order — Bingwa Flash</title>
-  <meta name="description" content="Order data bundles and airtime instantly via Bingwa Flash." />
+  <title>Bingwa Flash — Automation for Every Agent</title>
+
+  <link rel="icon" type="image/png" sizes="192x192" href="logo.png" />
+  <link rel="apple-touch-icon" href="logo.png" />
+
+  <meta property="og:title" content="Bingwa Flash" />
+  <meta property="og:description" content="Automation for every agent whose speed matters. Fast, reliable &amp; built for agents on the move." />
+  <meta property="og:image" content="https://bingwaflash.co.ke/logo.png" />
+  <meta property="og:url" content="https://bingwaflash.co.ke" />
+  <meta property="og:type" content="website" />
+  <meta name="description" content="Automation for every agent whose speed matters. Free Android app — Fast, reliable &amp; built for agents on the move." />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Syne:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
-  <!-- Firebase SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, doc, getDoc, collection, query, where, getDocs }
-      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-    // ── YOUR FIREBASE CONFIG ──────────────────────────────────────────────────
-    // Copy from Firebase Console → Project Settings → Your apps → SDK setup
-    const firebaseConfig = {
-      apiKey:            "AIzaSyBMf_Kc6gFA30TiiqTvPGEUOHRD0ikpL9c",
-      authDomain:        "bingwa-flash.firebaseapp.com",
-      projectId:         "bingwa-flash",
-      storageBucket:     "bingwa-flash.firebasestorage.app",
-      messagingSenderId: "141272100218",
-      appId:             "1:141272100218:web:bcfc60bfd8e5945cedbac3"
-    };
-    // ─────────────────────────────────────────────────────────────────────────
-
-    const app = initializeApp(firebaseConfig);
-    const db  = getFirestore(app);
-
-    // ── CLOUD FUNCTION URL ────────────────────────────────────────────────────
-    // After deploying functions/index.js, paste the URL here.
-    // e.g. https://us-central1-bingwa-flash.cloudfunctions.net/initiateOrder
-    const FUNCTION_URL = "https://initiateorder-kerhygd7aa-uc.a.run.app";
-    // ─────────────────────────────────────────────────────────────────────────
-
-    // Extract username from:
-    //   /order/john    → direct path (via 404.html redirect)
-    //   /order/?u=john → query param fallback
-    const params    = new URLSearchParams(window.location.search);
-    const pathParts = window.location.pathname.split("/").filter(Boolean);
-    const pathUser  = pathParts[pathParts.length - 1] || "";
-    const USERNAME  = (params.get("u") || (pathUser !== "order" ? pathUser : "")).toLowerCase();
-
-    let agentProfile = null;
-    let offers       = [];
-    let selectedOffer = null;
-
-    async function loadAgent() {
-      if (!USERNAME) { showError("No agent username in URL."); return; }
-
-      try {
-        // Query agents collection by websiteUsername field
-        const q    = query(collection(db, "agents"), where("websiteUsername", "==", USERNAME.toLowerCase()));
-        const snap = await getDocs(q);
-
-        if (snap.empty) { showError(`Agent "${USERNAME}" not found.`); return; }
-
-        agentProfile = snap.docs[0].data();
-
-        if (!agentProfile.webOrdersOn) {
-          showError("This agent's web orders are currently offline.");
-          return;
-        }
-
-        // Render agent header
-        document.getElementById("agent-name").textContent =
-          agentProfile.agentName || agentProfile.username || USERNAME;
-        document.getElementById("agent-handle").textContent = `@${agentProfile.username || USERNAME}`;
-        document.getElementById("agent-section").style.display = "flex";
-
-        // Load offers from agents/{uid}/meta/offers JSON blob
-        await loadOffers(snap.docs[0].id);
-
-      } catch (e) {
-        showError("Failed to load agent: " + e.message);
-      }
-    }
-
-    async function loadOffers(agentUid) {
-      try {
-        const offersDoc = await getDoc(doc(db, "agents", agentUid, "meta", "offers"));
-        if (!offersDoc.exists()) { showError("No offers configured."); return; }
-
-        const json = offersDoc.data().json || "[]";
-        const allOffers = JSON.parse(json);
-
-        // Only show offers that have an offerCode (web-enabled) and are enabled
-        offers = allOffers.filter(o => o.enabled && o.offerCode && o.offerCode.trim() !== "");
-
-        if (offers.isEmpty || offers.length === 0) {
-          showError("No offers available for web orders.");
-          return;
-        }
-
-        renderOffers();
-        document.getElementById("loading").style.display   = "none";
-        document.getElementById("content").style.display   = "block";
-
-      } catch (e) {
-        showError("Failed to load offers: " + e.message);
-      }
-    }
-
-    function renderOffers() {
-      const grid = document.getElementById("offers-grid");
-      grid.innerHTML = "";
-
-      // Group by category
-      const categories = [...new Set(offers.map(o => o.category || "Other"))];
-
-      categories.forEach(cat => {
-        const catOffers = offers.filter(o => (o.category || "Other") === cat);
-
-        const catEl = document.createElement("div");
-        catEl.className = "offer-category";
-        catEl.innerHTML = `<div class="cat-label">${cat}</div>`;
-
-        const row = document.createElement("div");
-        row.className = "offer-row";
-
-        catOffers.forEach(offer => {
-          const card = document.createElement("button");
-          card.className = "offer-card";
-          card.dataset.offerId = offer.id;
-          card.innerHTML = `
-            <div class="oc-name">${offer.name}</div>
-            <div class="oc-price">KSh <span>${offer.agentPrice}</span></div>
-            <div class="oc-code">${offer.offerCode}</div>
-          `;
-          card.addEventListener("click", () => selectOffer(offer, card));
-          row.appendChild(card);
-        });
-
-        catEl.appendChild(row);
-        grid.appendChild(catEl);
-      });
-    }
-
-    function selectOffer(offer, cardEl) {
-      // Deselect all
-      document.querySelectorAll(".offer-card").forEach(c => c.classList.remove("selected"));
-      cardEl.classList.add("selected");
-      selectedOffer = offer;
-
-      // Show order form
-      document.getElementById("order-form").style.display = "block";
-      document.getElementById("selected-name").textContent  = offer.name;
-      document.getElementById("selected-price").textContent = `KSh ${offer.agentPrice}`;
-      document.getElementById("pay-amount").textContent     = offer.agentPrice;
-
-      // Scroll to form
-      document.getElementById("order-form").scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-
-    async function submitOrder() {
-      if (!selectedOffer) return;
-
-      const payPhone     = document.getElementById("pay-phone").value.trim();
-      const receivePhone = document.getElementById("receive-phone").value.trim();
-
-      if (!isValidKenyanPhone(payPhone)) {
-        showFormError("Enter a valid M-Pesa number (07XXXXXXXX or 01XXXXXXXX)");
-        return;
-      }
-      if (!isValidKenyanPhone(receivePhone)) {
-        showFormError("Enter a valid receiving number (07XXXXXXXX or 01XXXXXXXX)");
-        return;
-      }
-
-      setLoading(true);
-      clearFormError();
-
-      try {
-        const res = await fetch(FUNCTION_URL, {
-          method:  "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            agentUsername: agentProfile.username,
-            agentUid:      agentProfile.uid,
-            offerCode:     selectedOffer.offerCode,
-            offerName:     selectedOffer.name,
-            amount:        selectedOffer.agentPrice,
-            commission:    selectedOffer.agentPrice - (selectedOffer.safPrice || 0),
-            payPhone:      normalizePhone(payPhone),
-            receivePhone:  normalizePhone(receivePhone),
-            agentPhone:    agentProfile.phoneNumber || agentProfile.agentMainNumber
-          })
-        });
-
-        const data = await res.json();
-
-        if (!res.ok || data.error) {
-          showFormError(data.error || "Payment initiation failed. Try again.");
-          setLoading(false);
-          return;
-        }
-
-        // Show STK push waiting screen
-        showStkScreen(data.checkoutRequestId || "");
-
-      } catch (e) {
-        showFormError("Network error: " + e.message);
-        setLoading(false);
-      }
-    }
-
-    function showStkScreen(checkoutId) {
-      document.getElementById("order-form").style.display = "none";
-      document.getElementById("stk-screen").style.display = "block";
-      document.getElementById("stk-screen").scrollIntoView({ behavior: "smooth" });
-
-      // Countdown 60s
-      let secs = 60;
-      const countdown = document.getElementById("stk-countdown");
-      const interval = setInterval(() => {
-        secs--;
-        if (countdown) countdown.textContent = secs + "s";
-        if (secs <= 0) {
-          clearInterval(interval);
-          showStkTimeout();
-        }
-      }, 1000);
-    }
-
-    function showStkTimeout() {
-      document.getElementById("stk-waiting").style.display = "none";
-      document.getElementById("stk-timeout").style.display  = "block";
-    }
-
-    window.retryOrder = function() {
-      document.getElementById("stk-screen").style.display  = "none";
-      document.getElementById("order-form").style.display  = "block";
-      document.getElementById("stk-waiting").style.display = "block";
-      document.getElementById("stk-timeout").style.display = "none";
-      setLoading(false);
-    };
-
-    // Expose to global scope for inline onclick
-    window.submitOrder = submitOrder;
-
-    function isValidKenyanPhone(p) {
-      return /^(07|01)\d{8}$/.test(p.replace(/\s/g,""));
-    }
-    function normalizePhone(p) {
-      const s = p.replace(/\s/g,"");
-      if (s.startsWith("07") || s.startsWith("01")) return "254" + s.substring(1);
-      return s;
-    }
-    function showError(msg) {
-      document.getElementById("loading").style.display = "none";
-      const el = document.getElementById("error-state");
-      el.style.display = "block";
-      el.querySelector(".error-msg").textContent = msg;
-    }
-    function showFormError(msg) {
-      const el = document.getElementById("form-error");
-      el.textContent = msg;
-      el.style.display = "block";
-    }
-    function clearFormError() {
-      document.getElementById("form-error").style.display = "none";
-    }
-    function setLoading(on) {
-      const btn = document.getElementById("pay-btn");
-      btn.disabled = on;
-      btn.textContent = on ? "Processing…" : `Pay KSh ${selectedOffer?.agentPrice || ""}`;
-    }
-
-    // Boot
-    loadAgent();
-  </script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -280,7 +26,6 @@
       --gold:      #F5C518;
       --gold-dim:  #c9a010;
       --gold-glow: rgba(245,197,24,0.35);
-      --green:     #00e87a;
       --red:       #ff3b3b;
       --dark:      #060608;
       --card:      #0f0f14;
@@ -295,11 +40,10 @@
     html { scroll-behavior: smooth; }
     body {
       background: var(--dark); color: var(--text);
-      font-family: 'Syne', sans-serif;
-      min-height: 100vh; overflow-x: hidden;
+      font-family: 'Syne', sans-serif; overflow-x: hidden;
     }
 
-    /* ── BACKGROUND (identical to main site) ── */
+    /* ── BACKGROUND ── */
     .bg-grid {
       position: fixed; inset: 0; z-index: 0; pointer-events: none;
       background-image:
@@ -310,7 +54,8 @@
     }
     @keyframes gridMove { to { background-position: 56px 56px; } }
     .bg-orb {
-      position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(90px);
+      position: fixed; border-radius: 50%;
+      pointer-events: none; z-index: 0; filter: blur(90px);
     }
     .bg-orb-1 {
       width: 480px; height: 480px; top: -80px; right: -80px;
@@ -319,301 +64,346 @@
     }
     .bg-orb-2 {
       width: 360px; height: 360px; bottom: 120px; left: -80px;
-      background: radial-gradient(circle, rgba(0,232,122,0.04) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(255,59,59,0.05) 0%, transparent 70%);
       animation: orbDrift 18s ease-in-out infinite reverse;
     }
-    @keyframes orbDrift { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-36px);} }
+    @keyframes orbDrift {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-36px); }
+    }
     .bg-scan {
       position: fixed; inset: 0; z-index: 1; pointer-events: none;
-      background: repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px);
+      background: repeating-linear-gradient(
+        0deg, transparent 0px, transparent 2px,
+        rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px
+      );
     }
+
+    header, main, footer { position: relative; z-index: 2; }
 
     /* ── HEADER ── */
     header {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 16px 40px;
-      background: rgba(6,6,8,0.88); backdrop-filter: blur(18px);
+      background: rgba(6,6,8,0.88);
+      backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--border);
     }
     header::after {
-      content: ''; position: absolute; bottom: -1px; left: 10%; right: 10%; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold-dim), transparent); opacity: 0.5;
+      content: '';
+      position: absolute; bottom: -1px; left: 10%; right: 10%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+      opacity: 0.5;
     }
     .logo {
-      font-family: 'Orbitron', monospace; font-size: 1.1rem; font-weight: 700;
-      letter-spacing: 3px; color: var(--gold); text-shadow: 0 0 20px var(--gold-glow);
-      text-decoration: none;
+      display: flex; align-items: center; gap: 10px; text-decoration: none;
     }
-    .logo em { font-style: normal; color: #fff; font-weight: 400; }
-    .header-right {
-      font-family: 'Orbitron', monospace; font-size: 0.58rem;
-      letter-spacing: 2px; color: var(--muted); text-transform: uppercase;
+    .logo img {
+      height: 34px; width: auto;
+      filter: drop-shadow(0 0 8px var(--gold-glow));
+      transition: filter 0.3s;
     }
+    .logo:hover img { filter: drop-shadow(0 0 16px var(--gold-glow)); }
+    .logo-wordmark {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.05rem; font-weight: 700;
+      letter-spacing: 3px; color: var(--gold);
+      text-shadow: 0 0 20px var(--gold-glow);
+    }
+    .logo-wordmark em { font-style: normal; color: #fff; font-weight: 400; }
 
-    /* ── MAIN ── */
-    main { position: relative; z-index: 2; padding: 100px 24px 60px; max-width: 540px; margin: 0 auto; }
+    nav { display: flex; gap: 28px; align-items: center; }
+    nav a {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.62rem; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--gold); }
+    .nav-dl {
+      border: 1px solid var(--gold-dim);
+      padding: 7px 16px; border-radius: 6px;
+      color: var(--gold) !important;
+      transition: background 0.2s !important;
+    }
+    .nav-dl:hover { background: rgba(245,197,24,0.09); }
 
-    /* ── AGENT HEADER ── */
-    #agent-section {
-      display: none; align-items: center; gap: 14px;
-      margin-bottom: 28px;
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 120px 24px 80px;
+    }
+    .hero-logo {
+      width: 90px; height: 90px; object-fit: contain; margin-bottom: 28px;
+      filter: drop-shadow(0 0 28px rgba(245,197,24,0.55));
+      animation: fadeUp 0.45s ease both;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(245,197,24,0.07);
+      border: 1px solid rgba(245,197,24,0.22);
+      border-radius: 4px; padding: 6px 18px; margin-bottom: 36px;
       animation: fadeUp 0.5s ease both;
     }
-    .agent-avatar {
-      width: 52px; height: 52px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--gold-dim), #6b4f00);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Orbitron', monospace; font-size: 1.2rem;
-      font-weight: 900; color: #000; flex-shrink: 0;
-      box-shadow: 0 0 24px var(--gold-glow);
-    }
-    .agent-info { flex: 1; }
-    .agent-name-text {
-      font-family: 'Orbitron', monospace; font-size: 1rem;
-      font-weight: 700; color: var(--text); letter-spacing: 1px;
-    }
-    .agent-handle { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
-    .agent-live {
-      display: flex; align-items: center; gap: 6px;
-      font-family: 'Orbitron', monospace; font-size: 0.55rem;
-      letter-spacing: 2px; color: var(--green); text-transform: uppercase;
-    }
-    .live-dot {
+    .badge-dot {
       width: 6px; height: 6px; border-radius: 50%;
-      background: var(--green); box-shadow: 0 0 8px var(--green);
+      background: #00e87a; box-shadow: 0 0 8px #00e87a;
       animation: blink 2s ease infinite;
     }
     @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+    .badge-text {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.6rem; letter-spacing: 3px;
+      color: var(--gold); text-transform: uppercase;
+    }
+    .hero-eyebrow {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.6rem; letter-spacing: 5px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 14px;
+      animation: fadeUp 0.55s ease 0.05s both;
+    }
+    .hero-h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(3.2rem, 12vw, 8rem);
+      font-weight: 900; line-height: 0.87; letter-spacing: 2px;
+      animation: fadeUp 0.6s ease 0.1s both;
+    }
+    .hero-h1 .gold {
+      display: block; color: var(--gold);
+      text-shadow: 0 0 60px var(--gold-glow), 0 0 120px rgba(245,197,24,0.1);
+    }
+    .hero-h1 .white { display: block; color: var(--text); }
+    .hero-sub {
+      margin-top: 24px; color: var(--muted);
+      font-size: 1rem; font-weight: 400; line-height: 1.7; max-width: 420px;
+      animation: fadeUp 0.6s ease 0.15s both;
+    }
+    .hero-actions {
+      margin-top: 44px; display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+      animation: fadeUp 0.6s ease 0.2s both;
+    }
+    .btn-primary {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.68rem; letter-spacing: 2px;
+      background: var(--gold); color: #000; font-weight: 700;
+      border: none; border-radius: 8px; padding: 14px 32px;
+      cursor: pointer; text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s;
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-secondary {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.68rem; letter-spacing: 2px;
+      background: transparent;
+      border: 1px solid var(--border-hi);
+      color: var(--muted); border-radius: 8px; padding: 14px 32px;
+      cursor: pointer; text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .btn-secondary:hover {
+      border-color: var(--gold-dim); color: var(--gold);
+      transform: translateY(-1px);
+    }
+    .hero-stats {
+      display: flex; align-items: center; margin-top: 56px;
+      border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+      animation: fadeUp 0.6s ease 0.25s both;
+    }
+    .stat { padding: 16px 28px; text-align: center; border-right: 1px solid var(--border); }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.3rem; font-weight: 700; color: var(--gold);
+    }
+    .stat-num sub { font-size: 0.65em; color: var(--muted); vertical-align: baseline; }
+    .stat-lbl {
+      font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); margin-top: 4px;
+    }
+    .scroll-cue {
+      margin-top: 56px; display: flex; flex-direction: column;
+      align-items: center; gap: 8px;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.55rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted2); animation: fadeUp 0.6s ease 0.3s both;
+    }
+    .scroll-line {
+      width: 1px; height: 38px;
+      background: linear-gradient(to bottom, var(--gold-dim), transparent);
+      animation: scrollPulse 2.5s ease infinite;
+    }
+    @keyframes scrollPulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
 
-    /* ── SECTION HEADERS ── */
+    /* ── SECTIONS ── */
+    .section {
+      max-width: 900px; margin: 0 auto;
+      padding: 80px 24px;
+    }
+    .sec-header { margin-bottom: 48px; }
     .sec-tag {
-      font-family: 'Orbitron', monospace; font-size: 0.56rem;
-      letter-spacing: 5px; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 6px;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.58rem; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 10px;
     }
     .sec-title {
-      font-family: 'Orbitron', monospace; font-size: 1.1rem;
-      font-weight: 700; letter-spacing: 2px; color: var(--text);
-      margin-bottom: 16px;
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700; color: var(--text); line-height: 1.1;
     }
+    .sec-sub { color: var(--muted); font-size: 0.95rem; line-height: 1.7; margin-top: 12px; }
 
-    /* ── LOADING ── */
-    #loading {
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; min-height: 60vh; gap: 18px;
-      animation: fadeUp 0.4s ease both;
+    /* ── FEATURES GRID ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
     }
-    .spinner {
-      width: 44px; height: 44px; border-radius: 50%;
-      border: 2px solid var(--border-hi);
-      border-top-color: var(--gold);
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .loading-text {
-      font-family: 'Orbitron', monospace; font-size: 0.6rem;
-      letter-spacing: 4px; color: var(--muted); text-transform: uppercase;
-    }
-
-    /* ── ERROR STATE ── */
-    #error-state {
-      display: none; text-align: center; padding: 48px 24px;
-      animation: fadeUp 0.4s ease both;
-    }
-    .error-icon { font-size: 2.4rem; margin-bottom: 14px; }
-    .error-msg  { color: var(--muted); font-size: 0.95rem; line-height: 1.6; }
-
-    /* ── CONTENT ── */
-    #content { display: none; animation: fadeUp 0.5s ease both; }
-
-    /* ── OFFERS GRID ── */
-    .offer-category { margin-bottom: 24px; }
-    .cat-label {
-      font-family: 'Orbitron', monospace; font-size: 0.58rem;
-      letter-spacing: 4px; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 10px;
-    }
-    .offer-row {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 10px;
-    }
-    .offer-card {
+    .feat-card {
       background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 14px 12px;
-      cursor: pointer; text-align: left;
-      transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
-      font-family: 'Syne', sans-serif;
+      border-radius: 14px; padding: 28px 24px;
+      transition: border-color 0.25s, transform 0.2s;
+      position: relative; overflow: hidden;
     }
-    .offer-card:hover {
-      border-color: var(--border-hi); transform: translateY(-2px);
+    .feat-card::before {
+      content: ''; position: absolute; inset: 0; border-radius: 14px;
+      background: radial-gradient(circle at 50% 0%, rgba(245,197,24,0.05) 0%, transparent 70%);
+      opacity: 0; transition: opacity 0.3s;
     }
-    .offer-card.selected {
-      border-color: var(--gold);
-      box-shadow: 0 0 20px var(--gold-glow), inset 0 0 0 1px rgba(245,197,24,0.15);
-      background: rgba(245,197,24,0.05);
+    .feat-card:hover { border-color: var(--border-hi); transform: translateY(-3px); }
+    .feat-card:hover::before { opacity: 1; }
+    .feat-icon { font-size: 1.8rem; margin-bottom: 14px; }
+    .feat-name {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 1px; color: var(--text); margin-bottom: 8px;
     }
-    .oc-name {
-      font-size: 0.82rem; font-weight: 600; color: var(--text);
-      margin-bottom: 6px; line-height: 1.3;
-    }
-    .oc-price {
-      font-family: 'Orbitron', monospace; font-size: 0.75rem;
-      color: var(--muted);
-    }
-    .oc-price span { color: var(--gold); font-weight: 700; font-size: 1rem; }
-    .oc-code {
-      display: inline-block; margin-top: 6px;
-      font-family: 'Orbitron', monospace; font-size: 0.5rem;
-      letter-spacing: 2px; padding: 2px 6px;
-      background: rgba(245,197,24,0.08); border: 1px solid rgba(245,197,24,0.15);
-      border-radius: 3px; color: var(--gold-dim);
-    }
+    .feat-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
 
-    /* ── ORDER FORM ── */
-    #order-form {
-      display: none; margin-top: 28px;
+    /* ── HOW IT WORKS ── */
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step {
+      display: flex; gap: 28px; align-items: flex-start;
+      padding: 28px 0; border-bottom: 1px solid var(--border);
+    }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      font-family: 'Orbitron', monospace;
+      font-size: 2rem; font-weight: 900; color: var(--border-hi);
+      line-height: 1; min-width: 48px; flex-shrink: 0;
+    }
+    .step-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 1px; color: var(--text); margin-bottom: 6px;
+    }
+    .step-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── WHO IS IT FOR ── */
+    .audience-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px;
+    }
+    .aud-card {
+      background: var(--card2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 22px 20px;
+      display: flex; align-items: flex-start; gap: 14px;
+    }
+    .aud-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .aud-title {
+      font-family: 'Orbitron', monospace; font-size: 0.72rem;
+      font-weight: 700; color: var(--text); margin-bottom: 5px;
+    }
+    .aud-sub { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── CTA STRIP ── */
+    .cta-strip {
       background: var(--card); border: 1px solid var(--border);
-      border-radius: 16px; padding: 24px;
-      animation: fadeUp 0.35s ease both;
+      border-radius: 18px; padding: 52px 40px;
+      text-align: center; position: relative; overflow: hidden;
     }
-    .form-divider {
-      border: none; border-top: 1px solid var(--border); margin: 18px 0;
+    .cta-strip::before {
+      content: ''; position: absolute;
+      top: 0; left: 10%; right: 10%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(245,197,24,0.4), transparent);
     }
-    .selected-summary {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--border);
+    .cta-title {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 700; color: var(--text); margin-bottom: 14px;
     }
-    .sel-label { font-size: 0.78rem; color: var(--muted); }
-    .sel-name  { font-weight: 600; color: var(--text); font-size: 0.95rem; margin-top: 2px; }
-    .sel-price {
-      font-family: 'Orbitron', monospace; font-size: 1.4rem;
-      font-weight: 700; color: var(--gold);
-      text-shadow: 0 0 20px var(--gold-glow);
-    }
+    .cta-title span { color: var(--gold); }
+    .cta-sub { font-size: 0.92rem; color: var(--muted); margin-bottom: 36px; line-height: 1.65; }
+    .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 
-    .form-group { margin-bottom: 16px; }
-    .form-label {
-      display: block; font-size: 0.78rem; color: var(--muted);
-      margin-bottom: 7px; letter-spacing: 0.5px;
+    /* ── CONTACT ── */
+    .contact-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px;
     }
-    .form-input {
-      width: 100%; background: var(--card2);
-      border: 1px solid var(--border); border-radius: 10px;
-      padding: 13px 16px; color: var(--text);
-      font-family: 'Syne', sans-serif; font-size: 0.95rem;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      outline: none;
-    }
-    .form-input::placeholder { color: var(--muted2); }
-    .form-input:focus {
-      border-color: var(--gold-dim);
-      box-shadow: 0 0 0 3px rgba(245,197,24,0.08);
-    }
-    .form-hint {
-      font-size: 0.7rem; color: var(--muted2); margin-top: 5px;
-    }
-    #form-error {
-      display: none; background: rgba(255,59,59,0.08);
-      border: 1px solid rgba(255,59,59,0.2); border-radius: 8px;
-      padding: 10px 14px; font-size: 0.82rem; color: var(--red);
-      margin-bottom: 14px;
-    }
-
-    .btn-pay {
-      display: block; width: 100%;
-      background: var(--gold); color: #000;
-      font-family: 'Orbitron', monospace; font-size: 0.78rem;
-      font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-      border: none; border-radius: 10px; padding: 16px;
-      cursor: pointer; transition: opacity 0.2s, transform 0.15s;
-      margin-top: 18px;
-    }
-    .btn-pay:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
-    .btn-pay:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
-
-    .pay-security {
-      display: flex; align-items: center; justify-content: center;
-      gap: 6px; margin-top: 12px;
-      font-size: 0.68rem; color: var(--muted2);
-    }
-
-    /* ── STK SCREEN ── */
-    #stk-screen {
-      display: none; margin-top: 28px;
+    .contact-card {
       background: var(--card); border: 1px solid var(--border);
-      border-radius: 16px; padding: 32px 24px;
-      text-align: center; animation: fadeUp 0.35s ease both;
+      border-radius: 12px; padding: 20px 18px;
+      display: flex; align-items: center; gap: 14px;
+      text-decoration: none; transition: border-color 0.2s;
     }
-    #stk-waiting { }
-    .stk-icon { font-size: 3rem; margin-bottom: 16px; }
-    .stk-title {
-      font-family: 'Orbitron', monospace; font-size: 1rem;
-      font-weight: 700; color: var(--text); letter-spacing: 1px; margin-bottom: 10px;
+    .contact-card:hover { border-color: var(--border-hi); }
+    .ci-wrap { font-size: 1.5rem; flex-shrink: 0; }
+    .ci-name {
+      font-family: 'Orbitron', monospace; font-size: 0.65rem;
+      letter-spacing: 1px; color: var(--muted); margin-bottom: 3px;
     }
-    .stk-sub { font-size: 0.9rem; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
-    .stk-timer {
-      display: inline-flex; align-items: center; gap: 8px;
-      border: 1px solid var(--border); border-radius: 8px; padding: 10px 20px;
-      font-family: 'Orbitron', monospace; font-size: 0.7rem; color: var(--muted);
-      letter-spacing: 2px; margin-bottom: 20px;
-    }
-    .stk-timer span { color: var(--gold); font-size: 1rem; font-weight: 700; }
-    .stk-steps {
-      text-align: left; background: var(--card2);
-      border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px;
-    }
-    .stk-step {
-      display: flex; gap: 10px; align-items: flex-start;
-      font-size: 0.82rem; color: var(--muted); padding: 5px 0;
-    }
-    .stk-num {
-      width: 20px; height: 20px; border-radius: 50%;
-      background: var(--border-hi); display: flex; align-items: center;
-      justify-content: center; font-size: 0.65rem; color: var(--gold);
-      flex-shrink: 0; margin-top: 1px;
-    }
-    #stk-timeout { display: none; }
-    .timeout-title {
-      font-family: 'Orbitron', monospace; font-size: 1rem;
-      color: var(--red); margin-bottom: 10px;
-    }
-    .timeout-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 20px; }
-    .btn-retry {
-      background: transparent; border: 1px solid var(--gold);
-      color: var(--gold); border-radius: 10px; padding: 12px 28px;
-      font-family: 'Orbitron', monospace; font-size: 0.7rem;
-      letter-spacing: 2px; cursor: pointer; transition: background 0.2s;
-    }
-    .btn-retry:hover { background: rgba(245,197,24,0.1); }
+    .ci-handle { font-size: 0.88rem; color: var(--text); }
+    .ci-arrow { margin-left: auto; color: var(--muted2); font-size: 1.2rem; }
 
     /* ── FOOTER ── */
     footer {
       position: relative; z-index: 2;
-      border-top: 1px solid var(--border); padding: 24px 40px;
+      border-top: 1px solid var(--border);
+      padding: 28px 40px;
       display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 12px; margin-top: 40px;
+      flex-wrap: wrap; gap: 14px; margin-top: 40px;
     }
     footer::before {
       content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
       background: linear-gradient(90deg, transparent, rgba(245,197,24,0.3), transparent);
     }
     .ft-logo {
+      display: flex; align-items: center; gap: 8px;
       font-family: 'Orbitron', monospace; font-size: 0.82rem;
       font-weight: 700; letter-spacing: 3px; color: var(--gold);
     }
+    .ft-logo img { height: 24px; width: auto; }
+    .ft-links { display: flex; gap: 22px; flex-wrap: wrap; }
+    .ft-links a {
+      font-family: 'Orbitron', monospace; font-size: 0.58rem;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color 0.2s;
+    }
+    .ft-links a:hover { color: var(--gold); }
     .ft-copy { font-size: 0.68rem; color: var(--muted2); }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.on { opacity: 1; transform: none; }
 
     @keyframes fadeUp {
       from { opacity:0; transform: translateY(18px); }
       to   { opacity:1; transform: none; }
     }
 
-    @media (max-width: 480px) {
-      header { padding: 13px 16px; }
-      main   { padding: 88px 16px 48px; }
-      .offer-row { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
-      footer { padding: 20px 16px; flex-direction: column; text-align: center; }
+    @media (max-width: 560px) {
+      header { padding: 13px 18px; }
+      nav { gap: 14px; }
+      .logo-wordmark { display: none; }
+      .stat { padding: 14px 16px; }
+      .section { padding: 60px 18px; }
+      .cta-strip { padding: 36px 20px; }
+      footer { flex-direction: column; text-align: center; }
+      .ft-links { justify-content: center; }
     }
   </style>
 </head>
@@ -625,124 +415,300 @@
   <div class="bg-scan"></div>
 
   <header>
-    <a class="logo" href="/">BINGWA <em>FLASH</em></a>
-    <div class="header-right">Instant Orders</div>
+    <a class="logo" href="/">
+      <img src="logo.png" alt="Bingwa Flash" />
+      <span class="logo-wordmark">BINGWA <em>FLASH</em></span>
+    </a>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#contact">Contact</a>
+      <a href="/privacy.html">Privacy</a>
+      <a href="/downloads/" class="nav-dl">⬇ Downloads</a>
+    </nav>
   </header>
 
   <main>
 
-    <!-- Agent header (shown after load) -->
-    <div id="agent-section">
-      <div class="agent-avatar" id="agent-avatar">?</div>
-      <div class="agent-info">
-        <div class="agent-name-text" id="agent-name">Loading…</div>
-        <div class="agent-handle" id="agent-handle"></div>
+    <!-- ── HERO ── -->
+    <section class="hero">
+      <img src="logo.png" alt="Bingwa Flash" class="hero-logo" />
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span class="badge-text">v1.0.9 — Live &amp; Stable</span>
       </div>
-      <div class="agent-live"><span class="live-dot"></span>Live</div>
-    </div>
+      <p class="hero-eyebrow">Bingwa Sokoni Automation Platform</p>
+      <h1 class="hero-h1">
+        <span class="gold">BINGWA</span>
+        <span class="white">FLASH</span>
+      </h1>
+      <p class="hero-sub">
+        Automation for every agent whose speed matters.<br>
+        Fast, reliable &amp; built for agents on the move.
+      </p>
+      <div class="hero-actions">
+        <a href="/downloads/" class="btn-primary">⬇ &nbsp;Download App</a>
+        <a href="#features" class="btn-secondary">See Features →</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">15.4<sub>MB</sub></div>
+          <div class="stat-lbl">App Size</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">7.0<sub>+</sub></div>
+          <div class="stat-lbl">Android</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">100<sub>%</sub></div>
+          <div class="stat-lbl">Free</div>
+        </div>
+      </div>
+      <div class="scroll-cue">
+        <div class="scroll-line"></div>
+        Scroll
+      </div>
+    </section>
 
-    <!-- Loading state -->
-    <div id="loading">
-      <div class="spinner"></div>
-      <div class="loading-text">Loading offers…</div>
-    </div>
+    <!-- ── FEATURES ── -->
+    <section class="section" id="features">
+      <div class="sec-header reveal">
+        <div class="sec-tag">What It Does</div>
+        <div class="sec-title">Core Features</div>
+        <div class="sec-sub">Everything an agent needs to run faster, serve better, and earn more — in one lightweight app.</div>
+      </div>
+      <div class="features-grid">
 
-    <!-- Error state -->
-    <div id="error-state">
-      <div class="error-icon">⚡</div>
-      <div class="error-msg">Something went wrong.</div>
-    </div>
+        <div class="feat-card reveal">
+          <div class="feat-icon">⚡</div>
+          <div class="feat-name">USSD Automation</div>
+          <div class="feat-desc">Receives M-Pesa SMS and automatically dials the USSD sequence for you. No manual input, no delays.</div>
+        </div>
 
-    <!-- Main content -->
-    <div id="content">
+        <div class="feat-card reveal">
+          <div class="feat-icon">🧠</div>
+          <div class="feat-name">Advanced USSD Steps</div>
+          <div class="feat-desc">Multi-step USSD flows with per-step responses, conditions, and fallback sequences when the first attempt fails.</div>
+        </div>
 
-      <!-- Offers -->
-      <div class="sec-tag">↓ Choose Offer</div>
-      <div class="sec-title">Available Offers</div>
-      <div id="offers-grid"></div>
+        <div class="feat-card reveal">
+          <div class="feat-icon">🔀</div>
+          <div class="feat-name">Alternative USSD</div>
+          <div class="feat-desc">Automatically tries an alternative USSD code when the primary flow fails — zero manual retry needed.</div>
+        </div>
 
-      <!-- Order form (shown on offer select) -->
-      <div id="order-form">
-        <div class="selected-summary">
+        <div class="feat-card reveal">
+          <div class="feat-icon">📡</div>
+          <div class="feat-name">SMS Relay</div>
+          <div class="feat-desc">Forward incoming M-Pesa messages to partner agents via SMS. Run receiver and sender relay rules side by side.</div>
+        </div>
+
+        <div class="feat-card reveal">
+          <div class="feat-icon">🌐</div>
+          <div class="feat-name">Web Orders</div>
+          <div class="feat-desc">Customers can order directly from your personal link — bingwaflash.co.ke/yourname — and payment triggers automation.</div>
+        </div>
+
+        <div class="feat-card reveal">
+          <div class="feat-icon">🤖</div>
+          <div class="feat-name">Offers Bot</div>
+          <div class="feat-desc">Automated SMS bot that replies to customer inquiries, recommends offers, and collects recipient numbers before payment.</div>
+        </div>
+
+        <div class="feat-card reveal">
+          <div class="feat-icon">🕐</div>
+          <div class="feat-name">Scheduled Transactions</div>
+          <div class="feat-desc">Schedule any transaction to run at a future time. Auto-retries are handled within a configurable window.</div>
+        </div>
+
+        <div class="feat-card reveal">
+          <div class="feat-icon">🚨</div>
+          <div class="feat-name">Agent Alerts</div>
+          <div class="feat-desc">SMS notifications for key events — automation off, failed thresholds, reversals, and blacklisted customers.</div>
+        </div>
+
+        <div class="feat-card reveal">
+          <div class="feat-icon">🏪</div>
+          <div class="feat-name">Dual SIM Support</div>
+          <div class="feat-desc">Choose which SIM slot executes each offer. Run different offers on different SIMs simultaneously.</div>
+        </div>
+
+        <div class="feat-card reveal">
+          <div class="feat-icon">📊</div>
+          <div class="feat-name">Transaction History</div>
+          <div class="feat-desc">Full log of every transaction — status, USSD response, fail reason, and the original M-Pesa SMS. Searchable and filterable.</div>
+        </div>
+
+        <div class="feat-card reveal">
+          <div class="feat-icon">🚫</div>
+          <div class="feat-name">Blacklist &amp; Offer Control</div>
+          <div class="feat-desc">Block specific customers, disable individual offers, and prevent duplicate transactions automatically.</div>
+        </div>
+
+        <div class="feat-card reveal">
+          <div class="feat-icon">💾</div>
+          <div class="feat-name">Contact Auto-Save</div>
+          <div class="feat-desc">Automatically saves paying customers to your phonebook with a custom suffix. Update, duplicate or skip existing contacts.</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── HOW IT WORKS ── -->
+    <section class="section" id="how">
+      <div class="sec-header reveal">
+        <div class="sec-tag">The Flow</div>
+        <div class="sec-title">How It Works</div>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-num">01</div>
           <div>
-            <div class="sel-label">Selected Offer</div>
-            <div class="sel-name" id="selected-name">—</div>
+            <div class="step-title">Customer Pays</div>
+            <div class="step-desc">A customer sends M-Pesa to your till or number. The app intercepts the SMS in real time.</div>
           </div>
-          <div class="sel-price" id="selected-price">KSh —</div>
         </div>
-
-        <div class="form-group">
-          <label class="form-label" for="pay-phone">M-Pesa Payment Number</label>
-          <input class="form-input" id="pay-phone" type="tel"
-            placeholder="07XXXXXXXX" maxlength="10" inputmode="numeric" />
-          <div class="form-hint">STK push will be sent to this number</div>
+        <div class="step reveal">
+          <div class="step-num">02</div>
+          <div>
+            <div class="step-title">Offer Matched</div>
+            <div class="step-desc">The amount and payment mode are matched against your configured offers. The correct USSD template is picked automatically.</div>
+          </div>
         </div>
-
-        <div class="form-group">
-          <label class="form-label" for="receive-phone">Receiving Number</label>
-          <input class="form-input" id="receive-phone" type="tel"
-            placeholder="07XXXXXXXX" maxlength="10" inputmode="numeric" />
-          <div class="form-hint">Number that will receive the bundle/airtime</div>
+        <div class="step reveal">
+          <div class="step-num">03</div>
+          <div>
+            <div class="step-title">USSD Executed</div>
+            <div class="step-desc">The app dials the USSD sequence silently using the Android accessibility service — no screen unlocking required.</div>
+          </div>
         </div>
-
-        <div id="form-error"></div>
-
-        <button class="btn-pay" id="pay-btn" onclick="submitOrder()">
-          Pay KSh <span id="pay-amount">—</span>
-        </button>
-
-        <div class="pay-security">
-          🔒 Secured by M-Pesa · Powered by Bingwa Flash
+        <div class="step reveal">
+          <div class="step-num">04</div>
+          <div>
+            <div class="step-title">Logged &amp; Done</div>
+            <div class="step-desc">Result is logged with the USSD response. If it fails, the app retries or flags it for manual review.</div>
+          </div>
         </div>
       </div>
+    </section>
 
-      <!-- STK push waiting screen -->
-      <div id="stk-screen">
-        <div id="stk-waiting">
-          <div class="stk-icon">📲</div>
-          <div class="stk-title">Check Your Phone</div>
-          <div class="stk-sub">
-            An M-Pesa STK push has been sent to your number.<br>
-            Enter your M-Pesa PIN to complete payment.
-          </div>
-          <div class="stk-timer">
-            Expires in <span id="stk-countdown">60s</span>
-          </div>
-          <div class="stk-steps">
-            <div class="stk-step"><div class="stk-num">1</div><div>M-Pesa notification appeared on your phone</div></div>
-            <div class="stk-step"><div class="stk-num">2</div><div>Tap the notification and enter your M-Pesa PIN</div></div>
-            <div class="stk-step"><div class="stk-num">3</div><div>Payment confirms and your order processes automatically</div></div>
+    <!-- ── WHO IS IT FOR ── -->
+    <section class="section" id="who">
+      <div class="sec-header reveal">
+        <div class="sec-tag">Built For</div>
+        <div class="sec-title">Who Uses It</div>
+      </div>
+      <div class="audience-grid">
+        <div class="aud-card reveal">
+          <div class="aud-icon">📱</div>
+          <div>
+            <div class="aud-title">Safaricom Agents</div>
+            <div class="aud-sub">Send data bundles and airtime without lifting a finger after payment arrives.</div>
           </div>
         </div>
-        <div id="stk-timeout">
-          <div class="stk-icon">⏱</div>
-          <div class="timeout-title">Request Timed Out</div>
-          <div class="timeout-sub">The STK push expired. You were not charged.</div>
-          <button class="btn-retry" onclick="retryOrder()">Try Again</button>
+        <div class="aud-card reveal">
+          <div class="aud-icon">🏬</div>
+          <div>
+            <div class="aud-title">Till Operators</div>
+            <div class="aud-sub">Handle high volumes of till payments automatically, even when the phone is in your pocket.</div>
+          </div>
+        </div>
+        <div class="aud-card reveal">
+          <div class="aud-icon">🤝</div>
+          <div>
+            <div class="aud-title">Relay Networks</div>
+            <div class="aud-sub">Receive payments from partner agents and forward execution — fully automated across devices.</div>
+          </div>
+        </div>
+        <div class="aud-card reveal">
+          <div class="aud-icon">💻</div>
+          <div>
+            <div class="aud-title">Web-Enabled Agents</div>
+            <div class="aud-sub">Serve customers online via your personal page while the app handles fulfillment on the ground.</div>
+          </div>
         </div>
       </div>
+    </section>
 
-    </div><!-- /content -->
+    <!-- ── CTA ── -->
+    <section class="section">
+      <div class="cta-strip reveal">
+        <div class="cta-title">Ready to <span>automate</span>?</div>
+        <div class="cta-sub">
+          Free download. No subscription. Works on any Android 7+ device.<br>
+          Install once, run forever.
+        </div>
+        <div class="cta-btns">
+          <a href="/downloads/" class="btn-primary">⬇ &nbsp;Download Now</a>
+          <a href="https://wa.me/254748008585" target="_blank" rel="noopener" class="btn-secondary">💬 &nbsp;WhatsApp Us</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CONTACT ── -->
+    <section class="section" id="contact">
+      <div class="sec-header reveal">
+        <div class="sec-tag">Reach Out</div>
+        <div class="sec-title">Contact Us</div>
+      </div>
+      <div class="contact-grid">
+        <a class="contact-card reveal" href="tel:+254748008585">
+          <div class="ci-wrap">📞</div>
+          <div class="ci-info">
+            <div class="ci-name">Phone</div>
+            <div class="ci-handle">+254 748 008 585</div>
+          </div>
+          <span class="ci-arrow">›</span>
+        </a>
+        <a class="contact-card reveal" href="mailto:support@bingwaflash.co.ke">
+          <div class="ci-wrap">✉️</div>
+          <div class="ci-info">
+            <div class="ci-name">Email</div>
+            <div class="ci-handle">support@bingwaflash.co.ke</div>
+          </div>
+          <span class="ci-arrow">›</span>
+        </a>
+        <a class="contact-card reveal" href="https://wa.me/254748008585" target="_blank" rel="noopener">
+          <div class="ci-wrap">💬</div>
+          <div class="ci-info">
+            <div class="ci-name">WhatsApp</div>
+            <div class="ci-handle">+254 748 008 585</div>
+          </div>
+          <span class="ci-arrow">›</span>
+        </a>
+        <a class="contact-card reveal" href="https://t.me/bingwaflash" target="_blank" rel="noopener">
+          <div class="ci-wrap">✈️</div>
+          <div class="ci-info">
+            <div class="ci-name">Telegram</div>
+            <div class="ci-handle">@bingwaflash</div>
+          </div>
+          <span class="ci-arrow">›</span>
+        </a>
+      </div>
+    </section>
 
   </main>
 
   <footer>
-    <div class="ft-logo">BINGWA FLASH</div>
-    <div class="ft-copy">© 2026 Bingwa Flash · bingwaflash.co.ke</div>
+    <div class="ft-logo">
+      <img src="logo.png" alt="Bingwa Flash" />
+      BINGWA FLASH
+    </div>
+    <div class="ft-links">
+      <a href="#features">Features</a>
+      <a href="/downloads/">Downloads</a>
+      <a href="#contact">Contact</a>
+      <a href="/privacy.html">Privacy Policy</a>
+    </div>
+    <div class="ft-copy">© 2026 Bingwa Flash. All rights reserved.</div>
   </footer>
 
   <script>
-    // Set agent avatar initial after DOM loads
-    document.addEventListener('DOMContentLoaded', () => {
-      const nameEl = document.getElementById('agent-name');
-      const obs = new MutationObserver(() => {
-        const n = nameEl.textContent.trim();
-        if (n && n !== 'Loading…') {
-          document.getElementById('agent-avatar').textContent = n.charAt(0).toUpperCase();
-        }
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); }
       });
-      obs.observe(nameEl, { childList: true, characterData: true, subtree: true });
-    });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
   </script>
 
 </body>
