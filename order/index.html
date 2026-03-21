@@ -142,9 +142,14 @@ import{getFirestore,doc,getDoc,collection,query,where,getDocs}from"https://www.g
 const FC={apiKey:"AIzaSyBMf_Kc6gFA30TiiqTvPGEUOHRD0ikpL9c",authDomain:"bingwa-flash.firebaseapp.com",projectId:"bingwa-flash",storageBucket:"bingwa-flash.firebasestorage.app",messagingSenderId:"141272100218",appId:"1:141272100218:web:bcfc60bfd8e5945cedbac3"};
 const app=initializeApp(FC);const db=getFirestore(app);
 const FURL="https://initiateorder-kerhygd7aa-uc.a.run.app";
+const STATUS_URL="https://getorderstatus-kerhygd7aa-uc.a.run.app";
 const params=new URLSearchParams(window.location.search);
 const USERNAME=(params.get("u")||"").toLowerCase();
 let agentProfile=null,selectedOffer=null;
+let activeTxId=null;
+let stkCountdownInterval=null;
+let stkPollInterval=null;
+let stkExpiresAtMs=0;
 function showError(m){document.getElementById("loading").style.display="none";const e=document.getElementById("error-state");e.style.display="block";document.getElementById("err-msg").innerHTML=m;}
 async function init(){
   if(!USERNAME){showError("No agent username in URL.");return;}
@@ -182,28 +187,202 @@ async function init(){
 }
 function valid07(p){return/^(07|01)\d{8}$/.test(p.trim());}
 function norm(p){const s=p.trim().replace(/\s/g,"");return(/^0/.test(s))?"254"+s.slice(1):s;}
+  function resetStkState(){
+  activeTxId=null;
+  stkExpiresAtMs=0;
+  if(stkCountdownInterval){clearInterval(stkCountdownInterval);stkCountdownInterval=null;}
+  if(stkPollInterval){clearInterval(stkPollInterval);stkPollInterval=null;}
+}
+
+function showFormError(msg){
+  const fe=document.getElementById("form-err");
+  fe.textContent=msg;
+  fe.style.display="block";
+}
+
+function restoreOrderForm(){
+  document.getElementById("stk-screen").style.display="none";
+  document.getElementById("stk-waiting").style.display="block";
+  document.getElementById("stk-timeout").style.display="none";
+  document.getElementById("order-form").style.display="block";
+  const btn=document.getElementById("pay-btn");
+  btn.disabled=false;
+  btn.textContent="Pay "+(selectedOffer?"KSh "+selectedOffer.agentPrice:"");
+}
+
+function showStkWaiting(){
+  document.getElementById("order-form").style.display="none";
+  document.getElementById("stk-screen").style.display="block";
+  document.getElementById("stk-waiting").style.display="block";
+  document.getElementById("stk-timeout").style.display="none";
+}
+
+function showStkTimeout(message="The STK push expired. You were not charged."){
+  resetStkState();
+  document.getElementById("stk-screen").style.display="block";
+  document.getElementById("stk-waiting").style.display="none";
+  document.getElementById("stk-timeout").style.display="block";
+  const desc=document.querySelector("#stk-timeout .timeout-desc");
+  if(desc) desc.textContent=message;
+}
+
+function showOrderSuccess(message){
+  resetStkState();
+  const screen=document.getElementById("stk-screen");
+  screen.style.display="block";
+  screen.innerHTML=`
+    <div class="stk-inner">
+      <div class="stk-title" style="color:var(--green)">Payment Confirmed</div>
+      <div class="stk-desc">${message||"Your payment was received successfully. Your order is now being processed."}</div>
+    </div>
+  `;
+}
+
+function showOrderFailure(message){
+  resetStkState();
+  document.getElementById("stk-screen").style.display="none";
+  restoreOrderForm();
+  showFormError(message||"Payment failed or was cancelled.");
+}
+
+function startStkCountdown(){
+  const ci=document.getElementById("stk-cd");
+  if(stkCountdownInterval) clearInterval(stkCountdownInterval);
+
+  stkCountdownInterval=setInterval(()=>{
+    const leftMs=Math.max(0,stkExpiresAtMs-Date.now());
+    const secs=Math.ceil(leftMs/1000);
+    ci.textContent=secs+"s";
+
+    if(leftMs<=0){
+      clearInterval(stkCountdownInterval);
+      stkCountdownInterval=null;
+      if(stkPollInterval) clearInterval(stkPollInterval);
+      stkPollInterval=null;
+      showStkTimeout("The STK push expired. If you cancelled or did not enter PIN, please try again.");
+    }
+  },1000);
+}
+
+async function pollOrderStatus(txId){
+  if(!txId) return;
+
+  try{
+    const res=await fetch(`${STATUS_URL}?txId=${encodeURIComponent(txId)}`);
+    const data=await res.json();
+
+    if(!res.ok || data.error){
+      return;
+    }
+
+    const status=String(data.status||"pending").toLowerCase();
+    const failReason=data.failReason||data.resultDesc||"Payment failed.";
+
+    if(status==="executed" || status==="payout_done"){
+      showOrderSuccess("Your payment was confirmed successfully. Your order is being processed.");
+      return;
+    }
+
+    if(status==="failed" || status==="cancelled" || status==="expired" || status==="payout_failed"){
+      showOrderFailure(failReason);
+      return;
+    }
+  }catch(e){
+    console.error("pollOrderStatus:",e);
+  }
+}
+
+function startOrderStatusPolling(txId){
+  activeTxId=txId;
+  stkExpiresAtMs=Date.now()+(70*1000);
+
+  startStkCountdown();
+
+  if(stkPollInterval) clearInterval(stkPollInterval);
+  stkPollInterval=setInterval(()=>{
+    pollOrderStatus(txId);
+  },2500);
+
+  pollOrderStatus(txId);
+}
 window.submitOrder=async function(){
   if(!selectedOffer)return;
+
   const pp=document.getElementById("pay-phone").value;
   const rp=document.getElementById("recv-phone").value;
-  const fe=document.getElementById("form-err");fe.style.display="none";
-  if(!valid07(pp)){fe.textContent="Enter a valid M-Pesa number (07XX or 01XX)";fe.style.display="block";return;}
-  if(!valid07(rp)){fe.textContent="Enter a valid receiving number (07XX or 01XX)";fe.style.display="block";return;}
-  const btn=document.getElementById("pay-btn");btn.disabled=true;btn.textContent="Processing…";
+  const fe=document.getElementById("form-err");
+  fe.style.display="none";
+
+  if(!valid07(pp)){
+    fe.textContent="Enter a valid M-Pesa number (07XX or 01XX)";
+    fe.style.display="block";
+    return;
+  }
+
+  if(!valid07(rp)){
+    fe.textContent="Enter a valid receiving number (07XX or 01XX)";
+    fe.style.display="block";
+    return;
+  }
+
+  const btn=document.getElementById("pay-btn");
+  btn.disabled=true;
+  btn.textContent="Processing…";
+
   try{
-    const res=await fetch(FURL,{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({agentUsername:agentProfile.username,agentUid:agentProfile.uid,
-        offerCode:selectedOffer.offerCode,offerName:selectedOffer.name,amount:selectedOffer.agentPrice,
-        payPhone:norm(pp),receivePhone:norm(rp),agentPhone:agentProfile.phoneNumber})});
+    const res=await fetch(FURL,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        agentUsername:agentProfile.username,
+        agentUid:agentProfile.uid,
+        offerCode:selectedOffer.offerCode,
+        offerName:selectedOffer.name,
+        amount:selectedOffer.agentPrice,
+        payPhone:norm(pp),
+        receivePhone:norm(rp),
+        agentPhone:agentProfile.phoneNumber
+      })
+    });
+
     const data=await res.json();
-    if(!res.ok||data.error){fe.textContent=data.error||"Payment failed. Try again.";fe.style.display="block";btn.disabled=false;btn.textContent="Pay "+selectedOffer.agentPrice;return;}
-    document.getElementById("order-form").style.display="none";
-    document.getElementById("stk-screen").style.display="block";
-    let t=60;const ci=document.getElementById("stk-cd");
-    const iv=setInterval(()=>{t--;ci.textContent=t+"s";if(t<=0){clearInterval(iv);document.getElementById("stk-waiting").style.display="none";document.getElementById("stk-timeout").style.display="block";}},1000);
-  }catch(e){fe.textContent="Network error: "+e.message;fe.style.display="block";btn.disabled=false;btn.textContent="Pay "+selectedOffer.agentPrice;}
+
+    if(!res.ok || data.error){
+      fe.textContent=data.error||"Payment failed. Try again.";
+      fe.style.display="block";
+      btn.disabled=false;
+      btn.textContent="Pay KSh "+selectedOffer.agentPrice;
+      return;
+    }
+
+    if(!data.txId){
+      fe.textContent="Transaction was created without txId. Please try again.";
+      fe.style.display="block";
+      btn.disabled=false;
+      btn.textContent="Pay KSh "+selectedOffer.agentPrice;
+      return;
+    }
+
+    showStkWaiting();
+    startOrderStatusPolling(data.txId);
+
+  }catch(e){
+    fe.textContent="Network error: "+e.message;
+    fe.style.display="block";
+    btn.disabled=false;
+    btn.textContent="Pay KSh "+selectedOffer.agentPrice;
+  }
 };
-window.retryOrder=function(){document.getElementById("stk-screen").style.display="none";document.getElementById("stk-timeout").style.display="none";document.getElementById("stk-waiting").style.display="block";document.getElementById("order-form").style.display="block";const b=document.getElementById("pay-btn");b.disabled=false;b.textContent="Pay "+(selectedOffer?selectedOffer.agentPrice:"");};
+window.retryOrder=function(){
+  resetStkState();
+  document.getElementById("stk-screen").style.display="none";
+  document.getElementById("stk-timeout").style.display="none";
+  document.getElementById("stk-waiting").style.display="block";
+  document.getElementById("order-form").style.display="block";
+  const b=document.getElementById("pay-btn");
+  b.disabled=false;
+  b.textContent="Pay "+(selectedOffer?("KSh "+selectedOffer.agentPrice):"");
+};
 init();
 
 </script>
