@@ -1,11 +1,30 @@
 <!DOCTYPE html><html><head><meta charset="UTF-8"><script>
 const segs=window.location.pathname.split('/').filter(Boolean);
 const first=(segs[0]||'').toLowerCase();
-if(!first)window.location.replace('/');
-else if(first==='download')window.location.replace('/download/');
-else if(first==='privacy')window.location.replace('/privacy.html');
-else if(first==='auth')window.location.replace('/auth.html');
-else if(first==='features')window.location.replace('/#features');
-else if(!/^(order|contact|404)$/.test(first)&&/^[a-z0-9_]{2,32}$/.test(first))window.location.replace('/order/?u='+encodeURIComponent(first));
-else window.location.replace('/');
+const second=(segs[1]||'').toLowerCase();
+
+if(!first){
+  window.location.replace('/');
+}else if(first==='download'){
+  window.location.replace('/download/');
+}else if(first==='privacy'){
+  window.location.replace('/privacy.html');
+}else if(first==='auth'){
+  window.location.replace('/auth.html');
+}else if(first==='features'){
+  window.location.replace('/#features');
+}else if(first==='clients'){
+  // /clients/agentusername → /clients/?u=agentusername
+  // /clients/ alone → just load the page (no agent)
+  if(second&&/^[a-z0-9_]{2,32}$/.test(second)){
+    window.location.replace('/clients/?u='+encodeURIComponent(second));
+  }else{
+    window.location.replace('/clients/');
+  }
+}else if(!/^(order|contact|404)$/.test(first)&&/^[a-z0-9_]{2,32}$/.test(first)){
+  // /agentusername → order page
+  window.location.replace('/order/?u='+encodeURIComponent(first));
+}else{
+  window.location.replace('/');
+}
 </script></head><body></body></html>
