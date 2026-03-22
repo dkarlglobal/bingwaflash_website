@@ -162,7 +162,7 @@ footer{border-top:1px solid var(--border);padding:20px 24px;display:flex;align-i
         <div id="set-pin-wrap">
           <div class="pin-notice">
             <strong>🔐 Create your Security PIN</strong>
-            This 5-digit PIN protects your registrations. You'll need it to add yourself to other agents or to remove yourself later. To reset a forgotten PIN contact <a href="/cdn-cgi/l/email-protection#f0838580809f8284b092999e978791969c918398de939fde9b95" style="color:#93c5fd"><span class="__cf_email__" data-cfemail="8efdfbfefee1fcfaceece7e0e9f9efe8e2effde6a0ede1a0e5eb">[email&#160;protected]</span></a>.
+            This 5-digit PIN protects your registrations. You'll need it to add yourself to other agents or to remove yourself later. To reset a forgotten PIN contact <a href="mailto:support@bingwaflash.co.ke" style="color:#93c5fd">support@bingwaflash.co.ke</a>.
           </div>
           <div class="field">
             <label for="reg-pin">Create PIN</label>
@@ -202,7 +202,7 @@ footer{border-top:1px solid var(--border);padding:20px 24px;display:flex;align-i
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
               </button>
             </div>
-            <div class="field-hint">Forgot your PIN? <a href="/cdn-cgi/l/email-protection#473432373728353307252e29203026212b26342f692428692c22" style="color:var(--amber)">Contact support</a></div>
+            <div class="field-hint">Forgot your PIN? <a href="mailto:support@bingwaflash.co.ke" style="color:var(--amber)">Contact support</a></div>
           </div>
         </div>
       </div>
@@ -241,7 +241,7 @@ footer{border-top:1px solid var(--border);padding:20px 24px;display:flex;align-i
           </div>
           <div>
             <div class="contact-label">Support Email</div>
-            <div class="contact-value"><a href="/cdn-cgi/l/email-protection#681b1d1818071a1c280a01060f1f090e04091b00460b0746030d"><span class="__cf_email__" data-cfemail="295a5c5959465b5d694b40474e5e484f45485a41074a4607424c">[email&#160;protected]</span></a></div>
+            <div class="contact-value"><a href="mailto:support@bingwaflash.co.ke">support@bingwaflash.co.ke</a></div>
           </div>
         </div>
       </div>
@@ -280,7 +280,7 @@ footer{border-top:1px solid var(--border);padding:20px 24px;display:flex;align-i
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
         </div>
-        <div class="field-hint">Forgot your PIN? <a href="/cdn-cgi/l/email-protection#42313732322d303602202b2c253523242e23312a6c212d6c2927" style="color:var(--amber)">Contact support</a></div>
+        <div class="field-hint">Forgot your PIN? <a href="mailto:support@bingwaflash.co.ke" style="color:var(--amber)">Contact support</a></div>
       </div>
 
       <div id="del-err"></div>
@@ -309,7 +309,7 @@ footer{border-top:1px solid var(--border);padding:20px 24px;display:flex;align-i
     <!-- Change PIN section -->
     <div id="pin-change-section" style="display:none">
       <div class="order-title">Change Your PIN</div>
-      <div class="order-sub">You must know your current PIN to set a new one. Forgotten? <a href="/cdn-cgi/l/email-protection#81f2f4f1f1eef3f5c1e3e8efe6f6e0e7ede0f2e9afe2eeafeae4" style="color:var(--amber)">Contact support</a>.</div>
+      <div class="order-sub">You must know your current PIN to set a new one. Forgotten? <a href="mailto:support@bingwaflash.co.ke" style="color:inherit">support@bingwaflash.co.ke</a>.</div>
       <div class="field">
         <label for="chg-phone">Your Phone Number</label>
         <input type="tel" id="chg-phone" placeholder="07xxxxxxxx or 01xxxxxxxx" inputmode="numeric" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')">
@@ -352,7 +352,7 @@ footer{border-top:1px solid var(--border);padding:20px 24px;display:flex;align-i
   <div class="ft-copy">© 2026 Bingwa Flash</div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
+<script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getFirestore,doc,getDoc,setDoc,deleteDoc,collection,query,where,getDocs,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -478,7 +478,7 @@ window.submitRegistration=async function(){
     const entered=pin;
     const snap=await getDoc(doc(db,'clientPins',phone));
     if(!snap.exists()||snap.data().pin!==entered){
-      errEl.textContent='Incorrect PIN. Forgot your PIN? Contact support@bingwaflash.co.ke';
+      errEl.textContent='Incorrect PIN. Forgot your PIN? Email support@bingwaflash.co.ke';
       errEl.style.display='block';return;
     }
     pinHash=entered;
