@@ -5,116 +5,137 @@
 <title>Order — Bingwa Flash</title>
 <link rel="icon" type="image/png" href="/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}:root{--amber:#f59e0b;--amber-light:#fcd34d;--amber-dark:#d97706;--red:#ef4444;--red-bg:rgba(239,68,68,.08);--green:#10b981;--green-bg:rgba(16,185,129,.08);--amber-bg:rgba(245,158,11,.1);--r4:4px;--r8:8px;--r12:12px;--r16:16px;--r24:24px}[data-theme="dark"]{--bg:#09090b;--surface:#111113;--surface2:#18181b;--border:#27272a;--border2:#3f3f46;--text:#fafafa;--text2:#a1a1aa;--text3:#71717a;--hbg:rgba(9,9,11,.9);--input-bg:#18181b;--btn-ghost-hover:#27272a}[data-theme="light"]{--bg:#ffffff;--surface:#fafafa;--surface2:#f4f4f5;--border:#e4e4e7;--border2:#d4d4d8;--text:#09090b;--text2:#52525b;--text3:#a1a1aa;--hbg:rgba(255,255,255,.9);--input-bg:#ffffff;--btn-ghost-hover:#f4f4f5}html{scroll-behavior:smooth}body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s;min-height:100vh;display:flex;flex-direction:column}header{position:sticky;top:0;z-index:100;background:var(--hbg);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;transition:background .25s}.logo{display:flex;align-items:center;gap:10px;text-decoration:none}.logo-icon{width:32px;height:32px;background:var(--amber);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;flex-shrink:0}.logo-icon svg{width:18px;height:18px}.logo-name{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:-.01em;color:var(--text)}.logo-name span{color:var(--amber)}nav{display:flex;align-items:center;gap:2px}nav a{font-size:.82rem;font-weight:500;color:var(--text2);text-decoration:none;padding:6px 12px;border-radius:var(--r8);transition:color .15s,background .15s}nav a:hover{color:var(--text);background:var(--btn-ghost-hover)}.nav-end{display:flex;align-items:center;gap:8px}.btn-sm{font-size:.8rem;font-weight:600;padding:7px 16px;border-radius:var(--r8);cursor:pointer;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:opacity .15s,transform .1s}.btn-sm:hover{opacity:.88}.btn-primary{background:var(--amber);color:#000;font-weight:700}.theme-toggle{width:34px;height:34px;border-radius:var(--r8);background:transparent;border:1px solid var(--border);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .15s,color .15s}.theme-toggle:hover{border-color:var(--border2);color:var(--text)}main{flex:1}footer{border-top:1px solid var(--border);padding:40px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:24px}.ft-brand{display:flex;align-items:center;gap:8px;text-decoration:none}.ft-brand-name{font-family:'Space Grotesk',sans-serif;font-size:.85rem;font-weight:600;color:var(--text)}.ft-links{display:flex;gap:24px;justify-content:center;flex-wrap:wrap}.ft-links a{font-size:.8rem;color:var(--text3);text-decoration:none;transition:color .15s}.ft-links a:hover{color:var(--text2)}.ft-copy{font-size:.75rem;color:var(--text3);text-align:right}@media(max-width:768px){header{padding:0 20px}nav{display:none}footer{grid-template-columns:1fr;text-align:center}.ft-links{justify-content:center}.ft-copy{text-align:center}}
-.order-page{display:flex;align-items:flex-start;justify-content:center;padding:48px 20px 60px;gap:32px;flex-wrap:wrap}
-.order-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r16);
-  width:100%;max-width:520px;overflow:hidden;animation:fadeUp .4s ease both}
-.agent-bar{padding:16px 24px;border-bottom:1px solid var(--border);display:none;
-  align-items:center;gap:12px;background:var(--surface2)}
-.ag-av{width:40px;height:40px;border-radius:50%;background:var(--amber);flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1rem;color:#000}
-.ag-name{font-size:.92rem;font-weight:600;color:var(--text)}
-.ag-handle{font-size:.78rem;color:var(--text3)}
-.ag-live{margin-left:auto;display:flex;align-items:center;gap:5px;font-size:.73rem;color:var(--green);font-weight:500}
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--amber:#f59e0b;--amber-light:#fcd34d;--amber-dark:#d97706;--red:#ef4444;--red-bg:rgba(239,68,68,.08);--green:#10b981;--green-bg:rgba(16,185,129,.08);--amber-bg:rgba(245,158,11,.1);--r4:4px;--r8:8px;--r12:12px;--r16:16px;--r24:24px}
+[data-theme="dark"]{--bg:#09090b;--surface:#111113;--surface2:#18181b;--border:#27272a;--border2:#3f3f46;--text:#fafafa;--text2:#a1a1aa;--text3:#71717a;--hbg:rgba(9,9,11,.9);--input-bg:#18181b;--btn-ghost-hover:#27272a}
+[data-theme="light"]{--bg:#ffffff;--surface:#fafafa;--surface2:#f4f4f5;--border:#e4e4e7;--border2:#d4d4d8;--text:#09090b;--text2:#52525b;--text3:#a1a1aa;--hbg:rgba(255,255,255,.9);--input-bg:#ffffff;--btn-ghost-hover:#f4f4f5}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s;min-height:100vh;display:flex;flex-direction:column}
+/* ── Header — logo + theme toggle only ── */
+header{position:sticky;top:0;z-index:100;background:var(--hbg);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;transition:background .25s}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-icon{width:30px;height:30px;background:var(--amber);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-icon svg{width:16px;height:16px}
+.logo-name{font-family:'Space Grotesk',sans-serif;font-size:.92rem;font-weight:700;letter-spacing:-.01em;color:var(--text)}
+.logo-name span{color:var(--amber)}
+.theme-toggle{width:32px;height:32px;border-radius:var(--r8);background:transparent;border:1px solid var(--border);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .15s,color .15s;flex-shrink:0}
+.theme-toggle:hover{border-color:var(--border2);color:var(--text)}
+/* ── Agent bar ── */
+.agent-bar{padding:14px 24px;border-bottom:1px solid var(--border);display:none;align-items:center;gap:12px;background:var(--surface2)}
+.ag-av{width:38px;height:38px;border-radius:50%;background:var(--amber);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.95rem;color:#000}
+.ag-name{font-size:.9rem;font-weight:600;color:var(--text)}
+.ag-handle{font-size:.76rem;color:var(--text3)}
+.ag-live{margin-left:auto;display:flex;align-items:center;gap:5px;font-size:.72rem;color:var(--green);font-weight:500}
 .ag-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.order-body{padding:28px 24px}
+/* ── Layout ── */
+main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:36px 20px 60px}
+.order-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r16);width:100%;max-width:520px;overflow:hidden;animation:fadeUp .4s ease both}
+.order-body{padding:26px 22px}
+/* ── Loading / error ── */
 #loading{text-align:center;padding:32px 0}
-.spin{width:32px;height:32px;border:2px solid var(--border2);border-top-color:var(--amber);
-  border-radius:50%;animation:spin .7s linear infinite;display:inline-block;margin-bottom:12px}
+.spin{width:30px;height:30px;border:2px solid var(--border2);border-top-color:var(--amber);border-radius:50%;animation:spin .7s linear infinite;display:inline-block;margin-bottom:10px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.spin-label{font-size:.8rem;color:var(--text3)}
-#error-state{display:none;text-align:center;padding:32px 0}
-.err-icon{font-size:2rem;margin-bottom:12px}
-.err-text{font-size:.88rem;color:var(--text2);line-height:1.65}
+.spin-label{font-size:.78rem;color:var(--text3)}
+#error-state{display:none;text-align:center;padding:28px 0}
+.err-icon{font-size:2rem;margin-bottom:10px}
+.err-text{font-size:.86rem;color:var(--text2);line-height:1.65}
 #content{display:none}
-.order-title{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;
-  color:var(--text);margin-bottom:4px}
-.order-sub{font-size:.82rem;color:var(--text3);margin-bottom:24px}
-.cat-header{font-size:.72rem;font-weight:600;color:var(--text3);text-transform:uppercase;
-  letter-spacing:.06em;margin-bottom:10px;margin-top:20px}
+/* ── Offers ── */
+.order-title{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:4px}
+.order-sub{font-size:.8rem;color:var(--text3);margin-bottom:22px}
+.cat-header{font-size:.7rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;margin-top:18px}
 .cat-header:first-of-type{margin-top:0}
-.offers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-bottom:4px}
-.offer-btn{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r8);
-  padding:14px 10px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;
-  font-family:inherit}
+.offers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:7px;margin-bottom:4px}
+.offer-btn{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r8);padding:12px 8px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;font-family:inherit}
 .offer-btn:hover{border-color:var(--border2);background:var(--btn-ghost-hover)}
 .offer-btn.selected{border-color:var(--amber);background:var(--amber-bg)}
-.ob-name{font-size:.72rem;font-weight:600;color:var(--text);margin-bottom:5px}
-.ob-price{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;color:var(--amber)}
-.ob-code{font-size:.65rem;color:var(--text3);margin-top:3px}
-.divider{border:none;border-top:1px solid var(--border);margin:20px 0}
+.ob-name{font-size:.7rem;font-weight:600;color:var(--text);margin-bottom:4px}
+.ob-price{font-family:'Space Grotesk',sans-serif;font-size:.92rem;font-weight:700;color:var(--amber)}
+.ob-code{font-size:.63rem;color:var(--text3);margin-top:2px}
+.divider{border:none;border-top:1px solid var(--border);margin:18px 0}
+/* ── Order form ── */
 #order-form{display:none}
-.selected-row{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r8);
-  padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.sr-label{font-size:.72rem;color:var(--text3);margin-bottom:3px}
-.sr-name{font-size:.88rem;font-weight:600;color:var(--text)}
-.sr-price{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:var(--amber)}
-.field{margin-bottom:16px}
-.field label{display:block;font-size:.75rem;font-weight:600;color:var(--text2);margin-bottom:6px}
-.field input{width:100%;background:var(--input-bg);border:1px solid var(--border);
-  border-radius:var(--r8);padding:11px 14px;color:var(--text);font-family:inherit;font-size:.88rem;
-  outline:none;transition:border-color .15s}
+.selected-row{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r8);padding:12px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.sr-label{font-size:.7rem;color:var(--text3);margin-bottom:2px}
+.sr-name{font-size:.86rem;font-weight:600;color:var(--text)}
+.sr-price{font-family:'Space Grotesk',sans-serif;font-size:1.05rem;font-weight:700;color:var(--amber)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:.74rem;font-weight:600;color:var(--text2);margin-bottom:5px}
+.field input{width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:var(--r8);padding:10px 13px;color:var(--text);font-family:inherit;font-size:.87rem;outline:none;transition:border-color .15s}
 .field input:focus{border-color:var(--amber)}
 .field input::placeholder{color:var(--text3)}
-.field-hint{font-size:.72rem;color:var(--text3);margin-top:4px}
-#form-err{font-size:.8rem;color:var(--red);margin-bottom:12px;display:none;
-  background:var(--red-bg);padding:10px 12px;border-radius:var(--r8)}
-.pay-btn{width:100%;padding:13px;background:var(--amber);color:#000;font-weight:700;
-  font-size:.88rem;border:none;border-radius:var(--r8);cursor:pointer;
-  transition:opacity .15s;margin-bottom:8px}
+.field-hint{font-size:.7rem;color:var(--text3);margin-top:3px}
+#form-err{font-size:.78rem;color:var(--red);margin-bottom:11px;display:none;background:var(--red-bg);padding:9px 12px;border-radius:var(--r8)}
+.pay-btn{width:100%;padding:12px;background:var(--amber);color:#000;font-weight:700;font-size:.87rem;border:none;border-radius:var(--r8);cursor:pointer;transition:opacity .15s;margin-bottom:7px}
 .pay-btn:hover{opacity:.88}.pay-btn:disabled{opacity:.45;cursor:not-allowed}
-.pay-secure{font-size:.73rem;color:var(--text3);text-align:center}
-#stk-screen{display:none;padding:8px 0}
-.stk-inner{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r12);
-  padding:24px;text-align:center;margin-bottom:16px}
-.stk-title{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:6px}
-.stk-desc{font-size:.83rem;color:var(--text2);line-height:1.6;margin-bottom:16px}
-.stk-timer{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:var(--text3);
-  border:1px solid var(--border);border-radius:var(--r8);padding:8px 16px;margin-bottom:16px}
+.pay-secure{font-size:.7rem;color:var(--text3);text-align:center}
+/* ── STK ── */
+#stk-screen{display:none;padding:6px 0}
+.stk-inner{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r12);padding:22px;text-align:center;margin-bottom:14px}
+.stk-title{font-family:'Space Grotesk',sans-serif;font-size:.98rem;font-weight:700;color:var(--text);margin-bottom:5px}
+.stk-desc{font-size:.81rem;color:var(--text2);line-height:1.6;margin-bottom:14px}
+.stk-timer{display:inline-flex;align-items:center;gap:6px;font-size:.76rem;color:var(--text3);border:1px solid var(--border);border-radius:var(--r8);padding:7px 14px;margin-bottom:14px}
 .stk-timer strong{color:var(--amber);font-family:'Space Grotesk',sans-serif}
-.stk-steps{text-align:left;display:flex;flex-direction:column;gap:8px}
-.stk-step{display:flex;align-items:flex-start;gap:10px;font-size:.82rem;color:var(--text2)}
-.step-n{width:22px;height:22px;border-radius:50%;background:var(--surface);border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:600;
-  color:var(--amber);flex-shrink:0;margin-top:1px}
-#stk-timeout{display:none;text-align:center;padding:8px 0}
-.timeout-title{font-size:.95rem;font-weight:600;color:var(--red);margin-bottom:6px}
-.timeout-desc{font-size:.82rem;color:var(--text2);margin-bottom:16px}
-.retry-btn{background:transparent;border:1px solid var(--amber);color:var(--amber);
-  border-radius:var(--r8);padding:10px 24px;font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;transition:background .15s}
+.stk-steps{text-align:left;display:flex;flex-direction:column;gap:7px}
+.stk-step{display:flex;align-items:flex-start;gap:9px;font-size:.8rem;color:var(--text2)}
+.step-n{width:20px;height:20px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:600;color:var(--amber);flex-shrink:0;margin-top:1px}
+#stk-timeout{display:none;text-align:center;padding:6px 0}
+.timeout-title{font-size:.92rem;font-weight:600;color:var(--red);margin-bottom:5px}
+.timeout-desc{font-size:.8rem;color:var(--text2);margin-bottom:14px}
+.retry-btn{background:transparent;border:1px solid var(--amber);color:var(--amber);border-radius:var(--r8);padding:9px 22px;font-family:inherit;font-size:.8rem;font-weight:600;cursor:pointer;transition:background .15s}
 .retry-btn:hover{background:var(--amber-bg)}
-/* ── Register as client banner ── */
-.register-banner{display:none;margin-top:4px;padding:14px 16px;
-  background:var(--surface2);border:1px solid var(--border);border-radius:var(--r8);
-  align-items:center;justify-content:space-between;gap:12px}
-.rb-text{font-size:.78rem;color:var(--text2);line-height:1.5}
+/* ── Register banner ── */
+.register-banner{display:none;margin-top:4px;padding:13px 15px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r8);align-items:center;justify-content:space-between;gap:12px}
+.rb-text{font-size:.77rem;color:var(--text2);line-height:1.5}
 .rb-text strong{color:var(--text);font-weight:600;display:block;margin-bottom:2px}
-.rb-btn{flex-shrink:0;font-size:.78rem;font-weight:700;padding:8px 14px;
-  background:transparent;border:1px solid var(--amber);color:var(--amber);
-  border-radius:var(--r8);cursor:pointer;font-family:inherit;transition:background .15s;
-  text-decoration:none;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.rb-btn{flex-shrink:0;font-size:.77rem;font-weight:700;padding:7px 13px;background:transparent;border:1px solid var(--amber);color:var(--amber);border-radius:var(--r8);cursor:pointer;font-family:inherit;transition:background .15s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
 .rb-btn:hover{background:var(--amber-bg)}
+/* ── Contact card ── */
+.contact-card{margin-top:16px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r12);overflow:hidden}
+.contact-card-title{font-size:.71rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;padding:10px 14px 6px}
+.contact-row{display:flex;align-items:center;gap:10px;padding:9px 14px;border-top:1px solid var(--border)}
+.contact-icon{width:28px;height:28px;border-radius:var(--r8);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.contact-label{font-size:.71rem;color:var(--text3);margin-bottom:1px}
+.contact-value{font-size:.83rem;font-weight:600;color:var(--text)}
+.contact-value a{color:var(--text);text-decoration:none}
+.contact-value a:hover{color:var(--amber)}
+/* ── Footer ── */
+footer{border-top:1px solid var(--border);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.ft-brand{display:flex;align-items:center;gap:7px;text-decoration:none}
+.ft-brand-name{font-family:'Space Grotesk',sans-serif;font-size:.82rem;font-weight:600;color:var(--text)}
+.ft-copy{font-size:.73rem;color:var(--text3)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media(max-width:480px){footer{flex-direction:column;text-align:center}}
 </style>
 </head>
 <body>
-<header><a class="logo" href="/"><div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><span class="logo-name">Bingwa <span>Flash</span></span></a><nav><a href="/">Home</a><a href="/#features">Features</a><a href="/download/">Downloads</a><a href="/privacy.html">Privacy</a></nav><div class="nav-end"><button class="theme-toggle" id="tb" onclick="toggleTheme()" title="Toggle theme"></button><a href="/download/" class="btn-sm btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download</a></div></header>
-<div id="agent-bar" class="agent-bar"><div class="ag-av" id="ag-av">?</div><div><div class="ag-name" id="ag-name"></div><div class="ag-handle" id="ag-handle"></div></div><div class="ag-live"><div class="ag-dot"></div>Online</div></div>
+
+<header>
+  <a class="logo" href="/"><div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><span class="logo-name">Bingwa <span>Flash</span></span></a>
+  <button class="theme-toggle" id="tb" onclick="toggleTheme()" title="Toggle theme"></button>
+</header>
+
+<div id="agent-bar" class="agent-bar">
+  <div class="ag-av" id="ag-av">?</div>
+  <div><div class="ag-name" id="ag-name"></div><div class="ag-handle" id="ag-handle"></div></div>
+  <div class="ag-live"><div class="ag-dot"></div>Online</div>
+</div>
+
 <main>
-<div class="order-page">
 <div class="order-card">
   <div class="order-body">
     <div id="loading"><div class="spin"></div><div class="spin-label">Loading offers…</div></div>
     <div id="error-state"><div class="err-icon">⚡</div><div class="err-text" id="err-msg">Something went wrong.</div></div>
+
     <div id="content">
       <div class="order-title">Available Offers</div>
       <div class="order-sub">Select an offer to get started</div>
       <div id="offers-container"></div>
       <div class="divider"></div>
 
-      <!-- ── Register as Client banner — shown after agent loads ── -->
+      <!-- Register as client banner -->
       <div class="register-banner" id="register-banner">
         <div class="rb-text">
           <strong>Want faster service?</strong>
@@ -134,6 +155,7 @@
         <button class="pay-btn" id="pay-btn" onclick="submitOrder()">Pay <span id="pay-amount">—</span></button>
         <div class="pay-secure">🔒 Secured by M-Pesa · Powered by Bingwa Flash</div>
       </div>
+
       <div id="stk-screen">
         <div id="stk-waiting">
           <div class="stk-inner">
@@ -153,16 +175,54 @@
           <button class="retry-btn" onclick="retryOrder()">Try Again</button>
         </div>
       </div>
+
+      <!-- Agent contact info — shown below the order area -->
+      <div class="contact-card" id="contact-card" style="display:none">
+        <div class="contact-card-title">Contact Agent</div>
+        <div class="contact-row" id="contact-till-row" style="display:none">
+          <div class="contact-icon" style="background:rgba(245,158,11,.12)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Till Number</div>
+            <div class="contact-value" id="contact-till"></div>
+          </div>
+        </div>
+        <div class="contact-row" id="contact-phone-row" style="display:none">
+          <div class="contact-icon" style="background:rgba(16,185,129,.1)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 15.92z"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Phone Number</div>
+            <div class="contact-value" id="contact-phone"></div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon" style="background:rgba(99,102,241,.1)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Support Email</div>
+            <div class="contact-value"><a href="mailto:support@bingwaflash.co.ke">support@bingwaflash.co.ke</a></div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
-</div>
 </main>
-<footer><a class="ft-brand" href="/"><div class="logo-icon" style="width:24px;height:24px;border-radius:6px"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" width="14" height="14"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><span class="ft-brand-name">Bingwa Flash</span></a><div class="ft-links"><a href="/">Home</a><a href="/#features">Features</a><a href="/download/">Downloads</a><a href="/privacy.html">Privacy Policy</a><a href="/cdn-cgi/l/email-protection#d9aaaca9a9b6abad99bbb0b7beaeb8bfb5b8aab1f7bab6f7b2bc">Contact</a></div><div class="ft-copy">© 2026 Bingwa Flash</div></footer>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
 
+<footer>
+  <a class="ft-brand" href="/"><div class="logo-icon" style="width:22px;height:22px;border-radius:5px"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" width="13" height="13"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><span class="ft-brand-name">Bingwa Flash</span></a>
+  <div class="ft-copy">© 2026 Bingwa Flash</div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getFirestore,doc,getDoc,collection,query,where,getDocs}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
 const FC={apiKey:"AIzaSyBMf_Kc6gFA30TiiqTvPGEUOHRD0ikpL9c",authDomain:"bingwa-flash.firebaseapp.com",projectId:"bingwa-flash",storageBucket:"bingwa-flash.firebasestorage.app",messagingSenderId:"141272100218",appId:"1:141272100218:web:bcfc60bfd8e5945cedbac3"};
 const app=initializeApp(FC);const db=getFirestore(app);
 const FURL="https://initiateorder-kerhygd7aa-uc.a.run.app";
@@ -170,11 +230,10 @@ const STATUS_URL="https://getorderstatus-kerhygd7aa-uc.a.run.app";
 const params=new URLSearchParams(window.location.search);
 const USERNAME=(params.get("u")||"").toLowerCase();
 let agentProfile=null,selectedOffer=null;
-let activeTxId=null;
-let stkCountdownInterval=null;
-let stkPollInterval=null;
-let stkExpiresAtMs=0;
+let activeTxId=null,stkCountdownInterval=null,stkPollInterval=null,stkExpiresAtMs=0;
+
 function showError(m){document.getElementById("loading").style.display="none";const e=document.getElementById("error-state");e.style.display="block";document.getElementById("err-msg").innerHTML=m;}
+
 async function init(){
   if(!USERNAME){showError("No agent username in URL.");return;}
   try{
@@ -183,21 +242,33 @@ async function init(){
     if(snap.empty){showError(`Agent "${USERNAME}" not found.`);return;}
     agentProfile=snap.docs[0].data();
     if(!agentProfile.webOrdersOn){showError("This agent's web orders are currently offline.");return;}
+
     const n=agentProfile.agentName||USERNAME;
+    // Use websiteUsername for the handle — not username
+    const handle=agentProfile.websiteUsername||USERNAME;
+
     document.getElementById("ag-name").textContent=n;
-    document.getElementById("ag-handle").textContent="@"+(agentProfile.username||USERNAME);
+    document.getElementById("ag-handle").textContent="@"+handle;
     document.getElementById("ag-av").textContent=n.charAt(0).toUpperCase();
     document.getElementById("agent-bar").style.display="flex";
 
-    // ── Set register link pointing to /clients/USERNAME ──
+    // Register banner link
     const regLink=document.getElementById("register-link");
     regLink.href="/clients/"+encodeURIComponent(USERNAME);
     document.getElementById("register-banner").style.display="flex";
+
+    // Contact card
+    const till=agentProfile.tillNumber||'';
+    const phone=agentProfile.phoneNumber||'';
+    if(till){document.getElementById("contact-till").textContent=till;document.getElementById("contact-till-row").style.display="flex";}
+    if(phone){document.getElementById("contact-phone").innerHTML=`<a href="tel:${phone}">${phone}</a>`;document.getElementById("contact-phone-row").style.display="flex";}
+    document.getElementById("contact-card").style.display="block";
 
     const d=await getDoc(doc(db,"agents",snap.docs[0].id,"meta","offers"));
     if(!d.exists()){showError("No offers available.");return;}
     const offers=JSON.parse(d.data().json||"[]").filter(o=>o.enabled&&o.offerCode&&o.offerCode.trim());
     if(!offers.length){showError("No offers available.");return;}
+
     const cats=[...new Set(offers.map(o=>o.category||"General"))];
     const grid=document.getElementById("offers-container");grid.innerHTML="";
     cats.forEach(cat=>{
@@ -206,7 +277,15 @@ async function init(){
       offers.filter(o=>(o.category||"General")===cat).forEach(o=>{
         const b=document.createElement("button");b.className="offer-btn";b.dataset.id=o.id;
         b.innerHTML=`<div class="ob-name">${o.name}</div><div class="ob-price">KSh ${o.agentPrice}</div><div class="ob-code">${o.offerCode}</div>`;
-        b.addEventListener("click",()=>{document.querySelectorAll(".offer-btn").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");selectedOffer=o;document.getElementById("sel-name").textContent=o.name;document.getElementById("sel-price").textContent="KSh "+o.agentPrice;document.getElementById("pay-amount").textContent="KSh "+o.agentPrice;document.getElementById("order-form").style.display="block";document.getElementById("order-form").scrollIntoView({behavior:"smooth",block:"nearest"});});
+        b.addEventListener("click",()=>{
+          document.querySelectorAll(".offer-btn").forEach(x=>x.classList.remove("selected"));
+          b.classList.add("selected");selectedOffer=o;
+          document.getElementById("sel-name").textContent=o.name;
+          document.getElementById("sel-price").textContent="KSh "+o.agentPrice;
+          document.getElementById("pay-amount").textContent="KSh "+o.agentPrice;
+          document.getElementById("order-form").style.display="block";
+          document.getElementById("order-form").scrollIntoView({behavior:"smooth",block:"nearest"});
+        });
         g.appendChild(b);
       });
       grid.appendChild(g);
@@ -215,154 +294,61 @@ async function init(){
     document.getElementById("content").style.display="block";
   }catch(e){showError("Failed to load: "+e.message);}
 }
+
 function valid07(p){return/^(07|01)\d{8}$/.test(p.trim());}
 function norm(p){const s=p.trim().replace(/\s/g,"");return(/^0/.test(s))?"254"+s.slice(1):s;}
-function resetStkState(){
-  activeTxId=null;
-  stkExpiresAtMs=0;
-  if(stkCountdownInterval){clearInterval(stkCountdownInterval);stkCountdownInterval=null;}
-  if(stkPollInterval){clearInterval(stkPollInterval);stkPollInterval=null;}
-}
-function showFormError(msg){
-  const fe=document.getElementById("form-err");
-  fe.textContent=msg;
-  fe.style.display="block";
-}
-function restoreOrderForm(){
-  document.getElementById("stk-screen").style.display="none";
-  document.getElementById("stk-waiting").style.display="block";
-  document.getElementById("stk-timeout").style.display="none";
-  document.getElementById("order-form").style.display="block";
-  const btn=document.getElementById("pay-btn");
-  btn.disabled=false;
-  btn.textContent="Pay "+(selectedOffer?"KSh "+selectedOffer.agentPrice:"");
-}
-function showStkWaiting(){
-  document.getElementById("order-form").style.display="none";
-  document.getElementById("stk-screen").style.display="block";
-  document.getElementById("stk-waiting").style.display="block";
-  document.getElementById("stk-timeout").style.display="none";
-}
-function showStkTimeout(message="The STK push expired. You were not charged."){
-  resetStkState();
-  document.getElementById("stk-screen").style.display="block";
-  document.getElementById("stk-waiting").style.display="none";
-  document.getElementById("stk-timeout").style.display="block";
-  const desc=document.querySelector("#stk-timeout .timeout-desc");
-  if(desc) desc.textContent=message;
-}
-function showOrderSuccess(message){
-  resetStkState();
-  const screen=document.getElementById("stk-screen");
-  screen.style.display="block";
-  screen.innerHTML=`
-    <div class="stk-inner">
-      <div class="stk-title" style="color:var(--green)">Payment Confirmed</div>
-      <div class="stk-desc">${message||"Your payment was received successfully. Your order is now being processed."}</div>
-    </div>
-  `;
-}
-function showOrderFailure(message){
-  resetStkState();
-  document.getElementById("stk-screen").style.display="none";
-  restoreOrderForm();
-  showFormError(message||"Payment failed or was cancelled.");
-}
-function startStkCountdown(){
-  const ci=document.getElementById("stk-cd");
-  if(stkCountdownInterval) clearInterval(stkCountdownInterval);
-  stkCountdownInterval=setInterval(()=>{
-    const leftMs=Math.max(0,stkExpiresAtMs-Date.now());
-    const secs=Math.ceil(leftMs/1000);
-    ci.textContent=secs+"s";
-    if(leftMs<=0){
-      clearInterval(stkCountdownInterval);
-      stkCountdownInterval=null;
-      if(stkPollInterval) clearInterval(stkPollInterval);
-      stkPollInterval=null;
-      showStkTimeout("The STK push expired. If you cancelled or did not enter PIN, please try again.");
-    }
-  },1000);
-}
+
+function resetStkState(){activeTxId=null;stkExpiresAtMs=0;if(stkCountdownInterval){clearInterval(stkCountdownInterval);stkCountdownInterval=null;}if(stkPollInterval){clearInterval(stkPollInterval);stkPollInterval=null;}}
+function showFormError(msg){const fe=document.getElementById("form-err");fe.textContent=msg;fe.style.display="block";}
+function restoreOrderForm(){document.getElementById("stk-screen").style.display="none";document.getElementById("stk-waiting").style.display="block";document.getElementById("stk-timeout").style.display="none";document.getElementById("order-form").style.display="block";const btn=document.getElementById("pay-btn");btn.disabled=false;btn.textContent="Pay "+(selectedOffer?"KSh "+selectedOffer.agentPrice:"");}
+function showStkWaiting(){document.getElementById("order-form").style.display="none";document.getElementById("stk-screen").style.display="block";document.getElementById("stk-waiting").style.display="block";document.getElementById("stk-timeout").style.display="none";}
+function showStkTimeout(message="The STK push expired. You were not charged."){resetStkState();document.getElementById("stk-screen").style.display="block";document.getElementById("stk-waiting").style.display="none";document.getElementById("stk-timeout").style.display="block";const desc=document.querySelector("#stk-timeout .timeout-desc");if(desc)desc.textContent=message;}
+function showOrderSuccess(message){resetStkState();const screen=document.getElementById("stk-screen");screen.style.display="block";screen.innerHTML=`<div class="stk-inner"><div class="stk-title" style="color:var(--green)">Payment Confirmed</div><div class="stk-desc">${message||"Your payment was received successfully. Your order is now being processed."}</div></div>`;}
+function showOrderFailure(message){resetStkState();document.getElementById("stk-screen").style.display="none";restoreOrderForm();showFormError(message||"Payment failed or was cancelled.");}
+function startStkCountdown(){const ci=document.getElementById("stk-cd");if(stkCountdownInterval)clearInterval(stkCountdownInterval);stkCountdownInterval=setInterval(()=>{const leftMs=Math.max(0,stkExpiresAtMs-Date.now());const secs=Math.ceil(leftMs/1000);ci.textContent=secs+"s";if(leftMs<=0){clearInterval(stkCountdownInterval);stkCountdownInterval=null;if(stkPollInterval)clearInterval(stkPollInterval);stkPollInterval=null;showStkTimeout("The STK push expired. If you cancelled or did not enter PIN, please try again.");}},1000);}
+
 async function pollOrderStatus(txId){
-  if(!txId) return;
+  if(!txId)return;
   try{
     const res=await fetch(`${STATUS_URL}?txId=${encodeURIComponent(txId)}`);
     const data=await res.json();
-    if(!res.ok || data.error){return;}
+    if(!res.ok||data.error)return;
     const status=String(data.status||"pending").toLowerCase();
     const failReason=data.failReason||data.resultDesc||"Payment failed.";
-    if(status==="executed" || status==="payout_done"){
-      showOrderSuccess("Your payment was confirmed successfully. Your order is being processed.");
-      return;
-    }
-    if(status==="failed" || status==="cancelled" || status==="expired" || status==="payout_failed"){
-      showOrderFailure(failReason);
-      return;
-    }
-  }catch(e){
-    console.error("pollOrderStatus:",e);
-  }
+    if(status==="executed"||status==="payout_done"){showOrderSuccess("Your payment was confirmed successfully. Your order is being processed.");return;}
+    if(status==="failed"||status==="cancelled"||status==="expired"||status==="payout_failed"){showOrderFailure(failReason);return;}
+  }catch(e){console.error("pollOrderStatus:",e);}
 }
-function startOrderStatusPolling(txId){
-  activeTxId=txId;
-  stkExpiresAtMs=Date.now()+(70*1000);
-  startStkCountdown();
-  if(stkPollInterval) clearInterval(stkPollInterval);
-  stkPollInterval=setInterval(()=>{pollOrderStatus(txId);},2500);
-  pollOrderStatus(txId);
-}
+
+function startOrderStatusPolling(txId){activeTxId=txId;stkExpiresAtMs=Date.now()+(70*1000);startStkCountdown();if(stkPollInterval)clearInterval(stkPollInterval);stkPollInterval=setInterval(()=>{pollOrderStatus(txId);},2500);pollOrderStatus(txId);}
+
 window.submitOrder=async function(){
   if(!selectedOffer)return;
   const pp=document.getElementById("pay-phone").value;
   const rp=document.getElementById("recv-phone").value;
-  const fe=document.getElementById("form-err");
-  fe.style.display="none";
+  const fe=document.getElementById("form-err");fe.style.display="none";
   if(!valid07(pp)){fe.textContent="Enter a valid M-Pesa number (07XX or 01XX)";fe.style.display="block";return;}
   if(!valid07(rp)){fe.textContent="Enter a valid receiving number (07XX or 01XX)";fe.style.display="block";return;}
-  const btn=document.getElementById("pay-btn");
-  btn.disabled=true;
-  btn.textContent="Processing…";
+  const btn=document.getElementById("pay-btn");btn.disabled=true;btn.textContent="Processing…";
   try{
-    const res=await fetch(FURL,{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        agentUsername:agentProfile.username,
-        agentUid:agentProfile.uid,
-        offerCode:selectedOffer.offerCode,
-        offerName:selectedOffer.name,
-        amount:selectedOffer.agentPrice,
-        payPhone:norm(pp),
-        receivePhone:norm(rp),
-        agentPhone:agentProfile.phoneNumber
-      })
-    });
+    const res=await fetch(FURL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({agentUsername:agentProfile.username,agentUid:agentProfile.uid,offerCode:selectedOffer.offerCode,offerName:selectedOffer.name,amount:selectedOffer.agentPrice,payPhone:norm(pp),receivePhone:norm(rp),agentPhone:agentProfile.phoneNumber})});
     const data=await res.json();
-    if(!res.ok || data.error){fe.textContent=data.error||"Payment failed. Try again.";fe.style.display="block";btn.disabled=false;btn.textContent="Pay KSh "+selectedOffer.agentPrice;return;}
+    if(!res.ok||data.error){fe.textContent=data.error||"Payment failed. Try again.";fe.style.display="block";btn.disabled=false;btn.textContent="Pay KSh "+selectedOffer.agentPrice;return;}
     if(!data.txId){fe.textContent="Transaction was created without txId. Please try again.";fe.style.display="block";btn.disabled=false;btn.textContent="Pay KSh "+selectedOffer.agentPrice;return;}
-    showStkWaiting();
-    startOrderStatusPolling(data.txId);
-  }catch(e){
-    fe.textContent="Network error: "+e.message;
-    fe.style.display="block";
-    btn.disabled=false;
-    btn.textContent="Pay KSh "+selectedOffer.agentPrice;
-  }
+    showStkWaiting();startOrderStatusPolling(data.txId);
+  }catch(e){fe.textContent="Network error: "+e.message;fe.style.display="block";btn.disabled=false;btn.textContent="Pay KSh "+selectedOffer.agentPrice;}
 };
-window.retryOrder=function(){
-  resetStkState();
-  document.getElementById("stk-screen").style.display="none";
-  document.getElementById("stk-timeout").style.display="none";
-  document.getElementById("stk-waiting").style.display="block";
-  document.getElementById("order-form").style.display="block";
-  const b=document.getElementById("pay-btn");
-  b.disabled=false;
-  b.textContent="Pay "+(selectedOffer?("KSh "+selectedOffer.agentPrice):"");
-};
-init();
 
+window.retryOrder=function(){resetStkState();document.getElementById("stk-screen").style.display="none";document.getElementById("stk-timeout").style.display="none";document.getElementById("stk-waiting").style.display="block";document.getElementById("order-form").style.display="block";const b=document.getElementById("pay-btn");b.disabled=false;b.textContent="Pay "+(selectedOffer?("KSh "+selectedOffer.agentPrice):"");};
+
+init();
 </script>
-<script>const _h=document.documentElement;_h.setAttribute('data-theme',localStorage.getItem('bf-theme')||'dark');function _tb(){const b=document.getElementById('tb');if(!b)return;const d=_h.getAttribute('data-theme')==='dark';b.innerHTML=d?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>';}function toggleTheme(){const t=_h.getAttribute('data-theme')==='dark'?'light':'dark';_h.setAttribute('data-theme',t);localStorage.setItem('bf-theme',t);_tb();}_tb();const _io=new IntersectionObserver(e=>{e.forEach(v=>{if(v.isIntersecting){v.target.classList.add('visible');}});},{threshold:0.1});document.querySelectorAll('.fade-in').forEach(el=>_io.observe(el));</script>
+<script>
+const _h=document.documentElement;
+_h.setAttribute('data-theme',localStorage.getItem('bf-theme')||'dark');
+function _tb(){const b=document.getElementById('tb');if(!b)return;const d=_h.getAttribute('data-theme')==='dark';b.innerHTML=d?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>';}
+function toggleTheme(){const t=_h.getAttribute('data-theme')==='dark'?'light':'dark';_h.setAttribute('data-theme',t);localStorage.setItem('bf-theme',t);_tb();}
+_tb();
+</script>
 </body>
 </html>
