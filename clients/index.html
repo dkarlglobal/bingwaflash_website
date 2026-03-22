@@ -162,7 +162,7 @@ footer{border-top:1px solid var(--border);padding:20px 24px;display:flex;align-i
         <div id="set-pin-wrap">
           <div class="pin-notice">
             <strong>🔐 Create your Security PIN</strong>
-            This 5-digit PIN protects your registrations. You'll need it to add yourself to other agents or to remove yourself later. To reset a forgotten PIN contact <a href="mailto:support@bingwaflash.co.ke" style="color:#93c5fd">support@bingwaflash.co.ke</a>.
+            This 5-digit PIN protects your registrations. You'll need it to add yourself to other agents or to remove yourself later. To reset a forgotten PIN contact <a href="/cdn-cgi/l/email-protection#f0838580809f8284b092999e978791969c918398de939fde9b95" style="color:#93c5fd"><span class="__cf_email__" data-cfemail="8efdfbfefee1fcfaceece7e0e9f9efe8e2effde6a0ede1a0e5eb">[email&#160;protected]</span></a>.
           </div>
           <div class="field">
             <label for="reg-pin">Create PIN</label>
@@ -202,7 +202,7 @@ footer{border-top:1px solid var(--border);padding:20px 24px;display:flex;align-i
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
               </button>
             </div>
-            <div class="field-hint">Forgot your PIN? <a href="mailto:support@bingwaflash.co.ke" style="color:var(--amber)">Contact support</a></div>
+            <div class="field-hint">Forgot your PIN? <a href="/cdn-cgi/l/email-protection#473432373728353307252e29203026212b26342f692428692c22" style="color:var(--amber)">Contact support</a></div>
           </div>
         </div>
       </div>
@@ -280,7 +280,7 @@ footer{border-top:1px solid var(--border);padding:20px 24px;display:flex;align-i
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
         </div>
-        <div class="field-hint">Forgot your PIN? <a href="mailto:support@bingwaflash.co.ke" style="color:var(--amber)">Contact support</a></div>
+        <div class="field-hint">Forgot your PIN? <a href="/cdn-cgi/l/email-protection#42313732322d303602202b2c253523242e23312a6c212d6c2927" style="color:var(--amber)">Contact support</a></div>
       </div>
 
       <div id="del-err"></div>
@@ -309,7 +309,7 @@ footer{border-top:1px solid var(--border);padding:20px 24px;display:flex;align-i
     <!-- Change PIN section -->
     <div id="pin-change-section" style="display:none">
       <div class="order-title">Change Your PIN</div>
-      <div class="order-sub">You must know your current PIN to set a new one. Forgotten? <a href="mailto:support@bingwaflash.co.ke" style="color:var(--amber)">Contact support</a>.</div>
+      <div class="order-sub">You must know your current PIN to set a new one. Forgotten? <a href="/cdn-cgi/l/email-protection#81f2f4f1f1eef3f5c1e3e8efe6f6e0e7ede0f2e9afe2eeafeae4" style="color:var(--amber)">Contact support</a>.</div>
       <div class="field">
         <label for="chg-phone">Your Phone Number</label>
         <input type="tel" id="chg-phone" placeholder="07xxxxxxxx or 01xxxxxxxx" inputmode="numeric" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')">
@@ -352,7 +352,7 @@ footer{border-top:1px solid var(--border);padding:20px 24px;display:flex;align-i
   <div class="ft-copy">© 2026 Bingwa Flash</div>
 </footer>
 
-<script type="module">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getFirestore,doc,getDoc,setDoc,deleteDoc,collection,query,where,getDocs,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -368,12 +368,6 @@ const USERNAME=(params.get('u')||pathUsername||'').toLowerCase().trim();
 
 let agentProfile=null,agentUid=null,regPhoneHasPin=false;
 const $=id=>document.getElementById(id);
-
-// SHA-256 — never store plain PIN
-async function sha256(str){
-  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-}
 
 // PIN rules: 5 digits, no all-same, no sequential
 function validatePin(pin){
@@ -477,13 +471,13 @@ window.submitRegistration=async function(){
     const pinErrs=validatePin(pin);
     if(pinErrs.length>0){errEl.textContent='PIN issue: '+pinErrs[0];errEl.style.display='block';return;}
     if(pin!==pin2){errEl.textContent='PINs do not match. Please re-enter.';errEl.style.display='block';return;}
-    pinHash=await sha256(pin);
+    pinHash=pin;
   }else{
     const pin=$('verify-pin').value;
     if(pin.length!==5){errEl.textContent='Please enter your 5-digit PIN.';errEl.style.display='block';return;}
-    const entered=await sha256(pin);
+    const entered=pin;
     const snap=await getDoc(doc(db,'clientPins',phone));
-    if(!snap.exists()||snap.data().pinHash!==entered){
+    if(!snap.exists()||snap.data().pin!==entered){
       errEl.textContent='Incorrect PIN. Forgot your PIN? Contact support@bingwaflash.co.ke';
       errEl.style.display='block';return;
     }
@@ -504,7 +498,7 @@ window.submitRegistration=async function(){
       errEl.style.display='block';btn.disabled=false;btn.textContent=`Register as ${agentProfile.agentName||USERNAME}'s Client`;return;
     }
     if(!regPhoneHasPin){
-      await setDoc(doc(db,'clientPins',phone),{pinHash,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
+      await setDoc(doc(db,'clientPins',phone),{pin:pinHash,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
     }
     const regId=`${phone}_${agentUid}`;
     await setDoc(doc(db,'clientRegistrations',regId),{phone,name,agentUid,agentUsername:agentProfile.websiteUsername||USERNAME,agentName:agentProfile.agentName||USERNAME,registeredAt:serverTimestamp(),registrationId:regId});
@@ -528,8 +522,8 @@ window.lookupMyAgents=async function(){
   try{
     const pinSnap=await getDoc(doc(db,'clientPins',phone));
     if(!pinSnap.exists()){errEl.textContent='No account found for this number. Register first.';errEl.style.display='block';btn.disabled=false;btn.textContent='Look Up My Registrations';return;}
-    const enteredHash=await sha256(pin);
-    if(pinSnap.data().pinHash!==enteredHash){errEl.textContent='Incorrect PIN. Forgot it? Contact support@bingwaflash.co.ke';errEl.style.display='block';btn.disabled=false;btn.textContent='Look Up My Registrations';return;}
+    const enteredHash=pin;
+    if(pinSnap.data().pin!==enteredHash){errEl.textContent='Incorrect PIN. Forgot it? Contact support@bingwaflash.co.ke';errEl.style.display='block';btn.disabled=false;btn.textContent='Look Up My Registrations';return;}
     btn.textContent='Loading…';
     const snap=await getDocs(query(collection(db,'clientRegistrations'),where('phone','==',phone)));
     const listEl=$('my-agents-list');const limitEl=$('limit-note');listEl.innerHTML='';
@@ -578,11 +572,11 @@ window.submitPinChange=async function(){
   try{
     const pinSnap=await getDoc(doc(db,'clientPins',phone));
     if(!pinSnap.exists()){errEl.textContent='No account found for this number.';errEl.style.display='block';btn.disabled=false;btn.textContent='Update PIN';return;}
-    const oldHash=await sha256(oldPin);
-    if(pinSnap.data().pinHash!==oldHash){errEl.textContent='Current PIN is incorrect. Forgot it? Contact support@bingwaflash.co.ke';errEl.style.display='block';btn.disabled=false;btn.textContent='Update PIN';return;}
+    const oldHash=oldPin;
+    if(pinSnap.data().pin!==oldHash){errEl.textContent='Current PIN is incorrect. Forgot it? Contact support@bingwaflash.co.ke';errEl.style.display='block';btn.disabled=false;btn.textContent='Update PIN';return;}
     btn.textContent='Saving…';
-    const newHash=await sha256(newPin);
-    await setDoc(doc(db,'clientPins',phone),{pinHash:newHash,updatedAt:serverTimestamp()},{merge:true});
+    const newHash=newPin;
+    await setDoc(doc(db,'clientPins',phone),{pin:newHash,updatedAt:serverTimestamp()},{merge:true});
     errEl.style.background='var(--green-bg)';errEl.style.color='var(--green)';
     errEl.textContent='✓ PIN updated successfully!';errEl.style.display='block';
     $('chg-old-pin').value='';$('chg-new-pin').value='';$('chg-new-pin2').value='';
@@ -593,6 +587,30 @@ window.submitPinChange=async function(){
 init();
 </script>
 <script>
-const _h=document.documentElement;
-_h.setAttribute('data-theme',localStorage.getItem('bf-theme')||'dark');
-function _tb(){const b=document.getElementById('tb');if(!b)return;const d=_h.getAttribute('data-theme')==='dark';b.innerHTML=d?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><pa
+(function(){
+  var h=document.documentElement;
+  var saved=localStorage.getItem('bf-theme');
+  if(saved)h.setAttribute('data-theme',saved);
+  function setIcon(){
+    var b=document.getElementById('tb');
+    if(!b)return;
+    var dark=h.getAttribute('data-theme')==='dark';
+    b.innerHTML=dark
+      ?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
+      :'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  }
+  window.toggleTheme=function(){
+    var t=h.getAttribute('data-theme')==='dark'?'light':'dark';
+    h.setAttribute('data-theme',t);
+    localStorage.setItem('bf-theme',t);
+    setIcon();
+  };
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',setIcon);
+  }else{
+    setIcon();
+  }
+})();
+</script>
+</body>
+</html>
