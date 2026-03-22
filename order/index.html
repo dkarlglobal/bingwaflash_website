@@ -85,6 +85,17 @@
 .retry-btn{background:transparent;border:1px solid var(--amber);color:var(--amber);
   border-radius:var(--r8);padding:10px 24px;font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;transition:background .15s}
 .retry-btn:hover{background:var(--amber-bg)}
+/* ── Register as client banner ── */
+.register-banner{display:none;margin-top:4px;padding:14px 16px;
+  background:var(--surface2);border:1px solid var(--border);border-radius:var(--r8);
+  align-items:center;justify-content:space-between;gap:12px}
+.rb-text{font-size:.78rem;color:var(--text2);line-height:1.5}
+.rb-text strong{color:var(--text);font-weight:600;display:block;margin-bottom:2px}
+.rb-btn{flex-shrink:0;font-size:.78rem;font-weight:700;padding:8px 14px;
+  background:transparent;border:1px solid var(--amber);color:var(--amber);
+  border-radius:var(--r8);cursor:pointer;font-family:inherit;transition:background .15s;
+  text-decoration:none;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.rb-btn:hover{background:var(--amber-bg)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 </style>
 </head>
@@ -102,6 +113,19 @@
       <div class="order-sub">Select an offer to get started</div>
       <div id="offers-container"></div>
       <div class="divider"></div>
+
+      <!-- ── Register as Client banner — shown after agent loads ── -->
+      <div class="register-banner" id="register-banner">
+        <div class="rb-text">
+          <strong>Want faster service?</strong>
+          Register as a client so your agent can recommend offers directly to your number.
+        </div>
+        <a class="rb-btn" id="register-link" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="13" height="13"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+          Register
+        </a>
+      </div>
+
       <div id="order-form">
         <div class="selected-row"><div><div class="sr-label">Selected</div><div class="sr-name" id="sel-name">—</div></div><div class="sr-price" id="sel-price">—</div></div>
         <div class="field"><label>M-Pesa Payment Number</label><input id="pay-phone" type="tel" placeholder="07XX XXX XXX" inputmode="numeric" maxlength="10"><div class="field-hint">STK push will be sent to this number</div></div>
@@ -134,8 +158,8 @@
 </div>
 </div>
 </main>
-<footer><a class="ft-brand" href="/"><div class="logo-icon" style="width:24px;height:24px;border-radius:6px"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" width="14" height="14"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><span class="ft-brand-name">Bingwa Flash</span></a><div class="ft-links"><a href="/">Home</a><a href="/#features">Features</a><a href="/download/">Downloads</a><a href="/privacy.html">Privacy Policy</a><a href="mailto:support@bingwaflash.co.ke">Contact</a></div><div class="ft-copy">© 2026 Bingwa Flash</div></footer>
-<script type="module">
+<footer><a class="ft-brand" href="/"><div class="logo-icon" style="width:24px;height:24px;border-radius:6px"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" width="14" height="14"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><span class="ft-brand-name">Bingwa Flash</span></a><div class="ft-links"><a href="/">Home</a><a href="/#features">Features</a><a href="/download/">Downloads</a><a href="/privacy.html">Privacy Policy</a><a href="/cdn-cgi/l/email-protection#d9aaaca9a9b6abad99bbb0b7beaeb8bfb5b8aab1f7bab6f7b2bc">Contact</a></div><div class="ft-copy">© 2026 Bingwa Flash</div></footer>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
 
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getFirestore,doc,getDoc,collection,query,where,getDocs}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -164,6 +188,12 @@ async function init(){
     document.getElementById("ag-handle").textContent="@"+(agentProfile.username||USERNAME);
     document.getElementById("ag-av").textContent=n.charAt(0).toUpperCase();
     document.getElementById("agent-bar").style.display="flex";
+
+    // ── Set register link pointing to /clients/USERNAME ──
+    const regLink=document.getElementById("register-link");
+    regLink.href="/clients/"+encodeURIComponent(USERNAME);
+    document.getElementById("register-banner").style.display="flex";
+
     const d=await getDoc(doc(db,"agents",snap.docs[0].id,"meta","offers"));
     if(!d.exists()){showError("No offers available.");return;}
     const offers=JSON.parse(d.data().json||"[]").filter(o=>o.enabled&&o.offerCode&&o.offerCode.trim());
@@ -187,19 +217,17 @@ async function init(){
 }
 function valid07(p){return/^(07|01)\d{8}$/.test(p.trim());}
 function norm(p){const s=p.trim().replace(/\s/g,"");return(/^0/.test(s))?"254"+s.slice(1):s;}
-  function resetStkState(){
+function resetStkState(){
   activeTxId=null;
   stkExpiresAtMs=0;
   if(stkCountdownInterval){clearInterval(stkCountdownInterval);stkCountdownInterval=null;}
   if(stkPollInterval){clearInterval(stkPollInterval);stkPollInterval=null;}
 }
-
 function showFormError(msg){
   const fe=document.getElementById("form-err");
   fe.textContent=msg;
   fe.style.display="block";
 }
-
 function restoreOrderForm(){
   document.getElementById("stk-screen").style.display="none";
   document.getElementById("stk-waiting").style.display="block";
@@ -209,14 +237,12 @@ function restoreOrderForm(){
   btn.disabled=false;
   btn.textContent="Pay "+(selectedOffer?"KSh "+selectedOffer.agentPrice:"");
 }
-
 function showStkWaiting(){
   document.getElementById("order-form").style.display="none";
   document.getElementById("stk-screen").style.display="block";
   document.getElementById("stk-waiting").style.display="block";
   document.getElementById("stk-timeout").style.display="none";
 }
-
 function showStkTimeout(message="The STK push expired. You were not charged."){
   resetStkState();
   document.getElementById("stk-screen").style.display="block";
@@ -225,7 +251,6 @@ function showStkTimeout(message="The STK push expired. You were not charged."){
   const desc=document.querySelector("#stk-timeout .timeout-desc");
   if(desc) desc.textContent=message;
 }
-
 function showOrderSuccess(message){
   resetStkState();
   const screen=document.getElementById("stk-screen");
@@ -237,23 +262,19 @@ function showOrderSuccess(message){
     </div>
   `;
 }
-
 function showOrderFailure(message){
   resetStkState();
   document.getElementById("stk-screen").style.display="none";
   restoreOrderForm();
   showFormError(message||"Payment failed or was cancelled.");
 }
-
 function startStkCountdown(){
   const ci=document.getElementById("stk-cd");
   if(stkCountdownInterval) clearInterval(stkCountdownInterval);
-
   stkCountdownInterval=setInterval(()=>{
     const leftMs=Math.max(0,stkExpiresAtMs-Date.now());
     const secs=Math.ceil(leftMs/1000);
     ci.textContent=secs+"s";
-
     if(leftMs<=0){
       clearInterval(stkCountdownInterval);
       stkCountdownInterval=null;
@@ -263,26 +284,18 @@ function startStkCountdown(){
     }
   },1000);
 }
-
 async function pollOrderStatus(txId){
   if(!txId) return;
-
   try{
     const res=await fetch(`${STATUS_URL}?txId=${encodeURIComponent(txId)}`);
     const data=await res.json();
-
-    if(!res.ok || data.error){
-      return;
-    }
-
+    if(!res.ok || data.error){return;}
     const status=String(data.status||"pending").toLowerCase();
     const failReason=data.failReason||data.resultDesc||"Payment failed.";
-
     if(status==="executed" || status==="payout_done"){
       showOrderSuccess("Your payment was confirmed successfully. Your order is being processed.");
       return;
     }
-
     if(status==="failed" || status==="cancelled" || status==="expired" || status==="payout_failed"){
       showOrderFailure(failReason);
       return;
@@ -291,44 +304,25 @@ async function pollOrderStatus(txId){
     console.error("pollOrderStatus:",e);
   }
 }
-
 function startOrderStatusPolling(txId){
   activeTxId=txId;
   stkExpiresAtMs=Date.now()+(70*1000);
-
   startStkCountdown();
-
   if(stkPollInterval) clearInterval(stkPollInterval);
-  stkPollInterval=setInterval(()=>{
-    pollOrderStatus(txId);
-  },2500);
-
+  stkPollInterval=setInterval(()=>{pollOrderStatus(txId);},2500);
   pollOrderStatus(txId);
 }
 window.submitOrder=async function(){
   if(!selectedOffer)return;
-
   const pp=document.getElementById("pay-phone").value;
   const rp=document.getElementById("recv-phone").value;
   const fe=document.getElementById("form-err");
   fe.style.display="none";
-
-  if(!valid07(pp)){
-    fe.textContent="Enter a valid M-Pesa number (07XX or 01XX)";
-    fe.style.display="block";
-    return;
-  }
-
-  if(!valid07(rp)){
-    fe.textContent="Enter a valid receiving number (07XX or 01XX)";
-    fe.style.display="block";
-    return;
-  }
-
+  if(!valid07(pp)){fe.textContent="Enter a valid M-Pesa number (07XX or 01XX)";fe.style.display="block";return;}
+  if(!valid07(rp)){fe.textContent="Enter a valid receiving number (07XX or 01XX)";fe.style.display="block";return;}
   const btn=document.getElementById("pay-btn");
   btn.disabled=true;
   btn.textContent="Processing…";
-
   try{
     const res=await fetch(FURL,{
       method:"POST",
@@ -344,28 +338,11 @@ window.submitOrder=async function(){
         agentPhone:agentProfile.phoneNumber
       })
     });
-
     const data=await res.json();
-
-    if(!res.ok || data.error){
-      fe.textContent=data.error||"Payment failed. Try again.";
-      fe.style.display="block";
-      btn.disabled=false;
-      btn.textContent="Pay KSh "+selectedOffer.agentPrice;
-      return;
-    }
-
-    if(!data.txId){
-      fe.textContent="Transaction was created without txId. Please try again.";
-      fe.style.display="block";
-      btn.disabled=false;
-      btn.textContent="Pay KSh "+selectedOffer.agentPrice;
-      return;
-    }
-
+    if(!res.ok || data.error){fe.textContent=data.error||"Payment failed. Try again.";fe.style.display="block";btn.disabled=false;btn.textContent="Pay KSh "+selectedOffer.agentPrice;return;}
+    if(!data.txId){fe.textContent="Transaction was created without txId. Please try again.";fe.style.display="block";btn.disabled=false;btn.textContent="Pay KSh "+selectedOffer.agentPrice;return;}
     showStkWaiting();
     startOrderStatusPolling(data.txId);
-
   }catch(e){
     fe.textContent="Network error: "+e.message;
     fe.style.display="block";
@@ -386,6 +363,6 @@ window.retryOrder=function(){
 init();
 
 </script>
-<script>const _h=document.documentElement;_h.setAttribute('data-theme',localStorage.getItem('bf-theme')||'dark');function _tb(){const b=document.getElementById('tb');if(!b)return;const d=_h.getAttribute('data-theme')==='dark';b.innerHTML=d?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>';}function toggleTheme(){const t=_h.getAttribute('data-theme')==='dark'?'light':'dark';_h.setAttribute('data-theme',t);localStorage.setItem('bf-theme',t);_tb();}_tb();const _io=new IntersectionObserver(e=>{e.forEach(v=>{if(v.isIntersecting){v.target.classList.add('on');_io.unobserve(v.target)}})},{threshold:0.05});document.querySelectorAll('.reveal').forEach(el=>_io.observe(el));</script>
+<script>const _h=document.documentElement;_h.setAttribute('data-theme',localStorage.getItem('bf-theme')||'dark');function _tb(){const b=document.getElementById('tb');if(!b)return;const d=_h.getAttribute('data-theme')==='dark';b.innerHTML=d?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>';}function toggleTheme(){const t=_h.getAttribute('data-theme')==='dark'?'light':'dark';_h.setAttribute('data-theme',t);localStorage.setItem('bf-theme',t);_tb();}_tb();const _io=new IntersectionObserver(e=>{e.forEach(v=>{if(v.isIntersecting){v.target.classList.add('visible');}});},{threshold:0.1});document.querySelectorAll('.fade-in').forEach(el=>_io.observe(el));</script>
 </body>
 </html>
