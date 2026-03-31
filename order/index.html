@@ -37,8 +37,6 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;line
 body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:radial-gradient(ellipse 600px 500px at -5% -5%,var(--blob1) 0%,transparent 65%),
   radial-gradient(ellipse 500px 400px at 105% 25%,var(--blob2) 0%,transparent 65%),var(--bg);}
-
-/* HEADER — logo + theme toggle only */
 header{position:sticky;top:0;z-index:100;background:var(--hbg);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:2px solid var(--border);height:52px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;transition:background .25s,border-color .25s}
 .logo{display:flex;align-items:center;gap:9px;text-decoration:none}
 .logo img{width:30px;height:30px;border-radius:var(--r12);object-fit:contain;}
@@ -46,8 +44,6 @@ header{position:sticky;top:0;z-index:100;background:var(--hbg);backdrop-filter:b
 .logo-text b{color:var(--gd);font-weight:800}
 .thm{width:32px;height:32px;border-radius:var(--pill);background:var(--surface2);border:2px solid var(--border);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
 .thm:hover{border-color:var(--y);color:var(--text)} .thm svg{width:13px;height:13px}
-
-/* AGENT BAR */
 .agent-bar{padding:11px 20px;border-bottom:2px solid var(--border);display:none;align-items:center;gap:12px;background:rgba(34,197,94,.06);transition:background .25s}
 .ag-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--g),var(--gd));flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-weight:800;font-size:.9rem;color:#fff;box-shadow:var(--cg)}
 .ag-name{font-size:.88rem;font-weight:700;color:var(--text);font-family:'Sora',sans-serif}
@@ -55,13 +51,9 @@ header{position:sticky;top:0;z-index:100;background:var(--hbg);backdrop-filter:b
 .ag-live{margin-left:auto;display:flex;align-items:center;gap:5px;font-size:.7rem;color:var(--gd);font-weight:800}
 .ag-dot{width:7px;height:7px;border-radius:50%;background:var(--g);animation:pulse 2s infinite;box-shadow:0 0 0 3px rgba(34,197,94,.2)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-
-/* MAIN */
 main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:28px 16px 56px}
 .card{background:var(--card-bg);border-radius:var(--r24);box-shadow:var(--cl);border:2px solid var(--border);width:100%;max-width:500px;overflow:hidden;animation:fadeUp .4s ease both;transition:background .25s,border-color .25s}
 .card-body{padding:22px 20px 26px}
-
-/* LOADING / ERROR */
 #loading{text-align:center;padding:34px 0}
 .spin{width:32px;height:32px;border:3px solid var(--border2);border-top-color:var(--y);border-radius:50%;animation:spin .7s linear infinite;display:inline-block;margin-bottom:10px}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -72,7 +64,23 @@ main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2
 .err-text{font-size:.84rem;color:var(--text2);line-height:1.65;font-weight:500}
 #content{display:none}
 
-/* OFFERS */
+/* ── MAINTENANCE STATE ── */
+#maintenance-state{display:none;text-align:center;padding:32px 8px 24px}
+.maint-gfx{width:72px;height:72px;border-radius:50%;background:rgba(245,197,24,.1);border:2px solid rgba(245,197,24,.25);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:maint-bob 3s ease-in-out infinite}
+@keyframes maint-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.maint-gfx svg{width:32px;height:32px;color:var(--yd)}
+.maint-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:rgba(245,197,24,.1);border:2px solid rgba(245,197,24,.25);border-radius:var(--pill);font-size:.7rem;font-weight:800;color:var(--yd);margin-bottom:14px;font-family:'Sora',sans-serif;letter-spacing:.04em}
+.maint-dot{width:6px;height:6px;border-radius:50%;background:var(--yd);animation:pulse 2s infinite}
+.maint-title{font-family:'Sora',sans-serif;font-size:1.05rem;font-weight:800;color:var(--text);margin-bottom:8px}
+.maint-sub{font-size:.8rem;color:var(--text2);line-height:1.7;margin-bottom:18px;font-weight:500}
+.maint-contact-card{background:var(--surface2);border:2px solid var(--border);border-radius:var(--r16);padding:14px 16px;text-align:left;display:flex;align-items:center;gap:12px}
+.maint-contact-icon{width:36px;height:36px;border-radius:var(--r12);background:rgba(245,197,24,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.maint-contact-icon svg{width:16px;height:16px;color:var(--yd)}
+.maint-contact-label{font-size:.65rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.maint-contact-value{font-size:.82rem;font-weight:700;color:var(--text2)}
+.maint-contact-value a{color:var(--text2);text-decoration:none;transition:color .15s}
+.maint-contact-value a:hover{color:var(--yd)}
+
 .sec-ttl{font-family:'Sora',sans-serif;font-size:.98rem;font-weight:800;color:var(--text);margin-bottom:3px}
 .sec-sub{font-size:.77rem;color:var(--text2);margin-bottom:16px;font-weight:600}
 .cat-header{font-size:.67rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;margin-top:18px}
@@ -85,8 +93,6 @@ main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2
 .ob-price{font-family:'Sora',sans-serif;font-size:.92rem;font-weight:800;color:var(--yd)}
 .ob-code{font-size:.6rem;color:var(--text3);margin-top:2px;font-weight:600}
 .divider{border:none;height:2px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:18px 0}
-
-/* ORDER FORM */
 #order-form{display:none}
 .selected-row{background:rgba(34,197,94,.1);border:2px solid rgba(34,197,94,.22);border-radius:var(--r16);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
 .sr-label{font-size:.65rem;color:var(--gd);font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
@@ -102,8 +108,6 @@ main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2
 .pay-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--y),var(--yd));color:#1a1000;font-weight:800;font-size:.9rem;border:none;border-radius:var(--pill);cursor:pointer;box-shadow:var(--cy);transition:transform .15s;margin-bottom:7px;font-family:'Sora',sans-serif}
 .pay-btn:hover{transform:translateY(-2px)} .pay-btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
 .pay-secure{font-size:.69rem;color:var(--text3);text-align:center;font-weight:700}
-
-/* STK SCREEN */
 #stk-screen{display:none;padding:4px 0}
 .stk-inner{background:rgba(34,197,94,.08);border:2px solid rgba(34,197,94,.2);border-radius:var(--r20);padding:22px;text-align:center;margin-bottom:14px}
 .stk-title{font-family:'Sora',sans-serif;font-size:.97rem;font-weight:800;color:var(--text);margin-bottom:5px}
@@ -118,15 +122,11 @@ main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2
 .timeout-desc{font-size:.79rem;color:var(--text2);margin-bottom:14px;font-weight:500}
 .retry-btn{background:rgba(245,197,24,.1);border:2px solid rgba(245,197,24,.3);color:var(--yd);border-radius:var(--pill);padding:10px 24px;font-family:'Sora',sans-serif;font-size:.81rem;font-weight:800;cursor:pointer;transition:all .15s;box-shadow:var(--cs)}
 .retry-btn:hover{background:rgba(245,197,24,.2);transform:translateY(-2px)}
-
-/* REGISTER BANNER */
 .register-banner{display:none;margin-top:4px;padding:12px 14px;background:rgba(245,197,24,.07);border:2px solid rgba(245,197,24,.22);border-radius:var(--r16);align-items:center;justify-content:space-between;gap:12px}
 .rb-text{font-size:.75rem;color:var(--text2);line-height:1.5;font-weight:500}
 .rb-text strong{color:var(--text);font-weight:800;font-family:'Sora',sans-serif;display:block;margin-bottom:2px}
 .rb-btn{flex-shrink:0;font-size:.75rem;font-weight:800;padding:8px 14px;background:linear-gradient(135deg,var(--y),var(--yd));border:none;color:#1a1000;border-radius:var(--pill);cursor:pointer;font-family:'Sora',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;box-shadow:var(--cy);transition:transform .15s}
 .rb-btn:hover{transform:translateY(-2px)}
-
-/* CONTACT CARD */
 .contact-card{margin-top:16px;background:var(--surface2);border:2px solid var(--border);border-radius:var(--r20);overflow:hidden;transition:background .25s,border-color .25s}
 .contact-card-title{font-size:.66rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;padding:10px 14px 6px}
 .contact-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:2px solid var(--border)}
@@ -134,8 +134,6 @@ main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2
 .contact-label{font-size:.67rem;color:var(--text3);margin-bottom:1px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
 .contact-value{font-size:.83rem;font-weight:700;color:var(--text2)}
 .contact-value a{color:var(--text2);text-decoration:none;transition:color .15s}.contact-value a:hover{color:var(--gd)}
-
-/* FOOTER */
 footer{background:var(--surface);border-top:2px solid var(--border);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;transition:background .25s,border-color .25s}
 .ft-logo{display:flex;align-items:center;gap:7px;text-decoration:none}
 .ft-logo img{width:22px;height:22px;border-radius:6px;object-fit:contain;}
@@ -167,6 +165,27 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
 
       <div id="loading"><div class="spin"></div><div class="spin-label">Loading offers…</div></div>
 
+      <!-- MAINTENANCE STATE -->
+      <div id="maintenance-state">
+        <div class="maint-gfx">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
+        <div class="maint-badge"><div class="maint-dot"></div>Under Maintenance</div>
+        <div class="maint-title">We'll Be Back Soon</div>
+        <div class="maint-sub" id="maint-sub">This service is temporarily unavailable while we perform scheduled maintenance. Please check back shortly.</div>
+        <div class="maint-contact-card">
+          <div class="maint-contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 15.92z"/></svg>
+          </div>
+          <div>
+            <div class="maint-contact-label">Need help?</div>
+            <div class="maint-contact-value" id="maint-contact-value">Contact your agent directly.</div>
+          </div>
+        </div>
+      </div>
+
       <div id="error-state">
         <div class="err-icon"><img src="/logo.png" alt=""></div>
         <div class="err-text" id="err-msg">Something went wrong.</div>
@@ -178,7 +197,6 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
         <div id="offers-container"></div>
         <div class="divider"></div>
 
-        <!-- Register banner -->
         <div class="register-banner" id="register-banner">
           <div class="rb-text">
             <strong>Want faster service?</strong>
@@ -190,7 +208,6 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
           </a>
         </div>
 
-        <!-- Order form -->
         <div id="order-form">
           <div class="selected-row">
             <div><div class="sr-label">Selected Offer</div><div class="sr-name" id="sel-name">—</div></div>
@@ -211,7 +228,6 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
           <div class="pay-secure">🔒 Secured by M-Pesa · Powered by Bingwa Flash</div>
         </div>
 
-        <!-- STK screen -->
         <div id="stk-screen">
           <div id="stk-waiting">
             <div class="stk-inner">
@@ -232,7 +248,6 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
           </div>
         </div>
 
-        <!-- Contact card -->
         <div class="contact-card" id="contact-card" style="display:none">
           <div class="contact-card-title">Contact Agent</div>
           <div class="contact-row" id="contact-till-row" style="display:none">
@@ -294,37 +309,84 @@ const USERNAME=(params.get("u")||"").toLowerCase();
 let agentProfile=null,selectedOffer=null;
 let activeTxId=null,stkCountdownInterval=null,stkPollInterval=null,stkExpiresAtMs=0;
 
-function showError(m){document.getElementById("loading").style.display="none";const e=document.getElementById("error-state");e.style.display="block";document.getElementById("err-msg").innerHTML=m;}
+// ── Helpers ──────────────────────────────────────────────────────────────────
+function el(id){return document.getElementById(id);}
 
+function showError(m){
+  el("loading").style.display="none";
+  el("error-state").style.display="block";
+  el("err-msg").innerHTML=m;
+}
+
+function showMaintenance(agentName,agentPhone,agentTill){
+  el("loading").style.display="none";
+  el("agent-bar").style.display="none";
+
+  // Personalise the contact line if we have agent details
+  const cv=el("maint-contact-value");
+  if(agentPhone){
+    cv.innerHTML=`Call your agent: <a href="tel:${agentPhone}">${agentPhone}</a>`;
+  } else if(agentTill){
+    cv.textContent="Till: "+agentTill;
+  } else if(agentName){
+    cv.textContent="Contact "+agentName+" directly.";
+  }
+
+  if(agentName){
+    el("maint-sub").textContent=agentName+"'s order page is temporarily under maintenance. Please check back soon.";
+  }
+
+  el("maintenance-state").style.display="block";
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
 async function init(){
   if(!USERNAME){showError("No agent username in URL.");return;}
   try{
+
+    // ── Step 1: Check global maintenance flag ─────────────────────────────
+    // Reads config/global_settings — field: websitesMaintenance (boolean)
+    // If true, every agent's order page shows maintenance instead of offers.
+    try{
+      const cfgSnap=await getDoc(doc(db,"config","global_settings"));
+      if(cfgSnap.exists()&&cfgSnap.data().websitesMaintenance===true){
+        showMaintenance(null,null,null);
+        return;
+      }
+    }catch(_){
+      // config read failed (network/rules) — fall through and try loading normally
+    }
+
+    // ── Step 2: Load agent profile ────────────────────────────────────────
     const q=query(collection(db,"agents"),where("websiteUsername","==",USERNAME));
     const snap=await getDocs(q);
     if(snap.empty){showError(`Agent "${USERNAME}" not found.`);return;}
     agentProfile=snap.docs[0].data();
-    if(!agentProfile.webOrdersOn){showError("This agent's web orders are currently offline.");return;}
 
     const n=agentProfile.agentName||USERNAME;
-    // Use websiteUsername for the handle — not username
     const handle=agentProfile.websiteUsername||USERNAME;
+    const agentPhone=agentProfile.phoneNumber||"";
+    const agentTill=agentProfile.tillNumber||"";
 
-    document.getElementById("ag-name").textContent=n;
-    document.getElementById("ag-handle").textContent="@"+handle;
-    document.getElementById("ag-av").textContent=n.charAt(0).toUpperCase();
-    document.getElementById("agent-bar").style.display="flex";
+    // ── Step 3: Check per-agent maintenance (webOrdersOn === false) ───────
+    if(!agentProfile.webOrdersOn){
+      showMaintenance(n,agentPhone,agentTill);
+      return;
+    }
 
-    // Register banner link
-    const regLink=document.getElementById("register-link");
+    // ── Step 4: Normal page load ──────────────────────────────────────────
+    el("ag-name").textContent=n;
+    el("ag-handle").textContent="@"+handle;
+    el("ag-av").textContent=n.charAt(0).toUpperCase();
+    el("agent-bar").style.display="flex";
+
+    const regLink=el("register-link");
     regLink.href="/clients/"+encodeURIComponent(USERNAME);
-    document.getElementById("register-banner").style.display="flex";
+    el("register-banner").style.display="flex";
 
-    // Contact card
-    const till=agentProfile.tillNumber||'';
-    const phone=agentProfile.phoneNumber||'';
-    if(till){document.getElementById("contact-till").textContent=till;document.getElementById("contact-till-row").style.display="flex";}
-    if(phone){document.getElementById("contact-phone").innerHTML=`<a href="tel:${phone}">${phone}</a>`;document.getElementById("contact-phone-row").style.display="flex";}
-    document.getElementById("contact-card").style.display="block";
+    if(agentTill){el("contact-till").textContent=agentTill;el("contact-till-row").style.display="flex";}
+    if(agentPhone){el("contact-phone").innerHTML=`<a href="tel:${agentPhone}">${agentPhone}</a>`;el("contact-phone-row").style.display="flex";}
+    el("contact-card").style.display="block";
 
     const d=await getDoc(doc(db,"agents",snap.docs[0].id,"meta","offers"));
     if(!d.exists()){showError("No offers available.");return;}
@@ -332,7 +394,7 @@ async function init(){
     if(!offers.length){showError("No offers available.");return;}
 
     const cats=[...new Set(offers.map(o=>o.category||"General"))];
-    const grid=document.getElementById("offers-container");grid.innerHTML="";
+    const grid=el("offers-container");grid.innerHTML="";
     cats.forEach(cat=>{
       const h=document.createElement("div");h.className="cat-header";h.textContent=cat;grid.appendChild(h);
       const g=document.createElement("div");g.className="offers-grid";
@@ -342,33 +404,31 @@ async function init(){
         b.addEventListener("click",()=>{
           document.querySelectorAll(".offer-btn").forEach(x=>x.classList.remove("selected"));
           b.classList.add("selected");selectedOffer=o;
-          document.getElementById("sel-name").textContent=o.name;
-          document.getElementById("sel-price").textContent="KSh "+o.agentPrice;
-          document.getElementById("pay-amount").textContent="KSh "+o.agentPrice;
-          document.getElementById("order-form").style.display="block";
-          document.getElementById("order-form").scrollIntoView({behavior:"smooth",block:"nearest"});
+          el("sel-name").textContent=o.name;
+          el("sel-price").textContent="KSh "+o.agentPrice;
+          el("pay-amount").textContent="KSh "+o.agentPrice;
+          el("order-form").style.display="block";
+          el("order-form").scrollIntoView({behavior:"smooth",block:"nearest"});
         });
         g.appendChild(b);
       });
       grid.appendChild(g);
     });
-    document.getElementById("loading").style.display="none";
-    document.getElementById("content").style.display="block";
+    el("loading").style.display="none";
+    el("content").style.display="block";
   }catch(e){showError("Failed to load: "+e.message);}
 }
 
+// ── Order flow (unchanged) ───────────────────────────────────────────────────
 function valid07(p){return/^(07|01)\d{8}$/.test(p.trim());}
 function norm(p){const s=p.trim().replace(/\s/g,"");return(/^0/.test(s))?"254"+s.slice(1):s;}
-
 function resetStkState(){activeTxId=null;stkExpiresAtMs=0;if(stkCountdownInterval){clearInterval(stkCountdownInterval);stkCountdownInterval=null;}if(stkPollInterval){clearInterval(stkPollInterval);stkPollInterval=null;}}
-function showFormError(msg){const fe=document.getElementById("form-err");fe.textContent=msg;fe.style.display="block";}
-function restoreOrderForm(){document.getElementById("stk-screen").style.display="none";document.getElementById("stk-waiting").style.display="block";document.getElementById("stk-timeout").style.display="none";document.getElementById("order-form").style.display="block";const btn=document.getElementById("pay-btn");btn.disabled=false;btn.textContent="Pay "+(selectedOffer?"KSh "+selectedOffer.agentPrice:"");}
-function showStkWaiting(){document.getElementById("order-form").style.display="none";document.getElementById("stk-screen").style.display="block";document.getElementById("stk-waiting").style.display="block";document.getElementById("stk-timeout").style.display="none";}
-function showStkTimeout(message="The STK push expired. You were not charged."){resetStkState();document.getElementById("stk-screen").style.display="block";document.getElementById("stk-waiting").style.display="none";document.getElementById("stk-timeout").style.display="block";const desc=document.querySelector("#stk-timeout .timeout-desc");if(desc)desc.textContent=message;}
-function showOrderSuccess(message){resetStkState();const screen=document.getElementById("stk-screen");screen.style.display="block";screen.innerHTML=`<div class="stk-inner"><div class="stk-title" style="color:var(--green)">Payment Confirmed</div><div class="stk-desc">${message||"Your payment was received successfully. Your order is now being processed."}</div></div>`;}
-function showOrderFailure(message){resetStkState();document.getElementById("stk-screen").style.display="none";restoreOrderForm();showFormError(message||"Payment failed or was cancelled.");}
-function startStkCountdown(){const ci=document.getElementById("stk-cd");if(stkCountdownInterval)clearInterval(stkCountdownInterval);stkCountdownInterval=setInterval(()=>{const leftMs=Math.max(0,stkExpiresAtMs-Date.now());const secs=Math.ceil(leftMs/1000);ci.textContent=secs+"s";if(leftMs<=0){clearInterval(stkCountdownInterval);stkCountdownInterval=null;if(stkPollInterval)clearInterval(stkPollInterval);stkPollInterval=null;showStkTimeout("The STK push expired. If you cancelled or did not enter PIN, please try again.");}},1000);}
-
+function restoreOrderForm(){el("stk-screen").style.display="none";el("stk-waiting").style.display="block";el("stk-timeout").style.display="none";el("order-form").style.display="block";const btn=el("pay-btn");btn.disabled=false;btn.textContent="Pay "+(selectedOffer?"KSh "+selectedOffer.agentPrice:"");}
+function showStkWaiting(){el("order-form").style.display="none";el("stk-screen").style.display="block";el("stk-waiting").style.display="block";el("stk-timeout").style.display="none";}
+function showStkTimeout(message="The STK push expired. You were not charged."){resetStkState();el("stk-screen").style.display="block";el("stk-waiting").style.display="none";el("stk-timeout").style.display="block";const desc=document.querySelector("#stk-timeout .timeout-desc");if(desc)desc.textContent=message;}
+function showOrderSuccess(message){resetStkState();const screen=el("stk-screen");screen.style.display="block";screen.innerHTML=`<div class="stk-inner"><div class="stk-title" style="color:var(--g)">Payment Confirmed</div><div class="stk-desc">${message||"Your payment was received successfully. Your order is now being processed."}</div></div>`;}
+function showOrderFailure(message){resetStkState();el("stk-screen").style.display="none";restoreOrderForm();const fe=el("form-err");fe.textContent=message||"Payment failed or was cancelled.";fe.style.display="block";}
+function startStkCountdown(){const ci=el("stk-cd");if(stkCountdownInterval)clearInterval(stkCountdownInterval);stkCountdownInterval=setInterval(()=>{const leftMs=Math.max(0,stkExpiresAtMs-Date.now());const secs=Math.ceil(leftMs/1000);ci.textContent=secs+"s";if(leftMs<=0){clearInterval(stkCountdownInterval);stkCountdownInterval=null;if(stkPollInterval)clearInterval(stkPollInterval);stkPollInterval=null;showStkTimeout("The STK push expired. If you cancelled or did not enter PIN, please try again.");}},1000);}
 async function pollOrderStatus(txId){
   if(!txId)return;
   try{
@@ -381,17 +441,16 @@ async function pollOrderStatus(txId){
     if(status==="failed"||status==="cancelled"||status==="expired"||status==="payout_failed"){showOrderFailure(failReason);return;}
   }catch(e){console.error("pollOrderStatus:",e);}
 }
-
 function startOrderStatusPolling(txId){activeTxId=txId;stkExpiresAtMs=Date.now()+(70*1000);startStkCountdown();if(stkPollInterval)clearInterval(stkPollInterval);stkPollInterval=setInterval(()=>{pollOrderStatus(txId);},2500);pollOrderStatus(txId);}
 
 window.submitOrder=async function(){
   if(!selectedOffer)return;
-  const pp=document.getElementById("pay-phone").value;
-  const rp=document.getElementById("recv-phone").value;
-  const fe=document.getElementById("form-err");fe.style.display="none";
+  const pp=el("pay-phone").value;
+  const rp=el("recv-phone").value;
+  const fe=el("form-err");fe.style.display="none";
   if(!valid07(pp)){fe.textContent="Enter a valid M-Pesa number (07XX or 01XX)";fe.style.display="block";return;}
   if(!valid07(rp)){fe.textContent="Enter a valid receiving number (07XX or 01XX)";fe.style.display="block";return;}
-  const btn=document.getElementById("pay-btn");btn.disabled=true;btn.textContent="Processing…";
+  const btn=el("pay-btn");btn.disabled=true;btn.textContent="Processing…";
   try{
     const res=await fetch(FURL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({agentUsername:agentProfile.username,agentUid:agentProfile.uid,offerCode:selectedOffer.offerCode,offerName:selectedOffer.name,amount:selectedOffer.agentPrice,payPhone:norm(pp),receivePhone:norm(rp),agentPhone:agentProfile.phoneNumber})});
     const data=await res.json();
@@ -401,7 +460,7 @@ window.submitOrder=async function(){
   }catch(e){fe.textContent="Network error: "+e.message;fe.style.display="block";btn.disabled=false;btn.textContent="Pay KSh "+selectedOffer.agentPrice;}
 };
 
-window.retryOrder=function(){resetStkState();document.getElementById("stk-screen").style.display="none";document.getElementById("stk-timeout").style.display="none";document.getElementById("stk-waiting").style.display="block";document.getElementById("order-form").style.display="block";const b=document.getElementById("pay-btn");b.disabled=false;b.textContent="Pay "+(selectedOffer?("KSh "+selectedOffer.agentPrice):"");};
+window.retryOrder=function(){resetStkState();el("stk-screen").style.display="none";el("stk-timeout").style.display="none";el("stk-waiting").style.display="block";el("order-form").style.display="block";const b=el("pay-btn");b.disabled=false;b.textContent="Pay "+(selectedOffer?("KSh "+selectedOffer.agentPrice):"");};
 
 init();
 </script>
