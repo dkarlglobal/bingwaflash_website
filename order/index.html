@@ -443,7 +443,7 @@ async function pollOrderStatus(txId){
 }
 
 if (status === "FAILED" || status === "EXPIRED") {
-  showOrderFailure(failReason);
+  showOrderFailure(failReason || "Payment failed.");
   return;
 }
   }catch(e){console.error("pollOrderStatus:",e);}
