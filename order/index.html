@@ -437,15 +437,8 @@ async function pollOrderStatus(txId){
     if(!res.ok||data.error)return;
     const status=String(data.status||"pending").toLowerCase();
     const failReason=data.failReason||data.resultDesc||"Payment failed.";
-    if (status === "COMPLETE") {
-  showOrderSuccess("Payment confirmed. Processing order...");
-  return;
-}
-
-if (status === "FAILED" || status === "EXPIRED") {
-  showOrderFailure(failReason || "Payment failed.");
-  return;
-}
+    if(status==="executed"){showOrderSuccess("Your payment was confirmed successfully. Your order is being processed.");return;}
+    if(status==="failed"||status==="cancelled"||status==="expired"){showOrderFailure(failReason);return;}
   }catch(e){console.error("pollOrderStatus:",e);}
 }
 function startOrderStatusPolling(txId){activeTxId=txId;stkExpiresAtMs=Date.now()+(70*1000);startStkCountdown();if(stkPollInterval)clearInterval(stkPollInterval);stkPollInterval=setInterval(()=>{pollOrderStatus(txId);},2500);pollOrderStatus(txId);}
