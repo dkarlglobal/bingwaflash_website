@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Terms of Service — Bingwa Flash</title>
+<link rel="icon" type="image/png" href="/logo.png">
+<script>
+(function(){
+  var t=localStorage.getItem('bf-theme')||'dark';
+  document.documentElement.setAttribute('data-theme',t);
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --y:#F5C518;--yd:#D97706;--yp:#FEF9C3;--g:#22C55E;--gd:#16A34A;--gp:#DCFCE7;
+  --cs:0 2px 0 rgba(0,0,0,.15),0 6px 20px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.1);
+  --cl:0 6px 0 rgba(0,0,0,.2),0 20px 56px rgba(0,0,0,.2),inset 0 2px 0 rgba(255,255,255,.1);
+  --cy:0 4px 0 rgba(160,100,0,.3),0 10px 28px rgba(245,197,24,.25),inset 0 1px 0 rgba(255,240,150,.4);
+  --cg:0 4px 0 rgba(18,100,45,.28),0 10px 28px rgba(34,197,94,.22),inset 0 1px 0 rgba(150,255,200,.4);
+  --r8:8px;--r12:12px;--r16:16px;--r20:20px;--r24:24px;--pill:999px;
+}
+[data-theme="dark"]{
+  --bg:#0e0e10;--surface:#18181b;--surface2:#232326;--border:#2a2a2e;--border2:#3a3a3f;
+  --text:#f4f4f5;--text2:#a1a1aa;--text3:#71717a;--hbg:rgba(14,14,16,.9);--card-bg:#1c1c1f;
+  --blob1:rgba(245,197,24,.12);--blob2:rgba(34,197,94,.09);}
+[data-theme="light"]{
+  --bg:#FFFBEB;--surface:#FFFFFF;--surface2:#F9FAFB;--border:rgba(245,197,24,.22);--border2:#E5E7EB;
+  --text:#111827;--text2:#4B5563;--text3:#9CA3AF;--hbg:rgba(255,251,235,.9);--card-bg:#FFFFFF;
+  --blob1:rgba(245,197,24,.18);--blob2:rgba(34,197,94,.13);}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s}
+body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse 600px 500px at -5% -5%,var(--blob1) 0%,transparent 65%),
+  radial-gradient(ellipse 500px 400px at 105% 20%,var(--blob2) 0%,transparent 65%),var(--bg);}
+/* HEADER */
+header{position:sticky;top:0;z-index:100;background:var(--hbg);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:2px solid var(--border);height:60px;padding:0 32px;display:flex;align-items:center;justify-content:space-between;transition:background .25s,border-color .25s}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo img{width:36px;height:36px;border-radius:10px;object-fit:contain;}
+.logo-text{font-family:'Sora',sans-serif;font-size:.93rem;font-weight:700;color:var(--text)}
+.logo-text b{color:var(--gd);font-weight:800}
+nav{display:flex;align-items:center;gap:2px}
+nav a{font-size:.81rem;font-weight:700;color:var(--text2);text-decoration:none;padding:6px 12px;border-radius:var(--pill);transition:all .15s}
+nav a:hover,nav a.on{background:rgba(245,197,24,.13);color:var(--text)}
+.hdr-r{display:flex;align-items:center;gap:8px}
+.thm{width:34px;height:34px;border-radius:var(--pill);background:var(--surface2);border:2px solid var(--border);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.thm:hover{border-color:var(--y);color:var(--text)} .thm svg{width:14px;height:14px}
+.hdr-cta{font-family:'Sora',sans-serif;font-size:.79rem;font-weight:800;padding:8px 18px;border-radius:var(--pill);background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;box-shadow:var(--cg);transition:transform .15s}
+.hdr-cta:hover{transform:translateY(-2px)} .hdr-cta svg{width:13px;height:13px}
+/* LAYOUT */
+.wrap{max-width:1060px;margin:0 auto;padding:0 32px}
+.page-hero{padding:52px 0 36px;border-bottom:2px solid var(--border)}
+.breadcrumb{font-size:.77rem;font-weight:700;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.breadcrumb a{color:var(--text3);text-decoration:none;transition:color .15s}.breadcrumb a:hover{color:var(--text2)}
+.breadcrumb span{color:var(--border2)}
+h1{font-family:'Sora',sans-serif;font-size:clamp(2rem,4vw,2.8rem);font-weight:800;letter-spacing:-.025em;color:var(--text);margin-bottom:8px}
+h1 em{font-style:normal;color:var(--gd)}
+.hero-meta{font-size:.78rem;color:var(--text3);font-weight:700;display:flex;align-items:center;gap:8px}
+.meta-dot{width:4px;height:4px;border-radius:50%;background:var(--border2)}
+.doc-layout{display:grid;grid-template-columns:210px 1fr;gap:32px;padding:40px 0 80px;align-items:start}
+/* TOC */
+.toc{position:sticky;top:76px}
+.toc-label{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:10px;padding-left:4px}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:2px}
+.toc-list a{font-size:.79rem;font-weight:700;color:var(--text3);text-decoration:none;padding:6px 12px;border-radius:var(--r12);display:block;border-left:2px solid transparent;transition:all .15s}
+.toc-list a:hover{color:var(--text2);background:var(--surface2)}
+.toc-list a.active{color:var(--yd);border-left-color:var(--y);background:rgba(245,197,24,.08)}
+/* SECTION CARDS */
+.ps{margin-bottom:18px;background:var(--card-bg);border-radius:var(--r20);box-shadow:var(--cs);border:2px solid var(--border);overflow:hidden;opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease,background .25s,border-color .25s}
+.ps.on{opacity:1;transform:none}
+.ps-header{padding:15px 20px 13px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:11px}
+.ps-num{width:26px;height:26px;border-radius:var(--r8);background:linear-gradient(135deg,var(--y),var(--yd));display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:.63rem;font-weight:800;color:#000;flex-shrink:0;box-shadow:var(--cy)}
+.ps h2{font-family:'Sora',sans-serif;font-size:.9rem;font-weight:800;color:var(--text)}
+.ps-body{padding:15px 20px}
+.ps-body p{font-size:.83rem;color:var(--text2);line-height:1.75;margin-bottom:10px;font-weight:500}
+.ps-body p:last-child{margin-bottom:0}
+.ps-body ul{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.ps-body li{font-size:.83rem;color:var(--text2);line-height:1.6;padding-left:18px;position:relative;font-weight:500}
+.ps-body li::before{content:'–';position:absolute;left:0;color:var(--y);font-weight:800}
+.ps-body a{color:var(--gd);text-decoration:none;font-weight:700}.ps-body a:hover{text-decoration:underline}
+.ps-body strong{color:var(--text);font-weight:700}
+/* CALLOUT */
+.callout{background:rgba(245,197,24,.08);border:2px solid rgba(245,197,24,.22);border-radius:var(--r12);padding:11px 14px;margin:10px 0}
+.callout p{margin:0;font-size:.81rem;color:var(--text2);font-weight:500;line-height:1.6}
+.callout.green{background:rgba(34,197,94,.07);border-color:rgba(34,197,94,.22)}
+.callout.red{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.22)}
+.callout.red p{color:var(--text2)}
+/* CONTACT CHIPS */
+.contact-chips{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.chip-row{display:flex;align-items:center;gap:10px;padding:10px 13px;background:var(--surface2);border:2px solid var(--border);border-radius:var(--r12);transition:background .25s,border-color .25s}
+.chip-ico{width:28px;height:28px;border-radius:var(--r8);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chip-ico.y{background:rgba(245,197,24,.12)}.chip-ico.g{background:rgba(34,197,94,.12)}
+.chip-ico svg{width:13px;height:13px}.chip-ico.y svg{color:var(--yd)}.chip-ico.g svg{color:var(--gd)}
+.chip-lbl{font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin-bottom:1px}
+.chip-val{font-size:.81rem;font-weight:700;color:var(--text2)}
+.chip-val a{color:var(--text2);text-decoration:none;transition:color .15s}.chip-val a:hover{color:var(--gd)}
+/* FOOTER */
+footer{background:var(--surface);border-top:2px solid var(--border);padding:22px 32px;transition:background .25s,border-color .25s}
+.ft-in{max-width:1060px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.ft-logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit}
+.ft-logo img{width:24px;height:24px;border-radius:6px;object-fit:contain;}
+.ft-name{font-family:'Sora',sans-serif;font-size:.82rem;font-weight:700;color:var(--text2)}
+.ft-links{display:flex;gap:16px;flex-wrap:wrap}.ft-links a{font-size:.75rem;font-weight:700;color:var(--text3);text-decoration:none;transition:color .15s}.ft-links a:hover{color:var(--text2)}
+.ft-copy{font-size:.72rem;color:var(--text3);font-weight:600}
+@media(max-width:900px){.doc-layout{grid-template-columns:1fr}.toc{display:none}}
+@media(max-width:768px){header{padding:0 16px}nav{display:none}.wrap{padding:0 20px}.ft-in{flex-direction:column;text-align:center}}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="/"><img src="/logo.png" alt="Bingwa Flash"><span class="logo-text">Bingwa <b>Flash</b></span></a>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/#features">Features</a>
+    <a href="/download/">Downloads</a>
+    <a href="/privacy.html">Privacy</a>
+  </nav>
+  <div class="hdr-r">
+    <button class="thm" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle dark/light mode">
+      <svg id="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      <svg id="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+    <a href="/download/" class="hdr-cta">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download
+    </a>
+  </div>
+</header>
+
+<div class="page-hero"><div class="wrap">
+  <div class="breadcrumb"><a href="/">Home</a><span>/</span><span style="color:var(--text2)">Terms of Service</span></div>
+  <h1>Terms of <em>Service</em></h1>
+  <div class="hero-meta">
+    <span>Effective: April 1, 2026</span>
+    <div class="meta-dot"></div>
+    <span>Last updated: April 1, 2026</span>
+  </div>
+</div></div>
+
+<div class="wrap">
+  <div class="doc-layout">
+
+    <!-- TOC -->
+    <aside class="toc">
+      <div class="toc-label">On this page</div>
+      <ul class="toc-list">
+        <li><a href="#s1">Acceptance</a></li>
+        <li><a href="#s2">The Service</a></li>
+        <li><a href="#s3">Eligibility</a></li>
+        <li><a href="#s4">Account &amp; Security</a></li>
+        <li><a href="#s5">Agent Responsibilities</a></li>
+        <li><a href="#s6">Client Registrations</a></li>
+        <li><a href="#s7">Web Orders &amp; Payments</a></li>
+        <li><a href="#s8">Acceptable Use</a></li>
+        <li><a href="#s9">Intellectual Property</a></li>
+        <li><a href="#s10">Disclaimers</a></li>
+        <li><a href="#s11">Limitation of Liability</a></li>
+        <li><a href="#s12">Termination</a></li>
+        <li><a href="#s13">Changes to Terms</a></li>
+        <li><a href="#s14">Governing Law</a></li>
+        <li><a href="#s15">Contact Us</a></li>
+      </ul>
+    </aside>
+
+    <!-- CONTENT -->
+    <div>
+
+      <div class="ps" id="s1">
+        <div class="ps-header"><div class="ps-num">01</div><h2>Acceptance of Terms</h2></div>
+        <div class="ps-body">
+          <p>By downloading, installing, or using the <strong>Bingwa Flash</strong> mobile application or accessing any part of <a href="https://bingwaflash.co.ke">bingwaflash.co.ke</a> (collectively, "the Service"), you confirm that you have read, understood, and agree to be bound by these Terms of Service ("Terms").</p>
+          <div class="callout"><p>If you do not agree to these Terms, do not download or use the Service. Continued use of Bingwa Flash constitutes acceptance of any updates to these Terms.</p></div>
+        </div>
+      </div>
+
+      <div class="ps" id="s2">
+        <div class="ps-header"><div class="ps-num">02</div><h2>What Bingwa Flash Does</h2></div>
+        <div class="ps-body">
+          <p>Bingwa Flash is an Android automation tool designed exclusively for <strong>Safaricom agents</strong> in Kenya. The App reads incoming M-Pesa payment SMS messages and automatically executes the corresponding USSD sequences on the agent's device, enabling faster fulfilment of data bundles, airtime, and other offers.</p>
+          <p>Additional features available within the Service include:</p>
+          <ul>
+            <li>Multi-step and fallback USSD automation</li>
+            <li>SMS relay between sender and receiver agent devices</li>
+            <li>A personal web order page accessible at <strong>bingwaflash.co.ke/order/?u=username</strong></li>
+            <li>STK push payment processing for web orders via M-Pesa</li>
+            <li>Client registration and management (clientele list)</li>
+            <li>Transaction scheduling and retry logic</li>
+            <li>Agent alerts, blacklisting, and transaction logs</li>
+          </ul>
+          <div class="callout green"><p>Bingwa Flash does not initiate any payment or USSD action without a corresponding M-Pesa trigger SMS or explicit agent configuration. The App only acts on payments that have already been made.</p></div>
+        </div>
+      </div>
+
+      <div class="ps" id="s3">
+        <div class="ps-header"><div class="ps-num">03</div><h2>Eligibility</h2></div>
+        <div class="ps-body">
+          <p>To use Bingwa Flash as an agent you must:</p>
+          <ul>
+            <li>Be at least 18 years of age</li>
+            <li>Hold a valid and active Safaricom agent account or till number</li>
+            <li>Operate in Kenya and comply with Safaricom's agent terms and conditions</li>
+            <li>Own or have authorised access to an Android 7.0 or higher device</li>
+          </ul>
+          <p>End customers who use an agent's web order page to place orders do not need a Bingwa Flash account, but must provide a valid Safaricom M-Pesa number to complete a transaction.</p>
+        </div>
+      </div>
+
+      <div class="ps" id="s4">
+        <div class="ps-header"><div class="ps-num">04</div><h2>Account &amp; Security</h2></div>
+        <div class="ps-body">
+          <p>Agent accounts are created using a valid email address and are authenticated through Firebase Authentication. You are responsible for:</p>
+          <ul>
+            <li>Keeping your login credentials confidential</li>
+            <li>All activity that occurs under your account</li>
+            <li>Notifying us immediately at <a href="mailto:support@bingwaflash.co.ke">support@bingwaflash.co.ke</a> if you suspect unauthorised access</li>
+            <li>Not sharing your account with other individuals</li>
+          </ul>
+          <p>Client users who register with an agent must create a <strong>5-digit security PIN</strong>. This PIN protects your registration record and is required to add yourself to additional agents or remove yourself from an agent's list. You are solely responsible for keeping this PIN safe. We cannot recover a forgotten PIN — contact support to request a manual reset.</p>
+          <div class="callout"><p>Bingwa Flash staff will never ask for your PIN or M-Pesa password. Do not share these with anyone claiming to represent us.</p></div>
+        </div>
+      </div>
+
+      <div class="ps" id="s5">
+        <div class="ps-header"><div class="ps-num">05</div><h2>Agent Responsibilities</h2></div>
+        <div class="ps-body">
+          <p>By using the automation features of Bingwa Flash, you as an agent accept full responsibility for:</p>
+          <ul>
+            <li>Ensuring your device remains charged and connected for the App to function</li>
+            <li>Configuring USSD codes, offer prices, and offer categories accurately</li>
+            <li>Verifying that all configured offers are valid and currently available on Safaricom's network</li>
+            <li>Managing and reviewing the transaction log for any failed or flagged orders</li>
+            <li>Responding to customers whose orders fail or are retried</li>
+            <li>Ensuring any SMS relay partnerships with other agents are mutually agreed upon</li>
+            <li>Complying with Safaricom's terms of service for agents at all times</li>
+          </ul>
+          <div class="callout red"><p><strong>Important:</strong> Bingwa Flash automates actions based on SMS triggers. If a USSD code is incorrectly configured or a Safaricom service changes, automated orders may fail or send to wrong recipients. Agents are solely responsible for verifying their configurations and handling any resulting customer complaints or refunds.</p></div>
+        </div>
+      </div>
+
+      <div class="ps" id="s6">
+        <div class="ps-header"><div class="ps-num">06</div><h2>Client Registrations</h2></div>
+        <div class="ps-body">
+          <p>The Bingwa Flash client registration system allows end customers to register their M-Pesa number with an agent's client list. By registering as a client you acknowledge:</p>
+          <ul>
+            <li>Your name and phone number will be stored in Bingwa Flash's database and shared with the specific agent you register under</li>
+            <li>Your agent may use this information to recommend data offers or bundles to your number</li>
+            <li>You may be registered under a maximum of <strong>3 agents</strong> simultaneously</li>
+            <li>You can remove yourself from any agent's client list at any time via <a href="https://bingwaflash.co.ke/clients/">bingwaflash.co.ke/clients/</a> using your PIN</li>
+            <li>Removing yourself from an agent's client list takes effect immediately and syncs to their app</li>
+          </ul>
+          <p>Agents may also remove clients from their list at their discretion, including if a number is blacklisted or the agent ceases operations.</p>
+        </div>
+      </div>
+
+      <div class="ps" id="s7">
+        <div class="ps-header"><div class="ps-num">07</div><h2>Web Orders &amp; Payments</h2></div>
+        <div class="ps-body">
+          <p>Agents with web orders enabled receive a personal order page where customers can purchase offers by paying via M-Pesa STK push. By placing a web order you agree that:</p>
+          <ul>
+            <li>Payment is processed directly through <strong>Safaricom M-Pesa</strong> — Bingwa Flash does not store or handle your M-Pesa credentials</li>
+            <li>The STK push prompt expires after <strong>70 seconds</strong> — if you do not enter your PIN within this window, no charge is made</li>
+            <li>Once payment is confirmed by M-Pesa, the agent's app will process your order automatically</li>
+            <li>Fulfilment depends on the agent's device being online and the Safaricom USSD service being available at the time of payment</li>
+            <li>The offer price displayed on the order page is set by the agent and is the amount you will be charged</li>
+          </ul>
+          <div class="callout"><p>Bingwa Flash is a fulfilment automation tool. All payment transactions are governed by Safaricom M-Pesa's own terms. In case of a payment dispute, contact the agent directly or reach Safaricom on <strong>*234#</strong>.</p></div>
+          <p>Refund and reversal requests for failed orders must be raised directly with the agent. Bingwa Flash is not a party to the payment transaction between the customer and the agent.</p>
+        </div>
+      </div>
+
+      <div class="ps" id="s8">
+        <div class="ps-header"><div class="ps-num">08</div><h2>Acceptable Use</h2></div>
+        <div class="ps-body">
+          <p>You agree not to use Bingwa Flash to:</p>
+          <ul>
+            <li>Violate any Kenyan law, Safaricom policy, or M-Pesa terms of service</li>
+            <li>Process payments for goods or services that are illegal, fraudulent, or prohibited</li>
+            <li>Attempt to reverse-engineer, decompile, or tamper with the App's source code</li>
+            <li>Use the SMS relay feature to intercept or forward messages without the explicit consent of all parties involved</li>
+            <li>Harass, spam, or send unsolicited messages to customers or other agents</li>
+            <li>Circumvent or abuse the client PIN system, including attempting to impersonate another user</li>
+            <li>Use automated scripts or bots to interact with the web order page in a way that constitutes abuse or denial of service</li>
+            <li>Resell or sublicense access to the App or its backend services</li>
+          </ul>
+          <p>We reserve the right to suspend or permanently terminate any account found in violation of these rules, without prior notice and without liability.</p>
+        </div>
+      </div>
+
+      <div class="ps" id="s9">
+        <div class="ps-header"><div class="ps-num">09</div><h2>Intellectual Property</h2></div>
+        <div class="ps-body">
+          <p>All content within Bingwa Flash — including the App code, UI design, logos, website text, and backend systems — is the exclusive property of <strong>Bingwa Flash</strong> and is protected under applicable copyright and intellectual property laws.</p>
+          <p>You are granted a limited, non-exclusive, non-transferable licence to install and use the App solely for its intended purpose on your own device. This licence does not include:</p>
+          <ul>
+            <li>The right to copy, modify, or distribute the App or any part of it</li>
+            <li>The right to use the Bingwa Flash name or logo in any commercial context without written permission</li>
+            <li>Any ownership claim over the App or its backend infrastructure</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ps" id="s10">
+        <div class="ps-header"><div class="ps-num">10</div><h2>Disclaimers</h2></div>
+        <div class="ps-body">
+          <p>Bingwa Flash is provided <strong>"as is"</strong> and <strong>"as available"</strong> without warranties of any kind, either express or implied. We do not warrant that:</p>
+          <ul>
+            <li>The App will operate without interruption or error at all times</li>
+            <li>USSD automation will succeed on every transaction — Safaricom network conditions, USSD timeouts, and device limitations may cause failures</li>
+            <li>The App will remain compatible with all future Android versions or Safaricom service changes</li>
+            <li>Data stored in Firebase will never be lost, though we take industry-standard precautions</li>
+          </ul>
+          <div class="callout"><p>Bingwa Flash is a productivity tool for agents. It does not guarantee income, transaction volumes, or customer satisfaction. Agents use the App entirely at their own discretion and risk.</p></div>
+        </div>
+      </div>
+
+      <div class="ps" id="s11">
+        <div class="ps-header"><div class="ps-num">11</div><h2>Limitation of Liability</h2></div>
+        <div class="ps-body">
+          <p>To the fullest extent permitted by applicable law, Bingwa Flash and its developers shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the Service, including but not limited to:</p>
+          <ul>
+            <li>Lost revenue or profits resulting from failed or misdirected USSD transactions</li>
+            <li>Customer complaints or disputes arising from delayed or incorrect order fulfilment</li>
+            <li>Any loss of data stored on your device or in your account</li>
+            <li>Unauthorised access to your account resulting from failure to secure your credentials</li>
+            <li>Service interruptions caused by Safaricom network downtime, M-Pesa outages, or Android system changes</li>
+          </ul>
+          <p>Our total aggregate liability to you for any claim arising under these Terms shall not exceed the amount you have paid for the Service in the 12 months preceding the claim. As Bingwa Flash is currently <strong>free to use</strong>, this amount is zero.</p>
+        </div>
+      </div>
+
+      <div class="ps" id="s12">
+        <div class="ps-header"><div class="ps-num">12</div><h2>Termination</h2></div>
+        <div class="ps-body">
+          <p>You may stop using Bingwa Flash at any time by uninstalling the App and requesting deletion of your account data by emailing <a href="mailto:support@bingwaflash.co.ke">support@bingwaflash.co.ke</a>.</p>
+          <p>We reserve the right to suspend or terminate your access to the Service immediately and without notice if:</p>
+          <ul>
+            <li>You violate any provision of these Terms</li>
+            <li>We receive a verified complaint of fraud, abuse, or illegal activity associated with your account</li>
+            <li>Your account poses a risk to the security or integrity of the platform</li>
+            <li>We are required to do so by law or by a competent authority</li>
+          </ul>
+          <p>Upon termination, your right to use the Service ceases immediately. Client registrations associated with your agent account may also be deleted.</p>
+        </div>
+      </div>
+
+      <div class="ps" id="s13">
+        <div class="ps-header"><div class="ps-num">13</div><h2>Changes to These Terms</h2></div>
+        <div class="ps-body">
+          <p>We may update these Terms from time to time to reflect changes in the App's features, legal requirements, or our operating practices. When we do, we will update the <strong>"Last updated"</strong> date at the top of this page.</p>
+          <p>If changes are material, we will make reasonable efforts to notify registered agents via the email address on their account. Continued use of the App after updated Terms are posted constitutes your acceptance of those changes.</p>
+          <div class="callout green"><p>We recommend bookmarking this page and checking it periodically, especially after receiving an App update notification.</p></div>
+        </div>
+      </div>
+
+      <div class="ps" id="s14">
+        <div class="ps-header"><div class="ps-num">14</div><h2>Governing Law</h2></div>
+        <div class="ps-body">
+          <p>These Terms are governed by and construed in accordance with the laws of the <strong>Republic of Kenya</strong>. Any disputes arising under or in connection with these Terms shall be subject to the exclusive jurisdiction of the courts of Kenya.</p>
+          <p>If any provision of these Terms is found to be unenforceable, the remaining provisions will continue in full force and effect.</p>
+        </div>
+      </div>
+
+      <div class="ps" id="s15">
+        <div class="ps-header"><div class="ps-num">15</div><h2>Contact Us</h2></div>
+        <div class="ps-body">
+          <p>Questions, concerns, or requests regarding these Terms of Service:</p>
+          <div class="contact-chips">
+            <div class="chip-row">
+              <div class="chip-ico y"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+              <div><div class="chip-lbl">Email</div><div class="chip-val"><a href="mailto:support@bingwaflash.co.ke">support@bingwaflash.co.ke</a></div></div>
+            </div>
+            <div class="chip-row">
+              <div class="chip-ico g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+              <div><div class="chip-lbl">Website</div><div class="chip-val"><a href="https://bingwaflash.co.ke">bingwaflash.co.ke</a></div></div>
+            </div>
+            <div class="chip-row">
+              <div class="chip-ico y"><svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
+              <div><div class="chip-lbl">WhatsApp</div><div class="chip-val"><a href="https://wa.me/254748008585">+254 748 008 585</a></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /doc-layout -->
+</div><!-- /wrap -->
+
+<footer>
+  <div class="ft-in">
+    <a class="ft-logo" href="/"><img src="/logo.png" alt="Bingwa Flash"><span class="ft-name">Bingwa Flash</span></a>
+    <div class="ft-links">
+      <a href="/">Home</a>
+      <a href="/#features">Features</a>
+      <a href="/download/">Downloads</a>
+      <a href="/privacy.html">Privacy Policy</a>
+      <a href="/terms.html">Terms</a>
+      <a href="mailto:support@bingwaflash.co.ke">Contact</a>
+    </div>
+    <div class="ft-copy">© 2026 Bingwa Flash</div>
+  </div>
+</footer>
+
+<script>
+function _syncTheme(){
+  var d=document.documentElement.getAttribute('data-theme')==='dark';
+  var m=document.getElementById('ico-moon');
+  var s=document.getElementById('ico-sun');
+  if(m) m.style.display=d?'block':'none';
+  if(s) s.style.display=d?'none':'block';
+}
+_syncTheme();
+window.toggleTheme=function(){
+  var n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',n);
+  localStorage.setItem('bf-theme',n);
+  _syncTheme();
+};
+// Scroll-reveal
+(function(){
+  var els=document.querySelectorAll('.ps');
+  function checkAll(){els.forEach(function(el){if(!el.classList.contains('on')){var r=el.getBoundingClientRect();if(r.top<window.innerHeight+50)el.classList.add('on');}})}
+  setTimeout(checkAll,50);setTimeout(checkAll,300);
+  window.addEventListener('scroll',checkAll,{passive:true});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(e){e.forEach(function(v){if(v.isIntersecting)v.target.classList.add('on')});},{threshold:0,rootMargin:'50px'});
+    els.forEach(function(el){io.observe(el)});
+  }
+})();
+// Active TOC
+(function(){
+  var sections=document.querySelectorAll('.ps[id]');
+  var links=document.querySelectorAll('.toc-list a');
+  var tio=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        links.forEach(function(l){l.classList.remove('active')});
+        var lnk=document.querySelector('.toc-list a[href="#'+e.target.id+'"]');
+        if(lnk)lnk.classList.add('active');
+      }
+    });
+  },{rootMargin:'-20% 0px -70% 0px'});
+  sections.forEach(function(s){tio.observe(s)});
+})();
+</script>
+</body>
+</html>
