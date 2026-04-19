@@ -91,7 +91,6 @@ main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2
 .offer-btn.selected{border-color:var(--y);background:rgba(245,197,24,.1);box-shadow:var(--cy)}
 .ob-name{font-size:.68rem;font-weight:700;color:var(--text2);margin-bottom:4px}
 .ob-price{font-family:'Sora',sans-serif;font-size:.92rem;font-weight:800;color:var(--yd)}
-.ob-code{font-size:.6rem;color:var(--text3);margin-top:2px;font-weight:600}
 .divider{border:none;height:2px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:18px 0}
 #order-form{display:none}
 .selected-row{background:rgba(34,197,94,.1);border:2px solid rgba(34,197,94,.22);border-radius:var(--r16);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
@@ -309,7 +308,6 @@ const USERNAME=(params.get("u")||"").toLowerCase();
 let agentProfile=null,selectedOffer=null;
 let activeTxId=null,stkCountdownInterval=null,stkPollInterval=null,stkExpiresAtMs=0;
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
 function el(id){return document.getElementById(id);}
 
 function showError(m){
@@ -321,8 +319,6 @@ function showError(m){
 function showMaintenance(agentName,agentPhone,agentTill){
   el("loading").style.display="none";
   el("agent-bar").style.display="none";
-
-  // Personalise the contact line if we have agent details
   const cv=el("maint-contact-value");
   if(agentPhone){
     cv.innerHTML=`Call your agent: <a href="tel:${agentPhone}">${agentPhone}</a>`;
@@ -331,33 +327,23 @@ function showMaintenance(agentName,agentPhone,agentTill){
   } else if(agentName){
     cv.textContent="Contact "+agentName+" directly.";
   }
-
   if(agentName){
     el("maint-sub").textContent=agentName+"'s order page is temporarily under maintenance. Please check back soon.";
   }
-
   el("maintenance-state").style.display="block";
 }
 
-// ── Init ─────────────────────────────────────────────────────────────────────
 async function init(){
   if(!USERNAME){showError("No agent username in URL.");return;}
   try{
-
-    // ── Step 1: Check global maintenance flag ─────────────────────────────
-    // Reads config/global_settings — field: websitesMaintenance (boolean)
-    // If true, every agent's order page shows maintenance instead of offers.
     try{
       const cfgSnap=await getDoc(doc(db,"config","global_settings"));
       if(cfgSnap.exists()&&cfgSnap.data().websitesMaintenance===true){
         showMaintenance(null,null,null);
         return;
       }
-    }catch(_){
-      // config read failed (network/rules) — fall through and try loading normally
-    }
+    }catch(_){}
 
-    // ── Step 2: Load agent profile ────────────────────────────────────────
     const q=query(collection(db,"agents"),where("websiteUsername","==",USERNAME));
     const snap=await getDocs(q);
     if(snap.empty){showError(`Agent "${USERNAME}" not found.`);return;}
@@ -368,13 +354,11 @@ async function init(){
     const agentPhone=agentProfile.phoneNumber||"";
     const agentTill=agentProfile.tillNumber||"";
 
-    // ── Step 3: Check per-agent maintenance (webOrdersOn === false) ───────
     if(!agentProfile.webOrdersOn){
       showMaintenance(n,agentPhone,agentTill);
       return;
     }
 
-    // ── Step 4: Normal page load ──────────────────────────────────────────
     el("ag-name").textContent=n;
     el("ag-handle").textContent="@"+handle;
     el("ag-av").textContent=n.charAt(0).toUpperCase();
@@ -400,7 +384,8 @@ async function init(){
       const g=document.createElement("div");g.className="offers-grid";
       offers.filter(o=>(o.category||"General")===cat).forEach(o=>{
         const b=document.createElement("button");b.className="offer-btn";b.dataset.id=o.id;
-        b.innerHTML=`<div class="ob-name">${o.name}</div><div class="ob-price">KSh ${o.agentPrice}</div><div class="ob-code">${o.offerCode}</div>`;
+        // Only name and price shown — code is internal and never exposed to the user
+        b.innerHTML=`<div class="ob-name">${o.name}</div><div class="ob-price">KSh ${o.agentPrice}</div>`;
         b.addEventListener("click",()=>{
           document.querySelectorAll(".offer-btn").forEach(x=>x.classList.remove("selected"));
           b.classList.add("selected");selectedOffer=o;
@@ -419,7 +404,6 @@ async function init(){
   }catch(e){showError("Failed to load: "+e.message);}
 }
 
-// ── Order flow (unchanged) ───────────────────────────────────────────────────
 function valid07(p){return/^(07|01)\d{8}$/.test(p.trim());}
 function norm(p){const s=p.trim().replace(/\s/g,"");return(/^0/.test(s))?"254"+s.slice(1):s;}
 function resetStkState(){activeTxId=null;stkExpiresAtMs=0;if(stkCountdownInterval){clearInterval(stkCountdownInterval);stkCountdownInterval=null;}if(stkPollInterval){clearInterval(stkPollInterval);stkPollInterval=null;}}
