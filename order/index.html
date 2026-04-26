@@ -15,7 +15,7 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --y:#F5C518;--yd:#D97706;--yp:#FEF9C3;--g:#22C55E;--gd:#16A34A;--gp:#DCFCE7;
+  --y:#FBBF24;--yd:#F59E0B;--yp:#FEF3C7;--g:#10B981;--gd:#059669;--gp:#D1FAE5;
   --red:#EF4444;--rp:#FEE2E2;
   --cs:0 2px 0 rgba(0,0,0,.15),0 6px 20px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.1);
   --cm:0 4px 0 rgba(0,0,0,.18),0 12px 32px rgba(0,0,0,.16),inset 0 2px 0 rgba(255,255,255,.1);
@@ -25,9 +25,9 @@
   --r8:8px;--r12:12px;--r16:16px;--r20:20px;--r24:24px;--pill:999px;
 }
 [data-theme="dark"]{
-  --bg:#0e0e10;--surface:#18181b;--surface2:#232326;--border:#2a2a2e;--border2:#3a3a3f;
-  --text:#f4f4f5;--text2:#a1a1aa;--text3:#71717a;--hbg:rgba(14,14,16,.9);--card-bg:#1c1c1f;--input-bg:#232326;
-  --blob1:rgba(245,197,24,.12);--blob2:rgba(34,197,94,.09);}
+  --bg:#0B0F0D;--surface:#111715;--surface2:#18201D;--border:#26302C;--border2:#34423D;
+  --text:#F7FAF8;--text2:#B6C2BC;--text3:#738078;--hbg:rgba(9,13,12,.92);--card-bg:#141A18;--input-bg:#18201D;
+  --blob1:rgba(251,191,36,.10);--blob2:rgba(16,185,129,.11);}
 [data-theme="light"]{
   --bg:#FFFBEB;--surface:#FFFFFF;--surface2:#F9FAFB;--border:rgba(245,197,24,.22);--border2:#E5E7EB;
   --text:#111827;--text2:#4B5563;--text3:#9CA3AF;--hbg:rgba(255,251,235,.9);--card-bg:#FFFFFF;--input-bg:#F9FAFB;
@@ -51,9 +51,9 @@ header{position:sticky;top:0;z-index:100;background:var(--hbg);backdrop-filter:b
 .ag-live{margin-left:auto;display:flex;align-items:center;gap:5px;font-size:.7rem;color:var(--gd);font-weight:800}
 .ag-dot{width:7px;height:7px;border-radius:50%;background:var(--g);animation:pulse 2s infinite;box-shadow:0 0 0 3px rgba(34,197,94,.2)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:28px 16px 56px}
-.card{background:var(--card-bg);border-radius:var(--r24);box-shadow:var(--cl);border:2px solid var(--border);width:100%;max-width:500px;overflow:hidden;animation:fadeUp .4s ease both;transition:background .25s,border-color .25s}
-.card-body{padding:22px 20px 26px}
+main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:20px 14px 52px}
+.card{background:linear-gradient(180deg,var(--card-bg),rgba(20,26,24,.96));border-radius:28px;box-shadow:var(--cl);border:1.5px solid var(--border);width:100%;max-width:560px;overflow:hidden;animation:fadeUp .4s ease both;transition:background .25s,border-color .25s}
+.card-body{padding:20px 18px 24px}
 #loading{text-align:center;padding:34px 0}
 .spin{width:32px;height:32px;border:3px solid var(--border2);border-top-color:var(--y);border-radius:50%;animation:spin .7s linear infinite;display:inline-block;margin-bottom:10px}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -81,16 +81,17 @@ main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2
 .maint-contact-value a{color:var(--text2);text-decoration:none;transition:color .15s}
 .maint-contact-value a:hover{color:var(--yd)}
 
-.sec-ttl{font-family:'Sora',sans-serif;font-size:.98rem;font-weight:800;color:var(--text);margin-bottom:3px}
-.sec-sub{font-size:.77rem;color:var(--text2);margin-bottom:16px;font-weight:600}
-.cat-header{font-size:.67rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;margin-top:18px}
-.cat-header:first-of-type{margin-top:0}
-.offers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin-bottom:4px}
-.offer-btn{background:var(--surface2);border:2px solid var(--border);border-radius:var(--r16);padding:13px 8px;text-align:center;cursor:pointer;transition:all .15s;font-family:inherit;box-shadow:var(--cs)}
-.offer-btn:hover{border-color:rgba(245,197,24,.4);background:rgba(245,197,24,.07);transform:translateY(-2px)}
-.offer-btn.selected{border-color:var(--y);background:rgba(245,197,24,.1);box-shadow:var(--cy)}
-.ob-name{font-size:.68rem;font-weight:700;color:var(--text2);margin-bottom:4px}
-.ob-price{font-family:'Sora',sans-serif;font-size:.92rem;font-weight:800;color:var(--yd)}
+.sec-ttl{font-family:'Sora',sans-serif;font-size:1.02rem;font-weight:800;color:var(--text);margin-bottom:2px}
+.sec-sub{font-size:.76rem;color:var(--text2);margin-bottom:14px;font-weight:650}
+.offer-section{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.055);border-radius:20px;padding:12px;margin:12px 0}
+.cat-header{display:flex;align-items:center;gap:8px;font-size:.7rem;font-weight:900;color:var(--text);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px}
+.cat-header::before{content:"";width:7px;height:7px;border-radius:50%;background:linear-gradient(135deg,var(--g),var(--y));box-shadow:0 0 0 4px rgba(16,185,129,.10)}
+.offers-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:2px}
+.offer-btn{min-height:92px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));border:1.5px solid var(--border);border-radius:18px;padding:12px 10px;text-align:left;cursor:pointer;transition:transform .16s,border-color .16s,background .16s,box-shadow .16s;font-family:inherit;box-shadow:0 8px 22px rgba(0,0,0,.14);display:flex;flex-direction:column;justify-content:space-between;gap:8px}
+.offer-btn:hover{border-color:rgba(16,185,129,.45);background:rgba(16,185,129,.08);transform:translateY(-2px)}
+.offer-btn.selected{border-color:var(--g);background:linear-gradient(180deg,rgba(16,185,129,.16),rgba(251,191,36,.08));box-shadow:0 0 0 3px rgba(16,185,129,.11),0 12px 30px rgba(16,185,129,.12)}
+.ob-name{font-size:.75rem;font-weight:800;color:var(--text2);line-height:1.28;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ob-price{font-family:'Sora',sans-serif;font-size:1rem;font-weight:900;color:var(--y);letter-spacing:-.02em}
 .divider{border:none;height:2px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:18px 0}
 #order-form{display:none}
 .selected-row{background:rgba(34,197,94,.1);border:2px solid rgba(34,197,94,.22);border-radius:var(--r16);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
@@ -121,11 +122,11 @@ main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2
 .timeout-desc{font-size:.79rem;color:var(--text2);margin-bottom:14px;font-weight:500}
 .retry-btn{background:rgba(245,197,24,.1);border:2px solid rgba(245,197,24,.3);color:var(--yd);border-radius:var(--pill);padding:10px 24px;font-family:'Sora',sans-serif;font-size:.81rem;font-weight:800;cursor:pointer;transition:all .15s;box-shadow:var(--cs)}
 .retry-btn:hover{background:rgba(245,197,24,.2);transform:translateY(-2px)}
-.register-banner{display:none;margin-top:4px;padding:12px 14px;background:rgba(245,197,24,.07);border:2px solid rgba(245,197,24,.22);border-radius:var(--r16);align-items:center;justify-content:space-between;gap:12px}
-.rb-text{font-size:.75rem;color:var(--text2);line-height:1.5;font-weight:500}
-.rb-text strong{color:var(--text);font-weight:800;font-family:'Sora',sans-serif;display:block;margin-bottom:2px}
-.rb-btn{flex-shrink:0;font-size:.75rem;font-weight:800;padding:8px 14px;background:linear-gradient(135deg,var(--y),var(--yd));border:none;color:#1a1000;border-radius:var(--pill);cursor:pointer;font-family:'Sora',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;box-shadow:var(--cy);transition:transform .15s}
-.rb-btn:hover{transform:translateY(-2px)}
+.register-banner{display:none;margin-top:12px;padding:9px 10px;background:rgba(255,255,255,.025);border:1px dashed rgba(182,194,188,.20);border-radius:14px;align-items:center;justify-content:space-between;gap:10px}
+.rb-text{font-size:.68rem;color:var(--text3);line-height:1.35;font-weight:650}
+.rb-text strong{color:var(--text2);font-weight:800;font-family:'Sora',sans-serif;display:inline;margin-right:4px}
+.rb-btn{flex-shrink:0;font-size:.68rem;font-weight:900;padding:6px 10px;background:rgba(16,185,129,.10);border:1px solid rgba(16,185,129,.28);color:var(--g);border-radius:var(--pill);cursor:pointer;font-family:'Sora',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;box-shadow:none;transition:background .15s,transform .15s}
+.rb-btn:hover{background:rgba(16,185,129,.16);transform:translateY(-1px)}
 .contact-card{margin-top:16px;background:var(--surface2);border:2px solid var(--border);border-radius:var(--r20);overflow:hidden;transition:background .25s,border-color .25s}
 .contact-card-title{font-size:.66rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;padding:10px 14px 6px}
 .contact-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:2px solid var(--border)}
@@ -196,17 +197,6 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
         <div id="offers-container"></div>
         <div class="divider"></div>
 
-        <div class="register-banner" id="register-banner">
-          <div class="rb-text">
-            <strong>Want faster service?</strong>
-            Register as a client so your agent can recommend offers directly to your number.
-          </div>
-          <a class="rb-btn" id="register-link" href="#">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="13" height="13"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
-            Register
-          </a>
-        </div>
-
         <div id="order-form">
           <div class="selected-row">
             <div><div class="sr-label">Selected Offer</div><div class="sr-name" id="sel-name">—</div></div>
@@ -249,12 +239,6 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
 
         <div class="contact-card" id="contact-card" style="display:none">
           <div class="contact-card-title">Contact Agent</div>
-          <div class="contact-row" id="contact-till-row" style="display:none">
-            <div class="contact-icon" style="background:rgba(245,197,24,.12)">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--yd)" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-            </div>
-            <div><div class="contact-label">Till Number</div><div class="contact-value" id="contact-till"></div></div>
-          </div>
           <div class="contact-row" id="contact-phone-row" style="display:none">
             <div class="contact-icon" style="background:rgba(34,197,94,.1)">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gd)" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 15.92z"/></svg>
@@ -267,6 +251,18 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
             </div>
             <div><div class="contact-label">Support Email</div><div class="contact-value"><a href="mailto:support@bingwaflash.co.ke">support@bingwaflash.co.ke</a></div></div>
           </div>
+        </div>
+
+
+        <div class="register-banner" id="register-banner">
+          <div class="rb-text">
+            <strong>Want faster service?</strong>
+            Register as a client so your agent can recommend offers directly to your number.
+          </div>
+          <a class="rb-btn" id="register-link" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="13" height="13"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+            Register
+          </a>
         </div>
 
       </div><!-- /#content -->
@@ -316,14 +312,12 @@ function showError(m){
   el("err-msg").innerHTML=m;
 }
 
-function showMaintenance(agentName,agentPhone,agentTill){
+function showMaintenance(agentName,agentPhone){
   el("loading").style.display="none";
   el("agent-bar").style.display="none";
   const cv=el("maint-contact-value");
   if(agentPhone){
     cv.innerHTML=`Call your agent: <a href="tel:${agentPhone}">${agentPhone}</a>`;
-  } else if(agentTill){
-    cv.textContent="Till: "+agentTill;
   } else if(agentName){
     cv.textContent="Contact "+agentName+" directly.";
   }
@@ -339,7 +333,7 @@ async function init(){
     try{
       const cfgSnap=await getDoc(doc(db,"config","global_settings"));
       if(cfgSnap.exists()&&cfgSnap.data().websitesMaintenance===true){
-        showMaintenance(null,null,null);
+        showMaintenance(null,null);
         return;
       }
     }catch(_){}
@@ -352,10 +346,9 @@ async function init(){
     const n=agentProfile.agentName||USERNAME;
     const handle=agentProfile.websiteUsername||USERNAME;
     const agentPhone=agentProfile.phoneNumber||"";
-    const agentTill=agentProfile.tillNumber||"";
 
     if(!agentProfile.webOrdersOn){
-      showMaintenance(n,agentPhone,agentTill);
+      showMaintenance(n,agentPhone);
       return;
     }
 
@@ -367,8 +360,6 @@ async function init(){
     const regLink=el("register-link");
     regLink.href="/clients/"+encodeURIComponent(USERNAME);
     el("register-banner").style.display="flex";
-
-    if(agentTill){el("contact-till").textContent=agentTill;el("contact-till-row").style.display="flex";}
     if(agentPhone){el("contact-phone").innerHTML=`<a href="tel:${agentPhone}">${agentPhone}</a>`;el("contact-phone-row").style.display="flex";}
     el("contact-card").style.display="block";
 
@@ -377,14 +368,16 @@ async function init(){
     const offers=JSON.parse(d.data().json||"[]").filter(o=>o.enabled&&o.offerCode&&o.offerCode.trim());
     if(!offers.length){showError("No offers available.");return;}
 
-    const cats=[...new Set(offers.map(o=>o.category||"General"))];
+    const categoryRank={DATA:1,SMS:2,MINUTES:3,AIRTIME:4,OTHER:8,GENERAL:9};
+    const catKey=c=>String(c||"General").trim().toUpperCase();
+    const cats=[...new Set(offers.map(o=>o.category||"General"))].sort((a,b)=>(categoryRank[catKey(a)]||50)-(categoryRank[catKey(b)]||50)||String(a).localeCompare(String(b)));
     const grid=el("offers-container");grid.innerHTML="";
     cats.forEach(cat=>{
-      const h=document.createElement("div");h.className="cat-header";h.textContent=cat;grid.appendChild(h);
+      const section=document.createElement("section");section.className="offer-section";
+      const h=document.createElement("div");h.className="cat-header";h.textContent=cat;section.appendChild(h);
       const g=document.createElement("div");g.className="offers-grid";
-      offers.filter(o=>(o.category||"General")===cat).forEach(o=>{
+      offers.filter(o=>(o.category||"General")===cat).sort((a,b)=>Number(a.agentPrice||0)-Number(b.agentPrice||0)||String(a.name||"").localeCompare(String(b.name||""))).forEach(o=>{
         const b=document.createElement("button");b.className="offer-btn";b.dataset.id=o.id;
-        // Only name and price shown — code is internal and never exposed to the user
         b.innerHTML=`<div class="ob-name">${o.name}</div><div class="ob-price">KSh ${o.agentPrice}</div>`;
         b.addEventListener("click",()=>{
           document.querySelectorAll(".offer-btn").forEach(x=>x.classList.remove("selected"));
@@ -397,7 +390,7 @@ async function init(){
         });
         g.appendChild(b);
       });
-      grid.appendChild(g);
+      section.appendChild(g);grid.appendChild(section);
     });
     el("loading").style.display="none";
     el("content").style.display="block";
@@ -450,3 +443,5 @@ init();
 </script>
 </body>
 </html>
+
+
