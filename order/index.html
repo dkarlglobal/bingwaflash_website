@@ -47,6 +47,8 @@ header{position:sticky;top:0;z-index:100;background:var(--hbg);backdrop-filter:b
 .agent-bar{padding:11px 20px;border-bottom:2px solid var(--border);display:none;align-items:center;gap:12px;background:rgba(34,197,94,.06);transition:background .25s}
 .ag-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--g),var(--gd));flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-weight:800;font-size:.9rem;color:#fff;box-shadow:var(--cg)}
 .ag-name{font-size:.88rem;font-weight:700;color:var(--text);font-family:'Sora',sans-serif}
+.ag-title{display:flex;align-items:center;gap:7px;min-width:0}
+.verified-badge{display:none;width:17px;height:17px;flex:0 0 17px;color:#0EA5E9;filter:drop-shadow(0 0 7px rgba(14,165,233,.45))}
 .ag-handle{font-size:.72rem;color:var(--text3);font-weight:600}
 .ag-live{margin-left:auto;display:flex;align-items:center;gap:5px;font-size:.7rem;color:var(--gd);font-weight:800}
 .ag-dot{width:7px;height:7px;border-radius:50%;background:var(--g);animation:pulse 2s infinite;box-shadow:0 0 0 3px rgba(34,197,94,.2)}
@@ -155,7 +157,7 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
 
 <div id="agent-bar" class="agent-bar">
   <div class="ag-av" id="ag-av">?</div>
-  <div><div class="ag-name" id="ag-name"></div><div class="ag-handle" id="ag-handle"></div></div>
+  <div><div class="ag-title"><div class="ag-name" id="ag-name"></div><svg class="verified-badge" id="verified-badge" viewBox="0 0 24 24" aria-label="Verified agent" role="img"><path fill="currentColor" d="M22 12l-2.44-2.78.34-3.68-3.61-.82-1.89-3.18L11 3 7.6 1.54 5.71 4.72l-3.61.82.34 3.68L0 12l2.44 2.78-.34 3.68 3.61.82 1.89 3.18L11 21l3.4 1.46 1.89-3.18 3.61-.82-.34-3.68L22 12z" transform="translate(1 0)"/><path fill="#fff" d="M9.2 15.8L5.7 12.3l1.4-1.4 2.1 2.1 5-5 1.4 1.4z"/></svg></div><div class="ag-handle" id="ag-handle"></div></div>
   <div class="ag-live"><div class="ag-dot"></div>Online</div>
 </div>
 
@@ -353,6 +355,8 @@ async function init(){
     }
 
     el("ag-name").textContent=n;
+    const verifiedBadge=el("verified-badge");
+    if(verifiedBadge) verifiedBadge.style.display=agentProfile.isVerified===true?"inline-block":"none";
     el("ag-handle").textContent="@"+handle;
     el("ag-av").textContent=n.charAt(0).toUpperCase();
     el("agent-bar").style.display="flex";
