@@ -475,12 +475,12 @@ window.showPinChangeSection=function(){hideAll();$('pin-change-section').style.d
 async function init(){
   if(!USERNAME){showError('No agent username found. Please use the link your agent shared with you.');return;}
   try{
-    const q=query(collection(db,'agents'),where('websiteUsername','==',USERNAME));
+    const q=query(collection(db,'agents'),where('username','==',USERNAME));
     const snap=await getDocs(q);
     if(snap.empty){showError(`Agent "${USERNAME}" not found.`);return;}
     agentUid=snap.docs[0].id;agentProfile=snap.docs[0].data();
     const displayName=agentProfile.agentName||USERNAME;
-    const handle=agentProfile.websiteUsername||USERNAME;
+    const handle=agentProfile.username||USERNAME;
     $('ag-av').textContent=displayName.charAt(0).toUpperCase();
     $('ag-name').textContent=displayName;
     const verifiedBadge=$('verified-badge');
@@ -546,7 +546,7 @@ window.submitRegistration=async function(){
       await setDoc(doc(db,'clientPins',phone),{pin:pinHash,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
     }
     const regId=`${phone}_${agentUid}`;
-    await setDoc(doc(db,'clientRegistrations',regId),{phone,name,agentUid,agentUsername:agentProfile.websiteUsername||USERNAME,agentName:agentProfile.agentName||USERNAME,registeredAt:serverTimestamp(),registrationId:regId});
+    await setDoc(doc(db,'clientRegistrations',regId),{phone,name,agentUid,agentUsername:agentProfile.username||USERNAME,agentName:agentProfile.agentName||USERNAME,registeredAt:serverTimestamp(),registrationId:regId});
     await setDoc(doc(db,'agents',agentUid,'clients',phone),{phone,name,totalSpent:0,lastSeenAtMs:Date.now(),isBlacklisted:false,source:'website',maskedDigits:fingerprint(phone),registrationId:regId,updatedAtMs:Date.now()},{merge:true});
     hideAll();
     $('success-desc').textContent=`You're now registered as a client of ${agentProfile.agentName||USERNAME}. When you make a payment, they can recommend data offers to ${phone}.`;
