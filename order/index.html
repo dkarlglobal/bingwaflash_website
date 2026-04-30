@@ -333,6 +333,31 @@ function showMaintenance(agentName,agentPhone){
   el("maintenance-state").style.display="block";
 }
 
+function tsMillis(v){
+  if(!v)return 0;
+  if(typeof v.toMillis==="function")return v.toMillis();
+  if(typeof v.toDate==="function")return v.toDate().getTime();
+  if(typeof v==="number")return v;
+  return 0;
+}
+
+async function loadSubscriptionConfig(){
+  try{
+    const s=await getDoc(doc(db,"config","subscription"));
+    if(!s.exists())return{configured:false,pricePerMonth:1};
+    const d=s.exists()?s.data():{};
+    return{configured:true,pricePerMonth:Math.max(0,Number(d.pricePerMonth||0))};
+  }catch(_){
+    return{configured:false,pricePerMonth:1};
+  }
+}
+
+function hasActiveWebOrderSubscription(agent,cfg){
+  if(!cfg.configured)return false;
+  if(Number(cfg.pricePerMonth||0)<=0)return true;
+  return tsMillis(agent.webOrderSubscriptionUntil)>Date.now();
+}
+
 async function init(){
   if(!USERNAME){showError("No agent username in URL.");return;}
   try{
@@ -352,8 +377,9 @@ async function init(){
     const n=agentProfile.agentName||USERNAME;
     const handle=agentProfile.username||USERNAME;
     const agentPhone=agentProfile.phoneNumber||"";
+    const subscriptionConfig=await loadSubscriptionConfig();
 
-    if(!agentProfile.webOrdersOn){
+    if(!agentProfile.webOrdersOn||!hasActiveWebOrderSubscription(agentProfile,subscriptionConfig)){
       showMaintenance(n,agentPhone);
       return;
     }
