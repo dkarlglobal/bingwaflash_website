@@ -344,13 +344,13 @@ async function init(){
       }
     }catch(_){}
 
-    const q=query(collection(db,"agents"),where("websiteUsername","==",USERNAME));
+    const q=query(collection(db,"agents"),where("username","==",USERNAME));
     const snap=await getDocs(q);
     if(snap.empty){showError(`Agent "${USERNAME}" not found.`);return;}
     agentProfile=snap.docs[0].data();
 
     const n=agentProfile.agentName||USERNAME;
-    const handle=agentProfile.websiteUsername||USERNAME;
+    const handle=agentProfile.username||USERNAME;
     const agentPhone=agentProfile.phoneNumber||"";
 
     if(!agentProfile.webOrdersOn){
