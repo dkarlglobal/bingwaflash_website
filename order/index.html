@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Order — Bingwa Flash</title>
+<title>Order - Bingwa Flash</title>
 <link rel="icon" type="image/png" href="/logo.png">
 <script>
 (function(){
@@ -70,7 +70,7 @@ main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2
 .err-text{font-size:.84rem;color:var(--text2);line-height:1.65;font-weight:500}
 #content{display:none}
 
-/* ── MAINTENANCE STATE ── */
+/* -- MAINTENANCE STATE - */
 #maintenance-state{display:none;text-align:center;padding:32px 8px 24px}
 .maint-gfx{width:72px;height:72px;border-radius:50%;background:rgba(245,197,24,.1);border:2px solid rgba(245,197,24,.25);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:maint-bob 3s ease-in-out infinite}
 @keyframes maint-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
@@ -169,7 +169,7 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
   <div class="card">
     <div class="card-body">
 
-      <div id="loading"><div class="spin"></div><div class="spin-label">Loading offers…</div></div>
+      <div id="loading"><div class="spin"></div><div class="spin-label">Loading offersâ€¦</div></div>
 
       <!-- MAINTENANCE STATE -->
       <div id="maintenance-state">
@@ -205,8 +205,8 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
 
         <div id="order-form">
           <div class="selected-row">
-            <div><div class="sr-label">Selected Offer</div><div class="sr-name" id="sel-name">—</div></div>
-            <div class="sr-price" id="sel-price">—</div>
+            <div><div class="sr-label">Selected Offer</div><div class="sr-name" id="sel-name">â€”</div></div>
+            <div class="sr-price" id="sel-price">â€”</div>
           </div>
           <div class="field">
             <label>M-Pesa Payment Number</label>
@@ -219,8 +219,8 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
             <div class="field-hint">Number that receives the bundle or airtime</div>
           </div>
           <div id="form-err"></div>
-          <button class="pay-btn" id="pay-btn" onclick="submitOrder()">Pay <span id="pay-amount">—</span></button>
-          <div class="pay-secure">🔒 Secured by M-Pesa · Powered by Bingwa Flash</div>
+          <button class="pay-btn" id="pay-btn" onclick="submitOrder()">Pay <span id="pay-amount">â€”</span></button>
+          <div class="pay-secure">ðŸ”’ Secured by M-Pesa Â· Powered by Bingwa Flash</div>
         </div>
 
         <div id="stk-screen">
@@ -278,7 +278,7 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
 
 <footer>
   <a class="ft-logo" href="/"><img src="/logo.png" alt="Bingwa Flash"><span class="ft-name">Bingwa Flash</span></a>
-  <div class="ft-copy">© 2026 Bingwa Flash</div>
+  <div class="ft-copy">Â© 2026 Bingwa Flash</div>
 </footer>
 
 <script>
@@ -399,7 +399,7 @@ async function init(){
 
     const d=await getDoc(doc(db,"agents",snap.docs[0].id,"meta","offers"));
     if(!d.exists()){showError("No offers available.");return;}
-    const offers=JSON.parse(d.data().json||"[]").filter(o=>o.enabled&&o.offerCode&&o.offerCode.trim());
+    const offers=JSON.parse(d.data().json||"[]").filter(o=>o.enabled&&o.offerCode&&o.offerCode.trim()&&Number(o.agentPrice||0)<=100);
     if(!offers.length){showError("No offers available.");return;}
 
     const categoryRank={DATA:1,SMS:2,MINUTES:3,AIRTIME:4,OTHER:8,GENERAL:9};
@@ -461,7 +461,7 @@ window.submitOrder=async function(){
   const fe=el("form-err");fe.style.display="none";
   if(!valid07(pp)){fe.textContent="Enter a valid M-Pesa number (07XX or 01XX)";fe.style.display="block";return;}
   if(!valid07(rp)){fe.textContent="Enter a valid receiving number (07XX or 01XX)";fe.style.display="block";return;}
-  const btn=el("pay-btn");btn.disabled=true;btn.textContent="Processing…";
+  const btn=el("pay-btn");btn.disabled=true;btn.textContent="Processingâ€¦";
   try{
     const res=await fetch(FURL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({agentUsername:agentProfile.username,agentUid:agentProfile.uid,offerCode:selectedOffer.offerCode,offerName:selectedOffer.name,amount:selectedOffer.agentPrice,payPhone:norm(pp),receivePhone:norm(rp),agentPhone:agentProfile.phoneNumber})});
     const data=await res.json();
