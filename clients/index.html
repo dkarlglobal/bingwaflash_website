@@ -479,6 +479,7 @@ async function init(){
     const snap=await getDocs(q);
     if(snap.empty){showError(`Agent "${USERNAME}" not found.`);return;}
     agentUid=snap.docs[0].id;agentProfile=snap.docs[0].data();
+    if(agentProfile.clientRegistrationOn!==true){showError('This agent has disabled registering as his client.');return;}
     const displayName=agentProfile.agentName||USERNAME;
     const handle=agentProfile.username||USERNAME;
     $('ag-av').textContent=displayName.charAt(0).toUpperCase();
