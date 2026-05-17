@@ -1,0 +1,268 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Airtime Recharge Scanner - Scan, Confirm, Recharge</title>
+  <meta name="description" content="Airtime Recharge Scanner scans airtime voucher cards, supports manual entry, SIM selection, balance checks, voucher history, and confirmed USSD recharge actions." />
+  <meta property="og:title" content="Airtime Recharge Scanner" />
+  <meta property="og:description" content="Scan airtime vouchers, confirm recharge actions, and manage voucher history for African mobile networks." />
+  <meta property="og:image" content="https://bingwaflash.co.ke/rechargescanner/logo.png" />
+  <meta property="og:url" content="https://bingwaflash.co.ke/rechargescanner/" />
+  <link rel="icon" type="image/png" href="./logo.png" />
+  <style>
+    :root {
+      color-scheme: dark light;
+      --red: #F90106;
+      --red-dark: #960004;
+      --red-soft: rgba(249, 1, 6, 0.12);
+      --black: #050505;
+      --white: #ffffff;
+      --ink: #121116;
+      --muted: #666873;
+      --paper: #ffffff;
+      --panel: #fff7f8;
+      --line: rgba(249, 1, 6, 0.20);
+      --shadow: 0 28px 80px rgba(130, 0, 5, 0.18);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink: #f7f7fb;
+        --muted: #aaaab5;
+        --paper: #000000;
+        --panel: #13070a;
+        --line: rgba(249, 1, 6, 0.34);
+        --shadow: 0 28px 80px rgba(249, 1, 6, 0.16);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% -5%, rgba(249, 1, 6, 0.20), transparent 28rem),
+        radial-gradient(circle at 94% 6%, rgba(150, 0, 4, 0.18), transparent 24rem),
+        var(--paper);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: linear-gradient(135deg, var(--red), var(--red-dark));
+      color: #fff;
+      box-shadow: 0 16px 36px rgba(150, 0, 4, 0.22);
+    }
+
+    .topbar-inner {
+      width: min(1120px, calc(100% - 32px));
+      min-height: 78px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand img { width: 48px; height: 48px; border-radius: 14px; object-fit: contain; background: #fff; box-shadow: 0 10px 26px rgba(0,0,0,.18); }
+    .brand strong { display: block; font-size: 1rem; line-height: 1.08; }
+    .brand span { display: block; opacity: .84; font-size: .78rem; font-weight: 650; }
+
+    .nav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+    .nav a { text-decoration: none; font-weight: 850; font-size: .88rem; padding: 9px 13px; border-radius: 999px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); }
+
+    .hero {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      min-height: calc(100vh - 78px);
+      padding: 64px 0 52px;
+      display: grid;
+      grid-template-columns: 1.02fr .98fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--red);
+      background: var(--red-soft);
+      border: 1px solid var(--line);
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: .76rem;
+    }
+    .pulse { width: 9px; height: 9px; border-radius: 99px; background: var(--red); box-shadow: 0 0 0 7px rgba(249,1,6,.12); }
+
+    h1 { margin: 20px 0 16px; font-size: clamp(2.5rem, 7vw, 5.7rem); line-height: .93; letter-spacing: -.065em; }
+    .lead { color: var(--muted); max-width: 650px; font-size: clamp(1.05rem, 2vw, 1.28rem); font-weight: 560; margin: 0 0 28px; }
+    .actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+
+    .play-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 13px;
+      min-height: 62px;
+      padding: 9px 20px 10px 16px;
+      color: #fff;
+      background: #050505;
+      border-radius: 16px;
+      text-decoration: none;
+      box-shadow: 0 18px 48px rgba(0,0,0,.24);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+    .play-icon {
+      width: 0;
+      height: 0;
+      border-top: 15px solid transparent;
+      border-bottom: 15px solid transparent;
+      border-left: 24px solid #34A853;
+      filter: drop-shadow(7px 0 0 #4285F4) drop-shadow(13px 0 0 #FBBC04) drop-shadow(19px 0 0 #EA4335);
+      margin-right: 18px;
+    }
+    .play-copy small { display: block; font-size: .7rem; letter-spacing: .08em; opacity: .82; text-transform: uppercase; }
+    .play-copy strong { display: block; font-size: 1.35rem; line-height: 1.08; }
+
+    .ghost-link { color: var(--red); font-weight: 900; text-decoration: none; padding: 14px 6px; }
+    .ghost-link:hover { text-decoration: underline; }
+
+    .phone-card {
+      border-radius: 36px;
+      background: linear-gradient(145deg, rgba(249,1,6,.16), rgba(249,1,6,.04)), var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    .phone-card::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 72% 8%, rgba(249,1,6,.22), transparent 18rem); pointer-events: none; }
+    .app-logo { position: relative; width: min(330px, 90%); display: block; margin: 0 auto 22px; border-radius: 32px; box-shadow: 0 18px 60px rgba(0,0,0,.16); }
+    .preview-list { position: relative; display: grid; gap: 12px; }
+    .preview-item { display: grid; grid-template-columns: 44px 1fr; gap: 13px; align-items: center; padding: 14px; border-radius: 18px; background: color-mix(in srgb, var(--paper) 90%, var(--red) 10%); border: 1px solid var(--line); }
+    .preview-icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 14px; background: var(--red); color: #fff; font-weight: 950; }
+    .preview-item strong { display: block; }
+    .preview-item span { display: block; color: var(--muted); font-size: .92rem; }
+
+    .section { width: min(1120px, calc(100% - 32px)); margin: 0 auto; padding: 54px 0; }
+    .section-title { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .section-title::before { content: ""; width: 7px; height: 36px; border-radius: 999px; background: var(--red); }
+    .section-title h2 { margin: 0; font-size: clamp(1.55rem, 3vw, 2.2rem); letter-spacing: -.04em; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .card { border: 1px solid var(--line); border-radius: 24px; background: var(--panel); padding: 22px; box-shadow: 0 14px 40px rgba(130,0,5,.09); }
+    .card b { display: block; font-size: 1.05rem; margin-bottom: 8px; }
+    .card p { margin: 0; color: var(--muted); }
+
+    .privacy-strip {
+      width: min(1120px, calc(100% - 32px));
+      margin: 18px auto 70px;
+      padding: 24px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, var(--red), var(--red-dark));
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      box-shadow: 0 22px 70px rgba(150,0,4,.22);
+    }
+    .privacy-strip h2 { margin: 0 0 6px; letter-spacing: -.035em; }
+    .privacy-strip p { margin: 0; opacity: .9; }
+    .privacy-strip a { color: #fff; border: 1px solid rgba(255,255,255,.3); padding: 12px 16px; border-radius: 999px; text-decoration: none; font-weight: 900; white-space: nowrap; background: rgba(255,255,255,.12); }
+
+    footer { color: var(--muted); text-align: center; padding: 28px 16px 44px; border-top: 1px solid var(--line); }
+
+    @media (max-width: 860px) {
+      .nav { display: none; }
+      .hero { min-height: auto; grid-template-columns: 1fr; padding-top: 38px; }
+      .phone-card { padding: 20px; }
+      .grid { grid-template-columns: 1fr; }
+      .privacy-strip { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="./" aria-label="Airtime Recharge Scanner home">
+        <img src="./logo.png" alt="Airtime Recharge Scanner logo" />
+        <span><strong>Airtime Recharge Scanner</strong><span>by Bingwa Flash</span></span>
+      </a>
+      <nav class="nav" aria-label="Page navigation">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="./privacy/">Privacy</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <span class="pill"><span class="pulse"></span> Scan. Confirm. Recharge.</span>
+        <h1>Airtime recharge without the typing stress.</h1>
+        <p class="lead">Airtime Recharge Scanner reads voucher digits from scratch cards or printed lists, lets you confirm the result, then helps you run the correct USSD recharge on your selected SIM.</p>
+        <div class="actions">
+          <a class="play-badge" href="https://play.google.com/store/apps/details?id=com.airtime.dkarl" aria-label="Download Airtime Recharge Scanner from Google Play">
+            <span class="play-icon" aria-hidden="true"></span>
+            <span class="play-copy"><small>Get it on</small><strong>Google Play</strong></span>
+          </a>
+          <a class="ghost-link" href="./privacy/">Read privacy policy</a>
+        </div>
+      </div>
+      <aside class="phone-card" aria-label="App preview">
+        <img class="app-logo" src="./logo.png" alt="Airtime Recharge Scanner app logo" />
+        <div class="preview-list">
+          <div class="preview-item"><span class="preview-icon">1</span><span><strong>Scan vouchers</strong><span>Single and bulk voucher detection.</span></span></div>
+          <div class="preview-item"><span class="preview-icon">2</span><span><strong>Confirm before running</strong><span>Edit, save, cancel, or recharge.</span></span></div>
+          <div class="preview-item"><span class="preview-icon">3</span><span><strong>Track history</strong><span>Keep recharge responses and saved vouchers.</span></span></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="features">
+      <div class="section-title"><h2>Built for everyday airtime work</h2></div>
+      <div class="grid">
+        <article class="card"><b>Camera scanner</b><p>Scan voucher digits from cards, screenshots, or printed voucher lists with a confirmation step before action.</p></article>
+        <article class="card"><b>Manual entry</b><p>Type single vouchers or multiple voucher lines when scanning is not convenient.</p></article>
+        <article class="card"><b>SIM and carrier codes</b><p>Select the SIM to use, detect carrier settings where possible, and edit USSD templates when networks change.</p></article>
+        <article class="card"><b>Balance checks</b><p>Run supported balance USSD codes and view carrier responses in the app.</p></article>
+        <article class="card"><b>Voucher history</b><p>Save vouchers, review recharge attempts, expand response messages, and keep track of what happened.</p></article>
+        <article class="card"><b>Bulk runs</b><p>Scan multiple vouchers, review them one by one, then run or save the list when you are ready.</p></article>
+      </div>
+    </section>
+
+    <section class="section" id="how">
+      <div class="section-title"><h2>How it works</h2></div>
+      <div class="grid">
+        <article class="card"><b>1. Choose your mode</b><p>Use single scan, bulk scan, focus box, full screen scanner, or manual entry.</p></article>
+        <article class="card"><b>2. Confirm the digits</b><p>The app pauses scanning logic and shows a dialog where you can edit, save, cancel, or run.</p></article>
+        <article class="card"><b>3. Run USSD</b><p>Recharge through the selected SIM and keep the network response in your voucher history.</p></article>
+      </div>
+    </section>
+
+    <section class="privacy-strip">
+      <div>
+        <h2>Privacy-first utility</h2>
+        <p>Camera scanning is used to detect voucher digits, and recharge actions need your confirmation.</p>
+      </div>
+      <a href="./privacy/">View Privacy Policy</a>
+    </section>
+  </main>
+
+  <footer>
+    Airtime Recharge Scanner by Bingwa Flash. Download link: play.google.com/store/apps/details?id=com.airtime.dkarl
+  </footer>
+</body>
+</html>
