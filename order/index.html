@@ -70,7 +70,7 @@ main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2
 .err-text{font-size:.84rem;color:var(--text2);line-height:1.65;font-weight:500}
 #content{display:none}
 
-/* -- MAINTENANCE STATE - */
+/* Maintenance state */
 #maintenance-state{display:none;text-align:center;padding:32px 8px 24px}
 .maint-gfx{width:72px;height:72px;border-radius:50%;background:rgba(245,197,24,.1);border:2px solid rgba(245,197,24,.25);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:maint-bob 3s ease-in-out infinite}
 @keyframes maint-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
@@ -169,7 +169,7 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
   <div class="card">
     <div class="card-body">
 
-      <div id="loading"><div class="spin"></div><div class="spin-label">Loading offersâ€¦</div></div>
+      <div id="loading"><div class="spin"></div><div class="spin-label">Loading offers...</div></div>
 
       <!-- MAINTENANCE STATE -->
       <div id="maintenance-state">
@@ -205,8 +205,8 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
 
         <div id="order-form">
           <div class="selected-row">
-            <div><div class="sr-label">Selected Offer</div><div class="sr-name" id="sel-name">â€”</div></div>
-            <div class="sr-price" id="sel-price">â€”</div>
+            <div><div class="sr-label">Selected Offer</div><div class="sr-name" id="sel-name">-</div></div>
+            <div class="sr-price" id="sel-price">-</div>
           </div>
           <div class="field">
             <label>M-Pesa Payment Number</label>
@@ -219,15 +219,15 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
             <div class="field-hint">Number that receives the bundle or airtime</div>
           </div>
           <div id="form-err"></div>
-          <button class="pay-btn" id="pay-btn" onclick="submitOrder()">Pay <span id="pay-amount">â€”</span></button>
-          <div class="pay-secure">ðŸ”’ Secured by M-Pesa Â· Powered by Bingwa Flash</div>
+          <button class="pay-btn" id="pay-btn" onclick="submitOrder()">Pay <span id="pay-amount">-</span></button>
+          <div class="pay-secure">🔒 Secured by M-Pesa · Powered by LYCO SERVICES</div>
         </div>
 
         <div id="stk-screen">
           <div id="stk-waiting">
             <div class="stk-inner">
               <div class="stk-title">Check Your Phone</div>
-              <div class="stk-desc">An M-Pesa prompt has been sent to your phone.<br>Enter your PIN to complete payment.</div>
+              <div class="stk-desc">An M-Pesa prompt has been sent to your phone.<br>Input your PIN to complete payment, from LYCO SERVICES.</div>
               <div class="stk-timer">Expires in <strong id="stk-cd">60s</strong></div>
               <div class="stk-steps">
                 <div class="stk-step"><div class="step-n">1</div><div>Tap the M-Pesa notification on your phone</div></div>
@@ -278,7 +278,7 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
 
 <footer>
   <a class="ft-logo" href="/"><img src="/logo.png" alt="Bingwa Flash"><span class="ft-name">Bingwa Flash</span></a>
-  <div class="ft-copy">Â© 2026 Bingwa Flash</div>
+  <div class="ft-copy">© 2026 Bingwa Flash</div>
 </footer>
 
 <script>
@@ -391,9 +391,15 @@ async function init(){
     el("ag-av").textContent=n.charAt(0).toUpperCase();
     el("agent-bar").style.display="flex";
 
+    const regBanner=el("register-banner");
     const regLink=el("register-link");
-    regLink.href="/clients/"+encodeURIComponent(USERNAME);
-    el("register-banner").style.display="flex";
+    if(agentProfile.clientRegistrationOn===true){
+      regLink.href="/clients/"+encodeURIComponent(USERNAME);
+      regBanner.style.display="flex";
+    }else{
+      regLink.removeAttribute("href");
+      regBanner.remove();
+    }
     if(agentPhone){el("contact-phone").innerHTML=`<a href="tel:${agentPhone}">${agentPhone}</a>`;el("contact-phone-row").style.display="flex";}
     el("contact-card").style.display="block";
 
@@ -461,7 +467,7 @@ window.submitOrder=async function(){
   const fe=el("form-err");fe.style.display="none";
   if(!valid07(pp)){fe.textContent="Enter a valid M-Pesa number (07XX or 01XX)";fe.style.display="block";return;}
   if(!valid07(rp)){fe.textContent="Enter a valid receiving number (07XX or 01XX)";fe.style.display="block";return;}
-  const btn=el("pay-btn");btn.disabled=true;btn.textContent="Processingâ€¦";
+  const btn=el("pay-btn");btn.disabled=true;btn.textContent="Processing...";
   try{
     const res=await fetch(FURL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({agentUsername:agentProfile.username,agentUid:agentProfile.uid,offerCode:selectedOffer.offerCode,offerName:selectedOffer.name,amount:selectedOffer.agentPrice,payPhone:norm(pp),receivePhone:norm(rp),agentPhone:agentProfile.phoneNumber})});
     const data=await res.json();
