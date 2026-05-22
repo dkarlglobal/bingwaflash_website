@@ -431,7 +431,8 @@ async function init(){
 
     const d=await getDoc(doc(db,"agents",snap.docs[0].id,"meta","offers"));
     if(!d.exists()){showError("No offers available.");return;}
-    const offers=JSON.parse(d.data().json||"[]").filter(o=>o.enabled&&o.offerCode&&o.offerCode.trim()&&Number(o.agentPrice||0)<=100);
+    // Match the app's web-order rule: only enabled public offers priced KSh 10 to KSh 100 should show online.
+    const offers=JSON.parse(d.data().json||"[]").filter(o=>o.enabled&&o.webOrderEnabled===true&&o.offerCode&&o.offerCode.trim()&&Number(o.agentPrice||0)>=10&&Number(o.agentPrice||0)<=100);
     if(!offers.length){showError("No offers available.");return;}
 
     const categoryRank={DATA:1,SMS:2,MINUTES:3,AIRTIME:4,OTHER:8,GENERAL:9};
