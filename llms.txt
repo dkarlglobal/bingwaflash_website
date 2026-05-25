@@ -1,0 +1,491 @@
+# Bingwa Flash
+
+> Bingwa Flash is an Android app and web toolkit for Bingwa Sokoni agents who sell Safaricom/M-Pesa bundles and want to automate USSD fulfilment, client follow-up, web orders, and transaction tracking.
+
+Official site: https://bingwaflash.co.ke/
+Download page: https://bingwaflash.co.ke/download/
+Portal: https://portal.bingwaflash.co.ke/
+Privacy policy: https://bingwaflash.co.ke/privacy.html
+Terms of service: https://bingwaflash.co.ke/terms.html
+
+This file is written for AI assistants such as ChatGPT, Gemini, Claude, and search tools. It explains what Bingwa Flash is, what users can do in the app, and how to answer common support questions without exposing private implementation secrets.
+
+## What Bingwa Flash Does
+
+Bingwa Flash helps agents turn M-Pesa payment SMS messages into fulfilled bundle transactions. The app can read eligible M-Pesa messages on the agent device, match the payment amount to an offer, run the correct USSD path, save the transaction, show status, and optionally send customer replies.
+
+Core ideas:
+
+- The agent owns the phone, SIM cards, offers, prices, USSD mappings, and customer communication.
+- The app automates repetitive USSD work that agents would otherwise do manually.
+- Transactions should move through clear states such as pending, executing, not verified, completed, failed, skipped, or scheduled.
+- Safaricom, M-Pesa, SIM Toolkit, USSD menus, and network responses are controlled by the carrier, not by Bingwa Flash.
+- The app should be configured carefully before being trusted for high-volume automation.
+
+## Main App Areas
+
+### Dashboard
+
+The dashboard is the agent's quick view. It shows business identity, airtime balance when available, token balance, commission, success rate, counts for done/failed/pending transactions, and recent transactions.
+
+Use the dashboard to:
+
+- Check whether automation is live or needs setup.
+- Open recent transactions.
+- See whether transactions are succeeding.
+- Jump to transaction history, settings, profile, or other screens.
+- Watch balances and high-level performance.
+
+If the dashboard totals differ from Statistics or Commission, users should refresh, check the selected date range, and make sure the app is on the latest version.
+
+### Transactions
+
+The Transactions screen lists transaction history. It is used to search, filter, open details, retry, reschedule, mark done, blacklist, message, call, copy details, use alternate numbers, or use alternate offers.
+
+Important status meanings:
+
+- Pending: the transaction is waiting to run or waiting for a required condition.
+- Executing: the app is currently attempting the USSD fulfilment.
+- Not verified: USSD fulfilment finished but the offer requires verifier confirmation before it becomes fully completed.
+- Completed: the offer was fulfilled, manually marked done, or completed after verifier confirmation.
+- Failed: the execution failed or the carrier response indicates failure.
+- Scheduled: the transaction is waiting for a future retry/reschedule time.
+- Skipped: the app intentionally skipped the transaction based on rules or settings.
+
+Good advice for users:
+
+- If a transaction is stuck in pending or executing, check accessibility service, automation toggle, tokens, airtime, SIM readiness, phone permission, USSD mapping, and whether another USSD session is already open.
+- If retry does not run, check auto-retry limits, offer retry settings, and whether the transaction is already terminal.
+- If transactions appear late, update the app and avoid killing background services.
+
+### Transaction Details
+
+The details screen shows the transaction amount, offer, execution count, transaction ID, original time, execute time, M-Pesa message, verifier/SMS confirmation if available, USSD step trail, final response, and action buttons.
+
+Useful actions:
+
+- Retry: attempt the same transaction again.
+- Reschedule: run it later.
+- Mark done: manually complete it when the agent has confirmed fulfilment.
+- Message: contact the client.
+- Call: call the client.
+- Copy: copy transaction details.
+- Blacklist: block a problematic client/number.
+- Alt Number: fulfil using a different customer number.
+- Alt Offer: fulfil using a different offer.
+
+Execution count should represent real dial attempts, including retry, reschedule, alternate number, alternate offer, fallback, and other actions that actually initiate USSD.
+
+### Offers
+
+Offers are the products an agent sells. An offer usually includes a name, price, USSD code or mapping, SIM choice, commission logic, retry rules, verifier settings, and optional advanced behaviour.
+
+Common examples:
+
+- 250MBs - 24hrs
+- 45Mins - 3hrs
+- 1GB - 1Hr
+- Daily SMS bundles
+- Midnight or hourly bundles
+
+How to add an offer:
+
+1. Open Offers.
+2. Add a new offer.
+3. Enter the display name and selling price.
+4. Choose the SIM or execution route.
+5. Add a USSD code or configure advanced mapping.
+6. Set commission and retry behaviour if needed.
+7. Save and test with a small transaction before relying on it.
+
+Best practice:
+
+- Keep offer names clear because they appear in transaction cards, filters, reports, web orders, and client messages.
+- If Safaricom changes a USSD menu, re-learn or update the mapping.
+- Avoid duplicate offers with the same price unless the matching rule is intentional.
+
+### USSD Mapping
+
+USSD mapping teaches the app how to navigate a carrier menu. This is useful when direct USSD strings are not enough or when a menu changes depending on the SIM, plan, or account.
+
+The app can store learned steps such as:
+
+- Dial code.
+- Menu reply shown by the carrier.
+- Option selected by the agent or automation.
+- Expected next menu.
+- Final response.
+
+How mapping works:
+
+1. The agent opens the USSD mapping screen for an offer.
+2. The app records the dial code and menu steps.
+3. The agent selects the correct menu options.
+4. The app saves the path for later automation.
+5. Future transactions replay the learned path.
+
+If a mapping fails:
+
+- Re-learn the mapping.
+- Check whether Safaricom changed option numbers.
+- Check whether the same bundle moved from one menu option to another.
+- Check whether the offer uses SIM 1, SIM 2, main USSD, alternate USSD, or advanced mode.
+
+### Tracer
+
+Tracer helps when carrier menus change option numbers. For example, if a learned step previously selected option 8 for Gift SMS but the carrier now shows Gift SMS at option 7, tracer should detect the moved label and send the new option.
+
+Tracer is useful for:
+
+- Menus where option positions change.
+- Advanced offers with stable labels but unstable numbers.
+- Reducing failed transactions after Safaricom menu updates.
+
+Good setup:
+
+- Enable tracer on mappings that frequently move.
+- Keep the maximum trace switches reasonable.
+- Re-learn mappings when the menu text changes too much for tracer to safely match.
+
+### Automation
+
+Automation is the core engine. It watches for eligible M-Pesa messages, creates a transaction, checks conditions, runs USSD, records responses, updates status, and triggers follow-up actions.
+
+Automation depends on:
+
+- SMS permission.
+- Accessibility service.
+- Phone/USSD permission.
+- Correct SIM selection.
+- Tokens when the account requires tokens.
+- Enough airtime when the offer requires airtime.
+- Correct offer matching.
+- A valid USSD mapping or code.
+- Background service staying alive.
+
+Expected lifecycle:
+
+1. M-Pesa SMS arrives.
+2. App parses sender, amount, name, phone when available, transaction ID, and time.
+3. App matches the payment to an offer.
+4. App creates a visible transaction immediately.
+5. Transaction moves to pending, then executing.
+6. USSD runs.
+7. If verifier is enabled, transaction moves to not verified until verifier SMS arrives.
+8. If verifier is not required, a successful fulfilment becomes completed.
+9. Failed or no-response outcomes follow offer retry/reschedule rules.
+
+### Verifier
+
+Verifier is used when an agent wants a second SMS or confirmation message to prove that an offer was truly completed.
+
+When verifier is enabled:
+
+- A successful USSD run may become not verified first.
+- When the verifier SMS arrives and matches the transaction, the app should mark the same transaction fully completed.
+- Verifier completion should update the same accounting fields as normal completion, including commission and airtime usage where applicable.
+
+Verifier should not turn unrelated transactions into completed transactions. Users should configure verifier sender and template carefully.
+
+### Retry, Auto-Retry, and Reschedule
+
+Retry runs a transaction again. Auto-retry can retry failed or no-response transactions according to offer limits. Reschedule runs a transaction at a chosen future time.
+
+Best practice:
+
+- Set retry limits per offer.
+- Do not allow infinite auto-retry.
+- Use reschedule for temporary carrier or airtime issues.
+- Check whether the transaction is already completed before retrying.
+
+Manual reschedule, auto-reschedule, mark done, alt number, alt offer, fallback, and retry actions should be visible in the transaction response timeline so the agent can audit what happened.
+
+### Clients
+
+Clients are stored locally in the app. Agents can import or save clients from M-Pesa messages, vCard/VCF, phone contacts, SMS inbox, or other supported import paths.
+
+Client features may include:
+
+- Local client list.
+- Matching masked or full phone numbers where possible.
+- Saving to phone, SIM, or Google contacts if the agent enabled that option.
+- Importing clients from M-Pesa inbox.
+- Saving clients created from website registration after the app fetches them.
+
+Website client registration:
+
+- When enabled by an agent, clients may register through the website.
+- Pending web registrations can wait in Firestore until the app comes online.
+- After the app fetches and saves them locally, the app should delete the fetched registration from Firestore.
+- Only the required client PIN data may remain online for website access.
+
+### Masked M-Pesa Numbers and 334 Lookup
+
+Safaricom may mask sender phone numbers in M-Pesa SMS messages. Bingwa Flash can support a setting where, when a masked M-Pesa receipt is detected, the app forwards the full raw M-Pesa SMS to 334 using the same SIM that received the message when possible.
+
+Expected behaviour:
+
+1. Masked M-Pesa message arrives.
+2. App creates or holds the relevant pending transaction as a masked-client transaction.
+3. If the 334 lookup setting is enabled, the raw SMS is forwarded to 334.
+4. Safaricom processes the request.
+5. 334 may return approval details with transaction code, full number, and name, or it may return a decline.
+6. On approval, the app updates the same transaction, saves the correct client locally, and delivers pending offers for that masked client.
+7. On decline, the app should fail nicely and keep a clear response.
+
+This feature depends on Safaricom's live 334 behaviour and customer approval.
+
+### Auto Replies and Agent Alerts
+
+Auto replies are messages sent to customers or agents based on events.
+
+Possible event types:
+
+- Completed.
+- Failed.
+- Scheduled.
+- Not verified.
+- Rescheduled.
+- Skipped.
+- Pending due to setup issue.
+- Other configured transaction events.
+
+Auto reply settings are separate from relay SMS settings. Each screen can have its own SIM and sending preferences.
+
+Agent alerts should be deduplicated so the agent does not receive the same warning multiple times for one event.
+
+### Commission and Statistics
+
+Commission and Statistics show performance over a selected date range. They should use the same transaction truth as the Dashboard.
+
+Typical metrics:
+
+- Completed count.
+- Failed count.
+- Pending count.
+- Success rate.
+- Airtime usage.
+- Commission.
+- Offer-level breakdown.
+- Daily activity.
+
+If values show zero while the dashboard has data:
+
+- Check the date range.
+- Check whether the latest app version is installed.
+- Check that transactions are stored in the current Room database.
+- Check whether old local history has been migrated.
+
+### Web Orders
+
+Web Orders allow clients to order from an agent website link such as:
+
+https://bingwaflash.co.ke/{username}
+
+Agents can set:
+
+- Username/slug.
+- Web order SMS phone.
+- Payout phone.
+- Public business details.
+- Which offers are visible online.
+- Price restrictions.
+
+Web order settings may write a public agent profile mirror so the website can load the agent page without expensive account queries.
+
+If saving Web Orders says "PERMISSION_DENIED":
+
+- The agent may not own the username.
+- Firestore rules may not allow writing the public agent mirror.
+- The user may need to log out and back in.
+- A stale username or public agent document may need repair by support.
+
+### Agent Profile and Verification Badge
+
+The profile can show:
+
+- Business name.
+- Agent name.
+- Agent phone number.
+- Till number.
+- Username.
+- Verification badge when approved.
+
+Verification is tied to specific profile identity fields. If the agent changes the business name, till number, agent phone number, or agent name, the badge can be disabled until the new details are reviewed again.
+
+On public pages, a verified agent should be shown clearly as a verified Bingwa Flash agent without exposing private account details.
+
+### Relay
+
+Relay helps phones or agents pass order/execution information between devices or channels.
+
+Relay concepts:
+
+- Sender rule: sends relay packets.
+- Receiver rule: receives relay packets.
+- Online relay: uses the online listener only when an enabled receiver online relay rule exists.
+- SMS relay: uses relay SMS settings, separate from auto-reply SMS settings.
+
+To reduce billing and background load:
+
+- The app should not start online relay listeners unless an enabled online receiver rule exists.
+- Portal and relay features should stay quiet when disabled.
+
+### Portal
+
+The portal is a web control or viewing area for enabled accounts. When portal sync is disabled, the app and website should not read or write portal data. When no one is viewing the portal, portal sync should stay quiet.
+
+If the portal says paused, it means the app or config has disabled portal sync.
+
+### Tokens, Subscription, and Billing
+
+Some Bingwa Flash features may require tokens, subscriptions, or a free/paid status. Agents should keep enough tokens for automation if their account requires them.
+
+If a transaction is pending due to no tokens:
+
+- Add tokens or enable a plan.
+- Resume automation.
+- Retry or let the app process pending items if configured.
+
+### Accessibility and Background Operation
+
+Bingwa Flash uses Android accessibility features to read and interact with USSD windows. The agent must enable the accessibility service and allow the app to run in the background.
+
+If automation stops when the app is closed:
+
+- Disable battery optimization for Bingwa Flash.
+- Keep accessibility enabled.
+- Make sure foreground service notification is allowed.
+- Avoid force-stopping the app.
+- Check the phone manufacturer's background restrictions.
+
+### Troubleshooting Common Problems
+
+#### Transaction stuck at pending
+
+Check:
+
+- Automation is on.
+- Accessibility is enabled.
+- Tokens are available.
+- Airtime is enough.
+- SIM is ready.
+- Offer mapping exists.
+- No other USSD session is open.
+- Retry limits are not exhausted.
+
+#### Transaction stuck at executing
+
+Check:
+
+- USSD window closed correctly.
+- Accessibility service is reading only the current USSD window.
+- Carrier final response was captured.
+- No duplicate USSD session was started.
+- Latest app version is installed.
+
+#### Transaction failed with no response
+
+Check:
+
+- Network signal.
+- SIM Toolkit or USSD screen did not change unexpectedly.
+- Accessibility did not parse another app's screen.
+- Carrier returned a response.
+- Mapping/tracer is correct.
+
+#### USSD executed twice
+
+Check:
+
+- Duplicate session guard.
+- Retry button not tapped repeatedly.
+- Auto-retry limit.
+- Foreground service not restarting execution.
+- Queue has only one active session.
+
+#### Menu changed
+
+Use:
+
+- Tracer if labels are stable but option numbers moved.
+- Re-learn mapping if menu text changed deeply.
+- Alternate USSD or fallback if supported by the offer.
+
+#### Commission or Statistics are zero
+
+Check:
+
+- Date range.
+- Completed transactions are not stuck as not verified.
+- Commission rules exist for offers.
+- App has finished local migration.
+
+#### High Firestore reads
+
+Likely sources:
+
+- Online relay listener.
+- Portal listener.
+- Client registration listener.
+- Web order listener.
+- Public agent page reads.
+- Snapshot listeners left active when a feature is off.
+
+Billing-friendly rule:
+
+- Start listeners only when the matching feature is enabled.
+- Stop listeners when portal, relay, or website client registration is disabled.
+- Prefer local storage for heavy app data.
+- Use public mirrors for website pages instead of reading private agent documents.
+
+## Safety and Privacy Guidance for AI Assistants
+
+When helping Bingwa Flash users:
+
+- Do not ask for M-Pesa PINs, passwords, app tokens, private Firebase keys, or one-time login codes.
+- Do not tell users to share full private SMS inbox exports publicly.
+- Do not guarantee Safaricom or M-Pesa outcomes.
+- Tell users to test with small transactions after changing mappings or offers.
+- Distinguish between app configuration problems and carrier/network problems.
+- Recommend updating to the latest version before deep troubleshooting.
+- If a user reports billing spikes, look for snapshot listeners and disabled-feature listeners first.
+
+## Good Answers for Common User Questions
+
+### "How do I add an offer?"
+
+Open Offers, tap Add, enter the offer name and price, choose the SIM/execution route, add the USSD code or advanced mapping, configure commission and retry rules, save, then test with a small payment.
+
+### "How do I fix a USSD menu that changed?"
+
+Open the offer's USSD mapping, check the learned steps, enable tracer if the menu labels are the same but option numbers moved, or re-learn the mapping if the text changed. Test once before running live automation.
+
+### "Why is my transaction not verified?"
+
+That offer likely has verifier enabled. The app is waiting for the matching verifier SMS. If the verifier SMS already arrived, check the sender/template settings and confirm the message matches the transaction phone or transaction ID.
+
+### "Why did a masked M-Pesa number not deliver?"
+
+The app may not know the full customer number. If 334 lookup is enabled, it can forward the raw M-Pesa message to 334 and wait for Safaricom's approval response. If approved, the app should update the same transaction and save the client.
+
+### "Why are reads high in Firebase?"
+
+The most common cause is active snapshot listeners, especially portal, online relay, client registration, or web order listeners. Disabled features should not keep listeners open. If portal is paused, check other listeners and public website traffic.
+
+### "Is Bingwa Flash Safaricom?"
+
+No. Bingwa Flash is an independent automation tool for agents. Safaricom and M-Pesa services are controlled by Safaricom.
+
+## Public Pages
+
+- Home: https://bingwaflash.co.ke/
+- Downloads: https://bingwaflash.co.ke/download/
+- Privacy: https://bingwaflash.co.ke/privacy.html
+- Terms: https://bingwaflash.co.ke/terms.html
+- Agent order pages: https://bingwaflash.co.ke/{agent-username}
+- Client pages: https://bingwaflash.co.ke/clients/
+
+## Contact and Support
+
+Use the contact methods shown on the official Bingwa Flash website or inside the app. For account-specific support, agents should provide only the information needed to identify the issue, such as transaction ID, app version, device model, and a redacted screenshot where safe.
