@@ -472,13 +472,31 @@ window.showRegSection=function(){hideAll();$('reg-section').style.display='block
 window.showDelSection=function(){hideAll();$('del-section').style.display='block';};
 window.showPinChangeSection=function(){hideAll();$('pin-change-section').style.display='block';};
 
+async function loadAgentProfile(username){
+  // Public mirror avoids a private agents collection query on normal page load.
+  const publicSnap=await getDoc(doc(db,'publicAgents',username));
+  if(publicSnap.exists()){
+    const profile=publicSnap.data();profile.username=profile.username||username;
+    if(profile.uid)return{uid:profile.uid,profile};
+  }
+  const q=query(collection(db,'agents'),where('username','==',username));
+  const snap=await getDocs(q);
+  if(snap.empty)return null;
+  const profile=snap.docs[0].data();profile.uid=profile.uid||snap.docs[0].id;
+  return{uid:snap.docs[0].id,profile};
+}
+
+async function touchClientSync(agentUidTarget,action,changedPhone='',deletedPhone=''){
+  // The app listens to this one marker doc, then reads only the changed client.
+  await setDoc(doc(db,'agents',agentUidTarget,'meta','clientSync'),{action,changedPhone,deletedPhone,updatedAtMs:Date.now(),updatedAt:serverTimestamp()},{merge:true});
+}
+
 async function init(){
   if(!USERNAME){showError('No agent username found. Please use the link your agent shared with you.');return;}
   try{
-    const q=query(collection(db,'agents'),where('username','==',USERNAME));
-    const snap=await getDocs(q);
-    if(snap.empty){showError(`Agent "${USERNAME}" not found.`);return;}
-    agentUid=snap.docs[0].id;agentProfile=snap.docs[0].data();
+    const bundle=await loadAgentProfile(USERNAME);
+    if(!bundle){showError(`Agent "${USERNAME}" not found.`);return;}
+    agentUid=bundle.uid;agentProfile=bundle.profile;
     if(agentProfile.clientRegistrationOn!==true){showError('This agent has disabled registering as his client.');return;}
     const displayName=agentProfile.agentName||USERNAME;
     const handle=agentProfile.username||USERNAME;
@@ -549,6 +567,7 @@ window.submitRegistration=async function(){
     const regId=`${phone}_${agentUid}`;
     await setDoc(doc(db,'clientRegistrations',regId),{phone,name,agentUid,agentUsername:agentProfile.username||USERNAME,agentName:agentProfile.agentName||USERNAME,registeredAt:serverTimestamp(),registrationId:regId});
     await setDoc(doc(db,'agents',agentUid,'clients',phone),{phone,name,totalSpent:0,lastSeenAtMs:Date.now(),isBlacklisted:false,source:'website',maskedDigits:fingerprint(phone),registrationId:regId,updatedAtMs:Date.now()},{merge:true});
+    await touchClientSync(agentUid,'UPSERT',phone,'');
     hideAll();
     $('success-desc').textContent=`You're now registered as a client of ${agentProfile.agentName||USERNAME}. When you make a payment, they can recommend data offers to ${phone}.`;
     $('success-state').style.display='block';
@@ -594,6 +613,7 @@ window.removeFromAgent=async function(regDocId,agentUidTarget,phone,agentDisplay
   try{
     await deleteDoc(doc(db,'clientRegistrations',regDocId));
     await deleteDoc(doc(db,'agents',agentUidTarget,'clients',phone));
+    await touchClientSync(agentUidTarget,'DELETE','',phone);
     hideAll();
     $('delete-success-desc').textContent=`You have been removed from ${agentDisplayName}'s client list. This change syncs to their app instantly.`;
     $('delete-success-state').style.display='block';

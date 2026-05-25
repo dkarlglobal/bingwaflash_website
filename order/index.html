@@ -387,6 +387,25 @@ function hasActiveWebOrderSubscription(agent,cfg){
   return tsMillis(agent.webOrderSubscriptionUntil)>Date.now();
 }
 
+async function loadAgentBundle(username){
+  // Prefer the public mirror because it is one direct document read. Older app
+  // builds may not have created it yet, so keep the private query fallback.
+  const publicSnap=await getDoc(doc(db,"publicAgents",username));
+  if(publicSnap.exists()){
+    const profile=publicSnap.data();
+    profile.username=profile.username||username;
+    profile.uid=profile.uid||"";
+    if(profile.uid)return{profile,uid:profile.uid,offersJson:String(profile.offersJson||"")};
+  }
+  const q=query(collection(db,"agents"),where("username","==",username));
+  const snap=await getDocs(q);
+  if(snap.empty)return null;
+  const profile=snap.docs[0].data();
+  profile.uid=profile.uid||snap.docs[0].id;
+  profile.username=profile.username||username;
+  return{profile,uid:snap.docs[0].id,offersJson:""};
+}
+
 async function init(){
   if(!USERNAME){showError("No agent username in URL.");return;}
   try{
@@ -398,10 +417,9 @@ async function init(){
       }
     }catch(_){}
 
-    const q=query(collection(db,"agents"),where("username","==",USERNAME));
-    const snap=await getDocs(q);
-    if(snap.empty){showError(`Agent "${USERNAME}" not found.`);return;}
-    agentProfile=snap.docs[0].data();
+    const bundle=await loadAgentBundle(USERNAME);
+    if(!bundle){showError(`Agent "${USERNAME}" not found.`);return;}
+    agentProfile=bundle.profile;
 
     const n=agentProfile.agentName||USERNAME;
     const businessName=agentProfile.businessName||n;
@@ -435,10 +453,14 @@ async function init(){
     if(agentPhone){el("contact-phone").innerHTML=`<a href="tel:${agentPhone}">${agentPhone}</a>`;el("contact-phone-row").style.display="flex";}
     el("contact-card").style.display="block";
 
-    const d=await getDoc(doc(db,"agents",snap.docs[0].id,"meta","offers"));
-    if(!d.exists()){showError("No offers available.");return;}
+    let offersJson=bundle.offersJson;
+    if(!offersJson&&bundle.uid){
+      const d=await getDoc(doc(db,"agents",bundle.uid,"meta","offers"));
+      if(d.exists())offersJson=String(d.data().json||"");
+    }
+    if(!offersJson){showError("No offers available.");return;}
     // Match the app's web-order rule: only enabled public offers priced KSh 10 to KSh 100 should show online.
-    const offers=JSON.parse(d.data().json||"[]").filter(o=>o.enabled&&o.webOrderEnabled===true&&o.offerCode&&o.offerCode.trim()&&Number(o.agentPrice||0)>=10&&Number(o.agentPrice||0)<=100);
+    const offers=JSON.parse(offersJson||"[]").filter(o=>o.enabled&&o.webOrderEnabled===true&&o.offerCode&&o.offerCode.trim()&&Number(o.agentPrice||0)>=10&&Number(o.agentPrice||0)<=100);
     if(!offers.length){showError("No offers available.");return;}
 
     const categoryRank={DATA:1,SMS:2,MINUTES:3,AIRTIME:4,OTHER:8,GENERAL:9};
