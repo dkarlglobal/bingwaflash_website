@@ -29,13 +29,15 @@
   --text:#F7FAF8;--text2:#C7D2CC;--text3:#84918A;--hbg:rgba(9,13,12,.92);--card-bg:#141A18;--card-end:#101613;--input-bg:#18201D;
   --offer-section-bg:rgba(255,255,255,.025);--offer-section-border:rgba(255,255,255,.055);
   --offer-bg:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.018));--offer-name:#DDE6E1;--price:#FBBF24;--soft-shadow:0 8px 22px rgba(0,0,0,.14);
-  --blob1:rgba(251,191,36,.10);--blob2:rgba(16,185,129,.11);}
+  --blob1:rgba(251,191,36,.10);--blob2:rgba(16,185,129,.11);
+  --chk-border:#34423D;--chk-bg:#18201D;}
 [data-theme="light"]{
   --bg:#FFF8DB;--surface:#FFFFFF;--surface2:#FFFCF2;--border:#F0D889;--border2:#E9D8A7;
   --text:#18231F;--text2:#3F4A45;--text3:#708078;--hbg:rgba(255,252,242,.94);--card-bg:#FFFFFF;--card-end:#FFF9E8;--input-bg:#FFFFFF;
   --offer-section-bg:linear-gradient(180deg,#FFFFFF,#FFF5CF);--offer-section-border:#EDD47C;
   --offer-bg:linear-gradient(180deg,#FFFFFF,#FFF8DF);--offer-name:#27362F;--price:#D97706;--soft-shadow:0 10px 26px rgba(185,128,0,.12);
-  --blob1:rgba(245,158,11,.20);--blob2:rgba(16,185,129,.14);}
+  --blob1:rgba(245,158,11,.20);--blob2:rgba(16,185,129,.14);
+  --chk-border:#E9D8A7;--chk-bg:#FFFFFF;}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;transition:background .25s,color .25s}
 body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
@@ -59,9 +61,14 @@ header{position:sticky;top:0;z-index:100;background:var(--hbg);backdrop-filter:b
 .ag-live{margin-left:auto;display:flex;align-items:center;gap:5px;font-size:.7rem;color:var(--gd);font-weight:800}
 .ag-dot{width:7px;height:7px;border-radius:50%;background:var(--g);animation:pulse 2s infinite;box-shadow:0 0 0 3px rgba(34,197,94,.2)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ── LAYOUT ── */
 main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:20px 14px 52px}
-.card{background:linear-gradient(180deg,var(--card-bg),var(--card-end));border-radius:28px;box-shadow:var(--cl);border:1.5px solid var(--border);width:100%;max-width:560px;overflow:hidden;animation:fadeUp .4s ease both;transition:background .25s,border-color .25s}
+.card{background:linear-gradient(180deg,var(--card-bg),var(--card-end));border-radius:28px;box-shadow:var(--cl);border:1.5px solid var(--border);width:100%;max-width:900px;overflow:hidden;animation:fadeUp .4s ease both;transition:background .25s,border-color .25s}
 .card-body{padding:20px 18px 24px}
+@media(min-width:700px){.card-body{padding:24px 24px 28px}}
+
+/* ── LOADING / STATES ── */
 #loading{text-align:center;padding:34px 0}
 .spin{width:32px;height:32px;border:3px solid var(--border2);border-top-color:var(--y);border-radius:50%;animation:spin .7s linear infinite;display:inline-block;margin-bottom:10px}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -72,7 +79,7 @@ main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2
 .err-text{font-size:.84rem;color:var(--text2);line-height:1.65;font-weight:500}
 #content{display:none}
 
-/* Maintenance state */
+/* ── MAINTENANCE ── */
 #maintenance-state{display:none;text-align:center;padding:32px 8px 24px}
 .maint-gfx{width:72px;height:72px;border-radius:50%;background:rgba(245,197,24,.1);border:2px solid rgba(245,197,24,.25);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:maint-bob 3s ease-in-out infinite}
 @keyframes maint-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
@@ -89,17 +96,54 @@ main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2
 .maint-contact-value a{color:var(--text2);text-decoration:none;transition:color .15s}
 .maint-contact-value a:hover{color:var(--yd)}
 
+/* ── OFFERS ── */
 .sec-ttl{font-family:'Sora',sans-serif;font-size:1.02rem;font-weight:800;color:var(--text);margin-bottom:2px}
 .sec-sub{font-size:.76rem;color:var(--text2);margin-bottom:14px;font-weight:650}
 .offer-section{background:var(--offer-section-bg);border:1px solid var(--offer-section-border);border-radius:20px;padding:12px;margin:12px 0}
 .cat-header{display:flex;align-items:center;gap:8px;font-size:.7rem;font-weight:900;color:var(--text);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px}
 .cat-header::before{content:"";width:7px;height:7px;border-radius:50%;background:linear-gradient(135deg,var(--g),var(--y));box-shadow:0 0 0 4px rgba(16,185,129,.10)}
-.offers-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:2px}
-.offer-btn{min-height:92px;background:var(--offer-bg);border:1.5px solid var(--border);border-radius:18px;padding:12px 10px;text-align:left;cursor:pointer;transition:transform .16s,border-color .16s,background .16s,box-shadow .16s;font-family:inherit;box-shadow:var(--soft-shadow);display:flex;flex-direction:column;justify-content:space-between;gap:8px}
+
+/* Responsive grid: 2 → 3 → 4 columns as viewport grows */
+.offers-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-bottom:2px;
+}
+@media(min-width:480px){
+  .offers-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+}
+@media(min-width:700px){
+  .offers-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
+}
+
+.offer-btn{
+  min-height:84px;
+  background:var(--offer-bg);
+  border:1.5px solid var(--border);
+  border-radius:16px;
+  padding:12px 10px;
+  text-align:left;
+  cursor:pointer;
+  transition:transform .16s,border-color .16s,background .16s,box-shadow .16s;
+  font-family:inherit;
+  box-shadow:var(--soft-shadow);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  gap:6px;
+}
 .offer-btn:hover{border-color:rgba(16,185,129,.45);background:rgba(16,185,129,.08);transform:translateY(-2px)}
 .offer-btn.selected{border-color:var(--g);background:linear-gradient(180deg,rgba(16,185,129,.16),rgba(251,191,36,.08));box-shadow:0 0 0 3px rgba(16,185,129,.11),0 12px 30px rgba(16,185,129,.12)}
-.ob-name{font-size:.75rem;font-weight:900;color:var(--offer-name);line-height:1.28;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.ob-price{font-family:'Sora',sans-serif;font-size:1rem;font-weight:900;color:var(--price);letter-spacing:-.02em}
+.ob-name{font-size:.72rem;font-weight:900;color:var(--offer-name);line-height:1.3;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.ob-price{font-family:'Sora',sans-serif;font-size:.95rem;font-weight:900;color:var(--price);letter-spacing:-.02em}
+@media(min-width:700px){
+  .offer-btn{min-height:90px;padding:13px 12px;border-radius:18px;}
+  .ob-name{font-size:.74rem;}
+  .ob-price{font-size:1rem;}
+}
+
+/* ── ORDER FORM ── */
 .divider{border:none;height:2px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:18px 0}
 #order-form{display:none}
 .selected-row{background:rgba(34,197,94,.1);border:2px solid rgba(34,197,94,.22);border-radius:var(--r16);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
@@ -108,16 +152,63 @@ main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2
 .sr-price{font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:800;color:var(--gd)}
 .field{margin-bottom:13px}
 .field label{display:block;font-size:.7rem;font-weight:800;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
-.field input{width:100%;background:var(--input-bg);border:2px solid var(--border2);border-radius:var(--r12);padding:11px 13px;color:var(--text);font-family:inherit;font-size:.86rem;outline:none;transition:border-color .15s,box-shadow .15s;font-weight:500}
-.field input:focus{border-color:var(--y);box-shadow:0 0 0 3px rgba(245,197,24,.15)}
-.field input::placeholder{color:var(--text3);font-weight:400}
+.field input[type="tel"]{width:100%;background:var(--input-bg);border:2px solid var(--border2);border-radius:var(--r12);padding:11px 13px;color:var(--text);font-family:inherit;font-size:.86rem;outline:none;transition:border-color .15s,box-shadow .15s;font-weight:500}
+.field input[type="tel"]:focus{border-color:var(--y);box-shadow:0 0 0 3px rgba(245,197,24,.15)}
+.field input[type="tel"]::placeholder{color:var(--text3);font-weight:400}
 .field-hint{font-size:.69rem;color:var(--text3);margin-top:3px;font-weight:600}
+
+/* Same-number checkbox row */
+.same-num-row{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin-bottom:13px;
+  padding:9px 12px;
+  background:var(--surface2);
+  border:2px solid var(--border);
+  border-radius:var(--r12);
+  cursor:pointer;
+  transition:border-color .15s,background .15s;
+  user-select:none;
+}
+.same-num-row:hover{border-color:var(--border2)}
+.same-num-row input[type="checkbox"]{
+  appearance:none;-webkit-appearance:none;
+  width:18px;height:18px;flex-shrink:0;
+  border:2px solid var(--chk-border);
+  border-radius:5px;
+  background:var(--chk-bg);
+  cursor:pointer;
+  position:relative;
+  transition:border-color .15s,background .15s;
+}
+.same-num-row input[type="checkbox"]:checked{
+  background:var(--g);
+  border-color:var(--g);
+}
+.same-num-row input[type="checkbox"]:checked::after{
+  content:"";
+  position:absolute;
+  left:4px;top:1px;
+  width:7px;height:11px;
+  border-right:2.5px solid #fff;
+  border-bottom:2.5px solid #fff;
+  transform:rotate(42deg);
+  border-radius:1px;
+}
+.same-num-label-text{font-size:.76rem;font-weight:700;color:var(--text2);line-height:1.35}
+.same-num-label-text small{display:block;font-size:.67rem;color:var(--text3);font-weight:600;margin-top:1px}
+
+#recv-field{transition:opacity .2s;}
+#recv-field.hidden{display:none}
+
 #form-err{font-size:.76rem;color:var(--red);margin-bottom:11px;display:none;background:rgba(239,68,68,.08);padding:9px 12px;border-radius:var(--r12);border:1.5px solid rgba(239,68,68,.22)}
 .pay-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--y),var(--yd));color:#1a1000;font-weight:800;font-size:.9rem;border:none;border-radius:var(--pill);cursor:pointer;box-shadow:var(--cy);transition:transform .15s;margin-bottom:7px;font-family:'Sora',sans-serif}
 .pay-btn:hover{transform:translateY(-2px)} .pay-btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
 .pay-secure{font-size:.69rem;color:var(--text3);text-align:center;font-weight:700}
+
+/* ── STK SCREEN ── */
 #stk-screen{display:none;padding:4px 0}
-/* Callback-first checkout: the UI waits for Firestore/backend status instead of showing a fake countdown. */
 .stk-inner{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(16,185,129,.13),rgba(251,191,36,.09));border:1.5px solid rgba(16,185,129,.24);border-radius:24px;padding:22px;text-align:center;margin-bottom:14px;box-shadow:var(--cm)}
 .stk-inner::before{content:"";position:absolute;inset:-45% -20% auto;height:170px;background:radial-gradient(circle,rgba(251,191,36,.28),transparent 58%);animation:waitGlow 4s ease-in-out infinite;pointer-events:none}
 .wait-orb{position:relative;width:72px;height:72px;border-radius:50%;margin:2px auto 14px;background:linear-gradient(135deg,var(--g),var(--y));box-shadow:0 0 0 10px rgba(16,185,129,.10),0 18px 42px rgba(16,185,129,.24);display:flex;align-items:center;justify-content:center}
@@ -126,13 +217,17 @@ main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2
 .wait-phone{width:30px;height:44px;border:3px solid rgba(11,15,13,.75);border-radius:10px;background:rgba(255,255,255,.42);box-shadow:inset 0 -5px 0 rgba(0,0,0,.10)}
 .stk-title{position:relative;font-family:'Sora',sans-serif;font-size:1.02rem;font-weight:900;color:var(--text);margin-bottom:6px}
 .stk-desc{position:relative;font-size:.8rem;color:var(--text2);line-height:1.65;margin-bottom:14px;font-weight:650}
+.stk-sender-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;background:rgba(251,191,36,.1);border:1.5px solid rgba(251,191,36,.25);border-radius:var(--pill);font-size:.68rem;font-weight:900;color:var(--yd);margin-bottom:12px;font-family:'Sora',sans-serif;letter-spacing:.04em}
+.stk-sender-tag svg{width:11px;height:11px}
 .stk-status{position:relative;display:inline-flex;align-items:center;gap:8px;font-size:.72rem;color:var(--text2);background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--pill);padding:8px 14px;margin-bottom:14px;font-weight:800;box-shadow:var(--cs)}
 .stk-status-dot{width:7px;height:7px;border-radius:50%;background:var(--g);box-shadow:0 0 0 5px rgba(16,185,129,.12);animation:pulse 1.4s infinite}
 .stk-steps{text-align:left;display:flex;flex-direction:column;gap:8px;position:relative}
 .stk-step{display:flex;align-items:flex-start;gap:10px;font-size:.77rem;color:var(--text2);font-weight:650;background:rgba(255,255,255,.035);border:1px solid var(--border);border-radius:14px;padding:9px 10px}
 .step-n{width:22px;height:22px;border-radius:50%;background:var(--surface);border:2px solid rgba(34,197,94,.3);display:flex;align-items:center;justify-content:center;font-size:.67rem;font-weight:900;color:var(--gd);flex-shrink:0;margin-top:1px;box-shadow:var(--cs)}
+
+/* ── RESULT DIALOG ── */
 .result-dialog{position:fixed;inset:0;z-index:200;display:none;align-items:flex-end;justify-content:center;padding:18px 18px max(22px,env(safe-area-inset-bottom));background:rgba(7,10,9,.64);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
-.result-card{width:min(380px,100%);background:linear-gradient(180deg,var(--card-bg),var(--card-end));border:1.5px solid var(--border);border-radius:24px;padding:22px 20px 20px;text-align:center;box-shadow:0 28px 90px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.10);animation:popIn .28s ease both}
+.result-card{width:min(400px,100%);background:linear-gradient(180deg,var(--card-bg),var(--card-end));border:1.5px solid var(--border);border-radius:24px;padding:22px 20px 20px;text-align:center;box-shadow:0 28px 90px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.10);animation:popIn .28s ease both}
 .result-icon{position:relative;width:76px;height:76px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 10px rgba(16,185,129,.10)}
 .result-icon.success{background:linear-gradient(135deg,var(--g),#86EFAC)}
 .result-icon.fail{background:linear-gradient(135deg,var(--red),#FB7185);box-shadow:0 0 0 10px rgba(239,68,68,.10)}
@@ -141,15 +236,21 @@ main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2
 .result-icon.fail::before{transform:rotate(45deg)}.result-icon.fail::after{transform:rotate(-45deg)}
 .result-title{font-family:'Sora',sans-serif;font-size:1.06rem;font-weight:900;color:var(--text);margin-bottom:7px}
 .result-message{font-size:.82rem;color:var(--text2);line-height:1.65;font-weight:650;margin-bottom:18px}
+.result-ref{font-size:.7rem;color:var(--text3);margin-bottom:18px;font-weight:700;margin-top:-12px}
 .result-ok{width:100%;padding:12px 18px;border:none;border-radius:var(--pill);font-family:'Sora',sans-serif;font-size:.86rem;font-weight:900;cursor:pointer;color:#1a1000;background:linear-gradient(135deg,var(--y),var(--yd));box-shadow:var(--cy)}
 .result-ok:hover{transform:translateY(-1px)}
+
+/* ── ANIMATIONS ── */
 @keyframes waitPulse{0%{transform:scale(.82);opacity:.75}100%{transform:scale(1.32);opacity:0}}
 @keyframes waitGlow{0%,100%{transform:translateX(-10%)}50%{transform:translateX(18%)}}
 @keyframes popIn{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* ── MISC ── */
 .register-banner{display:none;margin-top:12px;padding:9px 10px;background:var(--surface2);border:1px dashed var(--border);border-radius:14px;align-items:center;justify-content:space-between;gap:10px}
 .rb-text{font-size:.68rem;color:var(--text3);line-height:1.35;font-weight:650}
 .rb-text strong{color:var(--text2);font-weight:800;font-family:'Sora',sans-serif;display:inline;margin-right:4px}
-.rb-btn{flex-shrink:0;font-size:.68rem;font-weight:900;padding:6px 10px;background:rgba(16,185,129,.10);border:1px solid rgba(16,185,129,.28);color:var(--g);border-radius:var(--pill);cursor:pointer;font-family:'Sora',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;box-shadow:none;transition:background .15s,transform .15s}
+.rb-btn{flex-shrink:0;font-size:.68rem;font-weight:900;padding:6px 10px;background:rgba(16,185,129,.10);border:1px solid rgba(16,185,129,.28);color:var(--g);border-radius:var(--pill);cursor:pointer;font-family:'Sora',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;transition:background .15s,transform .15s}
 .rb-btn:hover{background:rgba(16,185,129,.16);transform:translateY(-1px)}
 .contact-card{margin-top:16px;background:var(--surface2);border:2px solid var(--border);border-radius:var(--r20);overflow:hidden;transition:background .25s,border-color .25s}
 .contact-card-title{font-size:.66rem;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;padding:10px 14px 6px}
@@ -165,7 +266,6 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
 .ft-copy{font-size:.71rem;color:var(--text3);font-weight:600}
 @media(max-width:480px){footer{flex-direction:column;text-align:center}}
 @media(min-width:700px){.result-dialog{align-items:center;padding:18px}.result-card{border-radius:28px}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 </style>
 </head>
 <body>
@@ -180,7 +280,17 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
 
 <div id="agent-bar" class="agent-bar">
   <div class="ag-av" id="ag-av">?</div>
-  <div class="ag-info"><div class="ag-title"><div class="ag-name" id="ag-name"></div><svg class="verified-badge" id="verified-badge" viewBox="0 0 24 24" aria-label="Verified agent" role="img"><path fill="currentColor" d="M22 12l-2.44-2.78.34-3.68-3.61-.82-1.89-3.18L11 3 7.6 1.54 5.71 4.72l-3.61.82.34 3.68L0 12l2.44 2.78-.34 3.68 3.61.82 1.89 3.18L11 21l3.4 1.46 1.89-3.18 3.61-.82-.34-3.68L22 12z" transform="translate(1 0)"/><path fill="#fff" d="M9.2 15.8L5.7 12.3l1.4-1.4 2.1 2.1 5-5 1.4 1.4z"/></svg></div><div class="ag-handle" id="ag-handle"></div><div class="ag-verified-note" id="ag-verified-note">This agent has been verified by BINGWA FLASH</div></div>
+  <div class="ag-info">
+    <div class="ag-title">
+      <div class="ag-name" id="ag-name"></div>
+      <svg class="verified-badge" id="verified-badge" viewBox="0 0 24 24" aria-label="Verified agent" role="img">
+        <path fill="currentColor" d="M22 12l-2.44-2.78.34-3.68-3.61-.82-1.89-3.18L11 3 7.6 1.54 5.71 4.72l-3.61.82.34 3.68L0 12l2.44 2.78-.34 3.68 3.61.82 1.89 3.18L11 21l3.4 1.46 1.89-3.18 3.61-.82-.34-3.68L22 12z" transform="translate(1 0)"/>
+        <path fill="#fff" d="M9.2 15.8L5.7 12.3l1.4-1.4 2.1 2.1 5-5 1.4 1.4z"/>
+      </svg>
+    </div>
+    <div class="ag-handle" id="ag-handle"></div>
+    <div class="ag-verified-note" id="ag-verified-note">This agent has been verified by BINGWA FLASH</div>
+  </div>
   <div class="ag-live"><div class="ag-dot"></div>Online</div>
 </div>
 
@@ -227,46 +337,68 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
             <div><div class="sr-label">Selected Offer</div><div class="sr-name" id="sel-name">-</div></div>
             <div class="sr-price" id="sel-price">-</div>
           </div>
+
+          <!-- Payment number -->
           <div class="field">
             <label>M-Pesa Payment Number</label>
-            <input id="pay-phone" type="tel" placeholder="07XX XXX XXX" inputmode="numeric" maxlength="10">
-            <div class="field-hint">STK push will be sent to this number</div>
+            <input id="pay-phone" type="tel" placeholder="07XX XXX XXX" inputmode="numeric" maxlength="10" oninput="syncSameNumber()">
+            <div class="field-hint">STK push from <strong>LYCO SERVICES</strong> will be sent to this number</div>
           </div>
-          <div class="field">
+
+          <!-- Same-number checkbox -->
+          <label class="same-num-row" id="same-num-row" for="same-num-chk">
+            <input type="checkbox" id="same-num-chk" onchange="toggleSameNumber()">
+            <div class="same-num-label-text">
+              Paying &amp; receiving number are the same
+              <small>Tick this to auto-fill the receiving number</small>
+            </div>
+          </label>
+
+          <!-- Receiving number (hidden when checkbox checked) -->
+          <div class="field" id="recv-field">
             <label>Receiving Number</label>
             <input id="recv-phone" type="tel" placeholder="07XX XXX XXX" inputmode="numeric" maxlength="10">
             <div class="field-hint">Number that receives the bundle or airtime</div>
           </div>
+
           <div id="form-err"></div>
           <button class="pay-btn" id="pay-btn" onclick="submitOrder()">Pay -</button>
-          <div class="pay-secure">Secured by M-Pesa - Powered by Bingwa Flash</div>
+          <div class="pay-secure">Secured by M-Pesa · Powered by Bingwa Flash</div>
         </div>
 
+        <!-- STK waiting screen -->
         <div id="stk-screen">
           <div id="stk-waiting">
             <div class="stk-inner">
               <div class="wait-orb" aria-hidden="true"><div class="wait-phone"></div></div>
               <div class="stk-title">Approve on Your Phone</div>
-              <div class="stk-desc">An M-Pesa prompt has been sent. Enter your PIN, then keep this page open while we wait for the confirmation callback.</div>
-              <div class="stk-status"><span class="stk-status-dot"></span><span>Waiting for confirmation</span></div>
+              <div class="stk-sender-tag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 15.92z"/></svg>
+                From: LYCO SERVICES
+              </div>
+              <div class="stk-desc">You'll receive an M-Pesa STK prompt from <strong>LYCO SERVICES</strong>. Enter your PIN to approve, then keep this page open — it updates automatically once Safaricom confirms.</div>
+              <div class="stk-status"><span class="stk-status-dot"></span><span>Waiting for confirmation…</span></div>
               <div class="stk-steps">
-                <div class="stk-step"><div class="step-n">1</div><div>Tap the M-Pesa notification on your phone</div></div>
-                <div class="stk-step"><div class="step-n">2</div><div>Enter your M-Pesa PIN to approve</div></div>
-                <div class="stk-step"><div class="step-n">3</div><div>This page updates automatically when Safaricom confirms the payment</div></div>
+                <div class="stk-step"><div class="step-n">1</div><div>Open the M-Pesa notification from <strong>LYCO SERVICES</strong> on your phone</div></div>
+                <div class="stk-step"><div class="step-n">2</div><div>Enter your M-Pesa PIN to approve the payment</div></div>
+                <div class="stk-step"><div class="step-n">3</div><div>This page updates automatically once Safaricom confirms</div></div>
               </div>
             </div>
           </div>
         </div>
 
+        <!-- Result dialog -->
         <div class="result-dialog" id="result-dialog" role="dialog" aria-modal="true" aria-labelledby="result-title">
           <div class="result-card">
             <div class="result-icon success" id="result-icon" aria-hidden="true"></div>
             <div class="result-title" id="result-title">Payment Confirmed</div>
             <div class="result-message" id="result-message">Your payment was received successfully.</div>
+            <div class="result-ref" id="result-ref" style="display:none"></div>
             <button class="result-ok" onclick="closeResultDialog()">OK</button>
           </div>
         </div>
 
+        <!-- Contact card -->
         <div class="contact-card" id="contact-card" style="display:none">
           <div class="contact-card-title">Contact Agent</div>
           <div class="contact-row" id="contact-phone-row" style="display:none">
@@ -283,7 +415,7 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
           </div>
         </div>
 
-
+        <!-- Register banner -->
         <div class="register-banner" id="register-banner">
           <div class="rb-text">
             <strong>Want faster service?</strong>
@@ -306,21 +438,38 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
 </footer>
 
 <script>
+/* ── Theme toggle ── */
 function _syncTheme(){
   var d=document.documentElement.getAttribute('data-theme')==='dark';
-  var m=document.getElementById('ico-moon');
-  var s=document.getElementById('ico-sun');
-  if(m) m.style.display=d?'block':'none';
-  if(s) s.style.display=d?'none':'block';
+  var m=document.getElementById('ico-moon');var s=document.getElementById('ico-sun');
+  if(m)m.style.display=d?'block':'none';if(s)s.style.display=d?'none':'block';
 }
 _syncTheme();
 window.toggleTheme=function(){
   var n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
   document.documentElement.setAttribute('data-theme',n);
-  localStorage.setItem('bf-theme',n);
-  _syncTheme();
+  localStorage.setItem('bf-theme',n);_syncTheme();
+};
+
+/* ── Same-number checkbox helpers ── */
+window.toggleSameNumber=function(){
+  var chk=document.getElementById('same-num-chk');
+  var recvField=document.getElementById('recv-field');
+  if(chk.checked){
+    recvField.classList.add('hidden');
+    document.getElementById('recv-phone').value=document.getElementById('pay-phone').value;
+  }else{
+    recvField.classList.remove('hidden');
+  }
+};
+window.syncSameNumber=function(){
+  var chk=document.getElementById('same-num-chk');
+  if(chk&&chk.checked){
+    document.getElementById('recv-phone').value=document.getElementById('pay-phone').value;
+  }
 };
 </script>
+
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getFirestore,doc,getDoc,collection,query,where,getDocs}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -336,73 +485,44 @@ let activeTxId=null,stkPollInterval=null,lastPaymentResult="";
 
 function el(id){return document.getElementById(id);}
 function setPayButtonLabel(amount){
-  // Rebuild the label as text because dialog/reset states can replace the initial span markup.
   const btn=el("pay-btn");
   if(btn)btn.textContent=amount?("Pay KSh "+amount):"Pay -";
 }
-
-function showError(m){
-  el("loading").style.display="none";
-  el("error-state").style.display="block";
-  el("err-msg").innerHTML=m;
-}
-
+function showError(m){el("loading").style.display="none";el("error-state").style.display="block";el("err-msg").innerHTML=m;}
 function showMaintenance(agentName,agentPhone){
-  el("loading").style.display="none";
-  el("agent-bar").style.display="none";
+  el("loading").style.display="none";el("agent-bar").style.display="none";
   const cv=el("maint-contact-value");
-  if(agentPhone){
-    cv.innerHTML=`Call your agent: <a href="tel:${agentPhone}">${agentPhone}</a>`;
-  } else if(agentName){
-    cv.textContent="Contact "+agentName+" directly.";
-  }
-  if(agentName){
-    el("maint-sub").textContent=agentName+"'s order page is temporarily under maintenance. Please check back soon.";
-  }
+  if(agentPhone){cv.innerHTML=`Call your agent: <a href="tel:${agentPhone}">${agentPhone}</a>`;}
+  else if(agentName){cv.textContent="Contact "+agentName+" directly.";}
+  if(agentName){el("maint-sub").textContent=agentName+"'s order page is temporarily under maintenance. Please check back soon.";}
   el("maintenance-state").style.display="block";
 }
-
 function tsMillis(v){
-  if(!v)return 0;
-  if(typeof v.toMillis==="function")return v.toMillis();
-  if(typeof v.toDate==="function")return v.toDate().getTime();
-  if(typeof v==="number")return v;
-  return 0;
+  if(!v)return 0;if(typeof v.toMillis==="function")return v.toMillis();
+  if(typeof v.toDate==="function")return v.toDate().getTime();if(typeof v==="number")return v;return 0;
 }
-
 async function loadSubscriptionConfig(){
   try{
     const s=await getDoc(doc(db,"config","subscription"));
     if(!s.exists())return{configured:false,pricePerMonth:1};
     const d=s.exists()?s.data():{};
     return{configured:true,pricePerMonth:Math.max(0,Number(d.pricePerMonth||0))};
-  }catch(_){
-    return{configured:false,pricePerMonth:1};
-  }
+  }catch(_){return{configured:false,pricePerMonth:1};}
 }
-
 function hasActiveWebOrderSubscription(agent,cfg){
   if(!cfg.configured)return false;
   if(Number(cfg.pricePerMonth||0)<=0)return true;
   return tsMillis(agent.webOrderSubscriptionUntil)>Date.now();
 }
-
 async function loadAgentBundle(username){
-  // Prefer the public mirror because it is one direct document read. Older app
-  // builds may not have created it yet, so keep the private query fallback.
   const publicSnap=await getDoc(doc(db,"publicAgents",username));
   if(publicSnap.exists()){
-    const profile=publicSnap.data();
-    profile.username=profile.username||username;
-    profile.uid=profile.uid||"";
+    const profile=publicSnap.data();profile.username=profile.username||username;profile.uid=profile.uid||"";
     if(profile.uid)return{profile,uid:profile.uid,offersJson:String(profile.offersJson||"")};
   }
   const q=query(collection(db,"agents"),where("username","==",username));
-  const snap=await getDocs(q);
-  if(snap.empty)return null;
-  const profile=snap.docs[0].data();
-  profile.uid=profile.uid||snap.docs[0].id;
-  profile.username=profile.username||username;
+  const snap=await getDocs(q);if(snap.empty)return null;
+  const profile=snap.docs[0].data();profile.uid=profile.uid||snap.docs[0].id;profile.username=profile.username||username;
   return{profile,uid:snap.docs[0].id,offersJson:""};
 }
 
@@ -411,10 +531,7 @@ async function init(){
   try{
     try{
       const cfgSnap=await getDoc(doc(db,"config","global_settings"));
-      if(cfgSnap.exists()&&cfgSnap.data().websitesMaintenance===true){
-        showMaintenance(null,null);
-        return;
-      }
+      if(cfgSnap.exists()&&cfgSnap.data().websitesMaintenance===true){showMaintenance(null,null);return;}
     }catch(_){}
 
     const bundle=await loadAgentBundle(USERNAME);
@@ -427,29 +544,20 @@ async function init(){
     const subscriptionConfig=await loadSubscriptionConfig();
 
     if(!agentProfile.webOrdersOn||!hasActiveWebOrderSubscription(agentProfile,subscriptionConfig)){
-      showMaintenance(n,agentPhone);
-      return;
+      showMaintenance(n,agentPhone);return;
     }
 
     el("ag-name").textContent=businessName;
-    const verifiedBadge=el("verified-badge");
-    const verified=agentProfile.isVerified===true;
-    if(verifiedBadge) verifiedBadge.style.display=verified?"inline-block":"none";
-    const verifiedNote=el("ag-verified-note");
-    if(verifiedNote) verifiedNote.style.display=verified?"block":"none";
-    el("ag-handle").textContent="AGENT "+n;
-    el("ag-av").textContent=businessName.charAt(0).toUpperCase();
+    const verifiedBadge=el("verified-badge");const verified=agentProfile.isVerified===true;
+    if(verifiedBadge)verifiedBadge.style.display=verified?"inline-block":"none";
+    const verifiedNote=el("ag-verified-note");if(verifiedNote)verifiedNote.style.display=verified?"block":"none";
+    el("ag-handle").textContent="AGENT "+n;el("ag-av").textContent=businessName.charAt(0).toUpperCase();
     el("agent-bar").style.display="flex";
 
-    const regBanner=el("register-banner");
-    const regLink=el("register-link");
+    const regBanner=el("register-banner");const regLink=el("register-link");
     if(agentProfile.clientRegistrationOn===true){
-      regLink.href="/clients/"+encodeURIComponent(USERNAME);
-      regBanner.style.display="flex";
-    }else{
-      regLink.removeAttribute("href");
-      regBanner.remove();
-    }
+      regLink.href="/clients/"+encodeURIComponent(USERNAME);regBanner.style.display="flex";
+    }else{regLink.removeAttribute("href");regBanner.remove();}
     if(agentPhone){el("contact-phone").innerHTML=`<a href="tel:${agentPhone}">${agentPhone}</a>`;el("contact-phone-row").style.display="flex";}
     el("contact-card").style.display="block";
 
@@ -459,7 +567,6 @@ async function init(){
       if(d.exists())offersJson=String(d.data().json||"");
     }
     if(!offersJson){showError("No offers available.");return;}
-    // Match the app's web-order rule: only enabled public offers priced KSh 10 to KSh 100 should show online.
     const offers=JSON.parse(offersJson||"[]").filter(o=>o.enabled&&o.webOrderEnabled===true&&o.offerCode&&o.offerCode.trim()&&Number(o.agentPrice||0)>=10&&Number(o.agentPrice||0)<=100);
     if(!offers.length){showError("No offers available.");return;}
 
@@ -471,99 +578,85 @@ async function init(){
       const section=document.createElement("section");section.className="offer-section";
       const h=document.createElement("div");h.className="cat-header";h.textContent=cat;section.appendChild(h);
       const g=document.createElement("div");g.className="offers-grid";
-      offers.filter(o=>(o.category||"General")===cat).sort((a,b)=>Number(a.agentPrice||0)-Number(b.agentPrice||0)||String(a.name||"").localeCompare(String(b.name||""))).forEach(o=>{
-        const b=document.createElement("button");b.className="offer-btn";b.dataset.id=o.id;
-        b.innerHTML=`<div class="ob-name">${o.name}</div><div class="ob-price">KSh ${o.agentPrice}</div>`;
-        b.addEventListener("click",()=>{
-          document.querySelectorAll(".offer-btn").forEach(x=>x.classList.remove("selected"));
-          b.classList.add("selected");selectedOffer=o;
-          el("sel-name").textContent=o.name;
-          el("sel-price").textContent="KSh "+o.agentPrice;
-          setPayButtonLabel(o.agentPrice);
-          el("order-form").style.display="block";
-          el("order-form").scrollIntoView({behavior:"smooth",block:"nearest"});
+      offers.filter(o=>(o.category||"General")===cat)
+        .sort((a,b)=>Number(a.agentPrice||0)-Number(b.agentPrice||0)||String(a.name||"").localeCompare(String(b.name||"")))
+        .forEach(o=>{
+          const b=document.createElement("button");b.className="offer-btn";b.dataset.id=o.id;
+          b.innerHTML=`<div class="ob-name">${o.name}</div><div class="ob-price">KSh ${o.agentPrice}</div>`;
+          b.addEventListener("click",()=>{
+            document.querySelectorAll(".offer-btn").forEach(x=>x.classList.remove("selected"));
+            b.classList.add("selected");selectedOffer=o;
+            el("sel-name").textContent=o.name;el("sel-price").textContent="KSh "+o.agentPrice;
+            setPayButtonLabel(o.agentPrice);el("order-form").style.display="block";
+            el("order-form").scrollIntoView({behavior:"smooth",block:"nearest"});
+          });
+          g.appendChild(b);
         });
-        g.appendChild(b);
-      });
       section.appendChild(g);grid.appendChild(section);
     });
-    el("loading").style.display="none";
-    el("content").style.display="block";
+    el("loading").style.display="none";el("content").style.display="block";
   }catch(e){showError("Failed to load: "+e.message);}
 }
 
 function valid07(p){return/^(07|01)\d{8}$/.test(p.trim());}
 function norm(p){const s=p.trim().replace(/\s/g,"");return(/^0/.test(s))?"254"+s.slice(1):s;}
-function stopOrderPolling(){
-  activeTxId=null;
-  if(stkPollInterval){clearInterval(stkPollInterval);stkPollInterval=null;}
-}
+function stopOrderPolling(){activeTxId=null;if(stkPollInterval){clearInterval(stkPollInterval);stkPollInterval=null;}}
 function resetStkState(){stopOrderPolling();}
 function restoreOrderForm(){
-  el("stk-screen").style.display="none";
-  el("order-form").style.display="block";
-  const btn=el("pay-btn");
-  btn.disabled=false;
-  setPayButtonLabel(selectedOffer?selectedOffer.agentPrice:null);
+  el("stk-screen").style.display="none";el("order-form").style.display="block";
+  const btn=el("pay-btn");btn.disabled=false;setPayButtonLabel(selectedOffer?selectedOffer.agentPrice:null);
 }
 function showStkWaiting(){
-  // No shortcode or secret data is rendered here; clients only see the prompt status.
-  el("order-form").style.display="none";
-  el("stk-screen").style.display="block";
-  el("stk-waiting").style.display="block";
-  el("stk-screen").scrollIntoView({behavior:"smooth",block:"center"});
+  el("order-form").style.display="none";el("stk-screen").style.display="block";
+  el("stk-waiting").style.display="block";el("stk-screen").scrollIntoView({behavior:"smooth",block:"center"});
 }
 function clearOfferSelection(){
   document.querySelectorAll(".offer-btn").forEach(x=>x.classList.remove("selected"));
-  selectedOffer=null;
-  el("order-form").style.display="none";
-  const btn=el("pay-btn");
-  btn.disabled=false;
-  setPayButtonLabel(null);
+  selectedOffer=null;el("order-form").style.display="none";
+  // Reset same-number checkbox
+  const chk=el("same-num-chk");if(chk)chk.checked=false;
+  const recvField=el("recv-field");if(recvField)recvField.classList.remove("hidden");
+  const btn=el("pay-btn");btn.disabled=false;setPayButtonLabel(null);
 }
-function showResultDialog(type,title,message){
+function showResultDialog(type,title,message,ref){
   lastPaymentResult=type;
-  const dialog=el("result-dialog");
-  const icon=el("result-icon");
+  const dialog=el("result-dialog");const icon=el("result-icon");
   icon.className="result-icon "+(type==="success"?"success":"fail");
-  el("result-title").textContent=title;
-  el("result-message").textContent=message;
+  el("result-title").textContent=title;el("result-message").textContent=message;
+  const refEl=el("result-ref");
+  if(ref){refEl.textContent=ref;refEl.style.display="block";}else{refEl.style.display="none";}
   dialog.style.display="flex";
 }
-function showOrderSuccess(message){
-  resetStkState();
-  el("stk-screen").style.display="none";
-  showResultDialog("success","Payment Confirmed",message||"Your payment was received successfully. Your order is now being processed.");
+function showOrderSuccess(message,ref){
+  resetStkState();el("stk-screen").style.display="none";
+  showResultDialog("success","Payment Confirmed",message||"Your payment was confirmed. Your order is now being processed.",ref);
 }
 function showOrderFailure(message){
-  resetStkState();
-  el("stk-screen").style.display="none";
+  resetStkState();el("stk-screen").style.display="none";
   showResultDialog("fail","Payment Not Completed",message||"Payment failed or was cancelled. You were not charged if the prompt was not approved.");
 }
 async function pollOrderStatus(txId){
   if(!txId)return;
   try{
     const res=await fetch(`${STATUS_URL}?txId=${encodeURIComponent(txId)}`);
-    const data=await res.json();
-    if(!res.ok||data.error)return;
+    const data=await res.json();if(!res.ok||data.error)return;
     const status=String(data.status||"pending").toLowerCase();
     const failReason=data.failReason||data.resultDesc||"Payment failed.";
-    if(status==="executed"){showOrderSuccess("Your payment was confirmed successfully. Your order is being processed.");return;}
+    const mpesaRef=data.mpesaRef||data.checkoutRequestID||"";
+    if(status==="executed"){showOrderSuccess("Your payment was confirmed successfully. Your order is being processed.",mpesaRef?"M-Pesa Ref: "+mpesaRef:"");return;}
     if(status==="failed"||status==="cancelled"||status==="expired"){showOrderFailure(failReason);return;}
   }catch(e){console.error("pollOrderStatus:",e);}
 }
 function startOrderStatusPolling(txId){
-  // The backend is the source of truth. This keeps waiting until callback status changes.
-  activeTxId=txId;
-  if(stkPollInterval)clearInterval(stkPollInterval);
-  stkPollInterval=setInterval(()=>{pollOrderStatus(txId);},3000);
-  pollOrderStatus(txId);
+  activeTxId=txId;if(stkPollInterval)clearInterval(stkPollInterval);
+  stkPollInterval=setInterval(()=>{pollOrderStatus(txId);},3000);pollOrderStatus(txId);
 }
 
 window.submitOrder=async function(){
   if(!selectedOffer)return;
   const pp=el("pay-phone").value;
-  const rp=el("recv-phone").value;
+  const chk=el("same-num-chk");
+  const rp=chk&&chk.checked?pp:el("recv-phone").value;
   const fe=el("form-err");fe.style.display="none";
   if(!valid07(pp)){fe.textContent="Enter a valid M-Pesa number (07XX or 01XX)";fe.style.display="block";return;}
   if(!valid07(rp)){fe.textContent="Enter a valid receiving number (07XX or 01XX)";fe.style.display="block";return;}
@@ -579,20 +672,12 @@ window.submitOrder=async function(){
 
 window.closeResultDialog=function(){
   el("result-dialog").style.display="none";
-  if(lastPaymentResult==="success"){
-    el("stk-screen").style.display="none";
-    clearOfferSelection();
-  }else{
-    restoreOrderForm();
-  }
-  lastPaymentResult="";
+  if(lastPaymentResult==="success"){el("stk-screen").style.display="none";clearOfferSelection();}
+  else{restoreOrderForm();}lastPaymentResult="";
 };
-
 window.retryOrder=function(){resetStkState();restoreOrderForm();};
 
 init();
 </script>
 </body>
 </html>
-
-
