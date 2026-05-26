@@ -207,23 +207,43 @@ main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2
 .pay-btn:hover{transform:translateY(-2px)} .pay-btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
 .pay-secure{font-size:.69rem;color:var(--text3);text-align:center;font-weight:700}
 
-/* ── STK SCREEN ── */
-#stk-screen{display:none;padding:4px 0}
-.stk-inner{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(16,185,129,.13),rgba(251,191,36,.09));border:1.5px solid rgba(16,185,129,.24);border-radius:24px;padding:22px;text-align:center;margin-bottom:14px;box-shadow:var(--cm)}
+/* ── STK SCREEN — fixed fullscreen overlay ── */
+#stk-screen{
+  position:fixed;inset:0;z-index:190;display:none;
+  align-items:center;justify-content:center;
+  padding:18px 18px max(22px,env(safe-area-inset-bottom));
+  background:rgba(7,10,9,.72);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+.stk-overlay-card{
+  width:min(420px,100%);
+  background:linear-gradient(180deg,var(--card-bg),var(--card-end));
+  border:1.5px solid var(--border);
+  border-radius:24px;
+  padding:4px 0 0;
+  box-shadow:0 28px 90px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08);
+  animation:popIn .28s ease both;
+  overflow:hidden;
+}
+.stk-inner{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(16,185,129,.13),rgba(251,191,36,.09));border-bottom:1.5px solid rgba(16,185,129,.18);padding:22px;text-align:center;}
 .stk-inner::before{content:"";position:absolute;inset:-45% -20% auto;height:170px;background:radial-gradient(circle,rgba(251,191,36,.28),transparent 58%);animation:waitGlow 4s ease-in-out infinite;pointer-events:none}
-.wait-orb{position:relative;width:72px;height:72px;border-radius:50%;margin:2px auto 14px;background:linear-gradient(135deg,var(--g),var(--y));box-shadow:0 0 0 10px rgba(16,185,129,.10),0 18px 42px rgba(16,185,129,.24);display:flex;align-items:center;justify-content:center}
+.wait-orb{position:relative;width:68px;height:68px;border-radius:50%;margin:2px auto 14px;background:linear-gradient(135deg,var(--g),var(--y));box-shadow:0 0 0 10px rgba(16,185,129,.10),0 18px 42px rgba(16,185,129,.24);display:flex;align-items:center;justify-content:center}
 .wait-orb::before,.wait-orb::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:1.5px solid rgba(16,185,129,.30);animation:waitPulse 1.8s ease-out infinite}
 .wait-orb::after{animation-delay:.65s}
-.wait-phone{width:30px;height:44px;border:3px solid rgba(11,15,13,.75);border-radius:10px;background:rgba(255,255,255,.42);box-shadow:inset 0 -5px 0 rgba(0,0,0,.10)}
-.stk-title{position:relative;font-family:'Sora',sans-serif;font-size:1.02rem;font-weight:900;color:var(--text);margin-bottom:6px}
-.stk-desc{position:relative;font-size:.8rem;color:var(--text2);line-height:1.65;margin-bottom:14px;font-weight:650}
+.wait-phone{width:28px;height:42px;border:3px solid rgba(11,15,13,.75);border-radius:9px;background:rgba(255,255,255,.42);box-shadow:inset 0 -5px 0 rgba(0,0,0,.10)}
+.stk-title{position:relative;font-family:'Sora',sans-serif;font-size:1rem;font-weight:900;color:var(--text);margin-bottom:6px}
+.stk-desc{position:relative;font-size:.78rem;color:var(--text2);line-height:1.65;margin-bottom:12px;font-weight:650}
 .stk-sender-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;background:rgba(251,191,36,.1);border:1.5px solid rgba(251,191,36,.25);border-radius:var(--pill);font-size:.68rem;font-weight:900;color:var(--yd);margin-bottom:12px;font-family:'Sora',sans-serif;letter-spacing:.04em}
 .stk-sender-tag svg{width:11px;height:11px}
-.stk-status{position:relative;display:inline-flex;align-items:center;gap:8px;font-size:.72rem;color:var(--text2);background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--pill);padding:8px 14px;margin-bottom:14px;font-weight:800;box-shadow:var(--cs)}
+.stk-status{position:relative;display:inline-flex;align-items:center;gap:8px;font-size:.72rem;color:var(--text2);background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--pill);padding:7px 13px;margin-bottom:12px;font-weight:800;box-shadow:var(--cs)}
 .stk-status-dot{width:7px;height:7px;border-radius:50%;background:var(--g);box-shadow:0 0 0 5px rgba(16,185,129,.12);animation:pulse 1.4s infinite}
-.stk-steps{text-align:left;display:flex;flex-direction:column;gap:8px;position:relative}
-.stk-step{display:flex;align-items:flex-start;gap:10px;font-size:.77rem;color:var(--text2);font-weight:650;background:rgba(255,255,255,.035);border:1px solid var(--border);border-radius:14px;padding:9px 10px}
+.stk-steps{text-align:left;display:flex;flex-direction:column;gap:7px;position:relative}
+.stk-step{display:flex;align-items:flex-start;gap:10px;font-size:.76rem;color:var(--text2);font-weight:650;background:rgba(255,255,255,.035);border:1px solid var(--border);border-radius:12px;padding:9px 10px}
 .step-n{width:22px;height:22px;border-radius:50%;background:var(--surface);border:2px solid rgba(34,197,94,.3);display:flex;align-items:center;justify-content:center;font-size:.67rem;font-weight:900;color:var(--gd);flex-shrink:0;margin-top:1px;box-shadow:var(--cs)}
+/* Cancel / dismiss link inside STK overlay */
+.stk-cancel-row{padding:12px 22px 16px;text-align:center}
+.stk-cancel-btn{font-size:.72rem;font-weight:800;color:var(--text3);background:none;border:none;cursor:pointer;font-family:inherit;text-decoration:underline;text-underline-offset:3px;transition:color .15s}
+.stk-cancel-btn:hover{color:var(--red)}
 
 /* ── RESULT DIALOG ── */
 .result-dialog{position:fixed;inset:0;z-index:200;display:none;align-items:flex-end;justify-content:center;padding:18px 18px max(22px,env(safe-area-inset-bottom));background:rgba(7,10,9,.64);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
@@ -366,23 +386,26 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
           <div class="pay-secure">Secured by M-Pesa · Powered by Bingwa Flash</div>
         </div>
 
-        <!-- STK waiting screen -->
-        <div id="stk-screen">
-          <div id="stk-waiting">
+        <!-- STK waiting screen — fixed fullscreen overlay -->
+        <div id="stk-screen" role="dialog" aria-modal="true" aria-labelledby="stk-title">
+          <div class="stk-overlay-card" id="stk-waiting">
             <div class="stk-inner">
               <div class="wait-orb" aria-hidden="true"><div class="wait-phone"></div></div>
-              <div class="stk-title">Approve on Your Phone</div>
+              <div class="stk-title" id="stk-title">Approve on Your Phone</div>
               <div class="stk-sender-tag">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 15.92z"/></svg>
                 From: LYCO SERVICES
               </div>
-              <div class="stk-desc">You'll receive an M-Pesa STK prompt from <strong>LYCO SERVICES</strong>. Enter your PIN to approve, then keep this page open — it updates automatically once Safaricom confirms.</div>
+              <div class="stk-desc">You'll receive an M-Pesa STK prompt from <strong>LYCO SERVICES</strong>. Enter your PIN to approve — this overlay updates automatically once Safaricom confirms.</div>
               <div class="stk-status"><span class="stk-status-dot"></span><span>Waiting for confirmation…</span></div>
               <div class="stk-steps">
                 <div class="stk-step"><div class="step-n">1</div><div>Open the M-Pesa notification from <strong>LYCO SERVICES</strong> on your phone</div></div>
                 <div class="stk-step"><div class="step-n">2</div><div>Enter your M-Pesa PIN to approve the payment</div></div>
                 <div class="stk-step"><div class="step-n">3</div><div>This page updates automatically once Safaricom confirms</div></div>
               </div>
+            </div>
+            <div class="stk-cancel-row">
+              <button class="stk-cancel-btn" onclick="cancelStkOverlay()">Didn't receive a prompt? Cancel and retry</button>
             </div>
           </div>
         </div>
@@ -603,19 +626,28 @@ function norm(p){const s=p.trim().replace(/\s/g,"");return(/^0/.test(s))?"254"+s
 function stopOrderPolling(){activeTxId=null;if(stkPollInterval){clearInterval(stkPollInterval);stkPollInterval=null;}}
 function resetStkState(){stopOrderPolling();}
 function restoreOrderForm(){
-  el("stk-screen").style.display="none";el("order-form").style.display="block";
+  el("stk-screen").style.display="none";
   const btn=el("pay-btn");btn.disabled=false;setPayButtonLabel(selectedOffer?selectedOffer.agentPrice:null);
 }
 function showStkWaiting(){
-  el("order-form").style.display="none";el("stk-screen").style.display="block";
-  el("stk-waiting").style.display="block";el("stk-screen").scrollIntoView({behavior:"smooth",block:"center"});
+  // Show as fixed overlay — order form stays visible underneath
+  el("stk-screen").style.display="flex";
 }
+window.cancelStkOverlay=function(){
+  resetStkState();
+  el("stk-screen").style.display="none";
+  // Restore the pay button so the user can retry
+  const btn=el("pay-btn");btn.disabled=false;setPayButtonLabel(selectedOffer?selectedOffer.agentPrice:null);
+};
 function clearOfferSelection(){
   document.querySelectorAll(".offer-btn").forEach(x=>x.classList.remove("selected"));
-  selectedOffer=null;el("order-form").style.display="none";
+  selectedOffer=null;
+  el("order-form").style.display="none";
   // Reset same-number checkbox
-  const chk=el("same-num-chk");if(chk)chk.checked=false;
+  const chk=el("same-num-chk");if(chk){chk.checked=false;}
   const recvField=el("recv-field");if(recvField)recvField.classList.remove("hidden");
+  const pp=el("pay-phone");if(pp)pp.value="";
+  const rp=el("recv-phone");if(rp)rp.value="";
   const btn=el("pay-btn");btn.disabled=false;setPayButtonLabel(null);
 }
 function showResultDialog(type,title,message,ref){
@@ -672,8 +704,14 @@ window.submitOrder=async function(){
 
 window.closeResultDialog=function(){
   el("result-dialog").style.display="none";
-  if(lastPaymentResult==="success"){el("stk-screen").style.display="none";clearOfferSelection();}
-  else{restoreOrderForm();}lastPaymentResult="";
+  el("stk-screen").style.display="none";
+  if(lastPaymentResult==="success"){
+    clearOfferSelection();
+  }else{
+    // Failure: just re-enable the pay button; order form & offer stay selected
+    const btn=el("pay-btn");btn.disabled=false;setPayButtonLabel(selectedOffer?selectedOffer.agentPrice:null);
+  }
+  lastPaymentResult="";
 };
 window.retryOrder=function(){resetStkState();restoreOrderForm();};
 
