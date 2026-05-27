@@ -3,7 +3,6 @@
 > Bingwa Flash is an Android app and web toolkit for Bingwa Sokoni agents who sell Safaricom/M-Pesa bundles and want to automate USSD fulfilment, client follow-up, web orders, and transaction tracking.
 
 Official site: https://bingwaflash.co.ke/
-Download page: https://bingwaflash.co.ke/download/
 Portal: https://portal.bingwaflash.co.ke/
 Privacy policy: https://bingwaflash.co.ke/privacy.html
 Terms of service: https://bingwaflash.co.ke/terms.html
@@ -480,7 +479,6 @@ No. Bingwa Flash is an independent automation tool for agents. Safaricom and M-P
 ## Public Pages
 
 - Home: https://bingwaflash.co.ke/
-- Downloads: https://bingwaflash.co.ke/download/
 - Privacy: https://bingwaflash.co.ke/privacy.html
 - Terms: https://bingwaflash.co.ke/terms.html
 - Agent order pages: https://bingwaflash.co.ke/{agent-username}

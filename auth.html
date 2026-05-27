@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-<script>
-(function(){
-  var t=localStorage.getItem('bf-theme')||'dark';
-  document.documentElement.setAttribute('data-theme',t);
-})();
-</script>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Account — Bingwa Flash</title>
 <link rel="icon" type="image/png" href="/logo.png">
@@ -27,27 +21,11 @@
   --bg:#0e0e10;--surface:#18181b;--surface2:#232326;--border:#2a2a2e;--border2:#3a3a3f;
   --text:#f4f4f5;--text2:#a1a1aa;--text3:#71717a;--hbg:rgba(14,14,16,.9);--card-bg:#1c1c1f;--input-bg:#232326;
   --blob1:rgba(245,197,24,.12);--blob2:rgba(34,197,94,.09);}
-[data-theme="light"]{
-  --bg:#FFFBEB;--surface:#FFFFFF;--surface2:#F9FAFB;--border:rgba(245,197,24,.22);--border2:#E5E7EB;
-  --text:#111827;--text2:#4B5563;--text3:#9CA3AF;--hbg:rgba(255,251,235,.9);--card-bg:#FFFFFF;--input-bg:#F9FAFB;
-  --blob1:rgba(245,197,24,.18);--blob2:rgba(34,197,94,.13);}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;transition:background .25s,color .25s}
 body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:radial-gradient(ellipse 600px 500px at -5% -5%,var(--blob1) 0%,transparent 65%),
   radial-gradient(ellipse 500px 400px at 105% 25%,var(--blob2) 0%,transparent 65%),var(--bg);}
-header{position:sticky;top:0;z-index:100;background:var(--hbg);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:2px solid var(--border);height:60px;padding:0 32px;display:flex;align-items:center;justify-content:space-between;transition:background .25s,border-color .25s}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.logo img{width:36px;height:36px;border-radius:10px;object-fit:contain;}
-.logo-text{font-family:'Sora',sans-serif;font-size:.93rem;font-weight:700;color:var(--text)}
-.logo-text b{color:var(--gd);font-weight:800}
-nav a{font-size:.81rem;font-weight:700;color:var(--text2);text-decoration:none;padding:6px 12px;border-radius:var(--pill);transition:all .15s}
-nav a:hover{background:rgba(245,197,24,.13);color:var(--text)}
-.hdr-r{display:flex;align-items:center;gap:8px}
-.thm{width:34px;height:34px;border-radius:var(--pill);background:var(--surface2);border:2px solid var(--border);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
-.thm:hover{border-color:var(--y);color:var(--text)} .thm svg{width:14px;height:14px}
-.hdr-cta{font-family:'Sora',sans-serif;font-size:.79rem;font-weight:800;padding:8px 18px;border-radius:var(--pill);background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;box-shadow:var(--cg);transition:transform .15s}
-.hdr-cta:hover{transform:translateY(-2px)} .hdr-cta svg{width:13px;height:13px}
 main{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 20px 64px}
 .card{background:var(--card-bg);border-radius:var(--r24);box-shadow:var(--cl);border:2px solid var(--border);width:100%;max-width:440px;overflow:hidden;animation:fadeUp .4s ease both;transition:background .25s,border-color .25s}
 .card-top{padding:28px 28px 0;text-align:center}
@@ -92,33 +70,21 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 
 #reset-err{font-size:.76rem;color:var(--red);display:none;text-align:center;margin-top:8px}
 footer{background:var(--surface);border-top:2px solid var(--border);padding:22px 32px;transition:background .25s,border-color .25s}
 .ft-in{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
-.ft-logo{display:flex;align-items:center;gap:8px;text-decoration:nonecolor:inherit;}
+.ft-logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit;}
 .ft-logo img{width:26px;height:26px;border-radius:7px;object-fit:contain;}
 .ft-links{display:flex;gap:16px;flex-wrap:wrap}
 .ft-links a{font-size:.75rem;font-weight:700;color:var(--text3);text-decoration:none;transition:color .15s}.ft-links a:hover{color:var(--text2)}
 .ft-copy{font-size:.72rem;color:var(--text3);font-weight:600}
-@media(max-width:768px){header{padding:0 16px}nav{display:none}.ft-in{flex-direction:column;text-align:center}}
+@media(max-width:768px){.ft-in{flex-direction:column;text-align:center}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-.ft-logo{display:flex;align-items:center;gap:7px;text-decoration:nonecolor:inherit;}
+.ft-logo{display:flex;align-items:center;gap:7px;text-decoration:none;color:inherit;}
 .ft-logo img{width:22px;height:22px;border-radius:6px;object-fit:contain;}
 .ft-name{font-family:'Sora',sans-serif;font-size:.82rem;font-weight:700;color:var(--text2)}
 .ft-copy{font-size:.72rem;color:var(--text3);font-weight:600}
-.logo-text{font-family:'Sora',sans-serif;font-size:.9rem;font-weight:700;color:var(--text)}
-.logo-text b{color:var(--gd);font-weight:800}
 </style>
 </head>
 <body>
-<header>
-  <a class="logo" href="/"><img src="/logo.png" alt="Bingwa Flash"><span class="logo-text">Bingwa <b>Flash</b></span></a>
-  <nav><a href="/" >Home</a><a href="/#features" >Features</a><a href="/download/" >Downloads</a><a href="/privacy.html" >Privacy</a></nav>
-  <div class="hdr-r">
-    <button class="thm" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle dark/light mode">
-      <svg id="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-      <svg id="ico-sun"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-    </button>
-    <a href="/download/" class="hdr-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download</a>
-  </div>
-</header>
+<!-- Account actions open directly into their secure task, without promotional navigation. -->
 <main>
   <div class="card">
     <div class="card-top">
@@ -177,12 +143,12 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:22px
 <footer>
   <div class="ft-in">
     <a class="ft-logo" href="/"><img src="/logo.png" alt="Bingwa Flash"><span class="ft-name">Bingwa Flash</span></a>
-    <div class="ft-links"><a href="/">Home</a><a href="/#features">Features</a><a href="/download/">Downloads</a><a href="/privacy.html">Privacy Policy</a><a href="/cdn-cgi/l/email-protection#7b080e0b0b14090f3b1912151c0c1a1d171a081355181455101e">Contact</a></div>
+    <div class="ft-links"><a href="/">Home</a><a href="/#features">Capabilities</a><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms</a><a href="mailto:support@bingwaflash.co.ke">Contact</a></div>
     <div class="ft-copy">© 2026 Bingwa Flash</div>
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
+<script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getAuth,applyActionCode,verifyPasswordResetCode,confirmPasswordReset}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 const app=initializeApp({apiKey:"AIzaSyBMf_Kc6gFA30TiiqTvPGEUOHRD0ikpL9c",authDomain:"bingwa-flash.firebaseapp.com",projectId:"bingwa-flash",storageBucket:"bingwa-flash.firebasestorage.app",messagingSenderId:"141272100218",appId:"1:141272100218:web:bcfc60bfd8e5945cedbac3"});
@@ -202,47 +168,6 @@ window.toggleEye=function(i,b){const el=document.getElementById(i);const btn=doc
 window.checkReqs=function(){const pw=document.getElementById('pw1').value;[['r-len','rc-len',pw.length>=6],['r-up','rc-up',/[A-Z]/.test(pw)],['r-lo','rc-lo',/[a-z]/.test(pw)],['r-num','rc-num',/[0-9]/.test(pw)]].forEach(([r,c,ok])=>{document.getElementById(r).classList.toggle('met',ok);document.getElementById(c).textContent=ok?'✓':''});checkMatch()};
 window.checkMatch=function(){const a=document.getElementById('pw1').value,b=document.getElementById('pw2').value,m=document.getElementById('match-msg');if(!b){m.textContent='';return}m.style.color=a===b?'var(--gd)':'var(--red)';m.textContent=a===b?'✓ Passwords match':'✕ Passwords do not match'};
 window.doReset=async function(){const pw1=document.getElementById('pw1').value,pw2=document.getElementById('pw2').value;const e=document.getElementById('reset-err'),btn=document.getElementById('reset-btn');e.style.display='none';if(pw1.length<6){e.textContent='Minimum 6 characters required.';e.style.display='block';return}if(!/[A-Z]/.test(pw1)){e.textContent='Include at least one uppercase letter.';e.style.display='block';return}if(!/[a-z]/.test(pw1)){e.textContent='Include at least one lowercase letter.';e.style.display='block';return}if(!/[0-9]/.test(pw1)){e.textContent='Include at least one number.';e.style.display='block';return}if(pw1!==pw2){e.textContent='Passwords do not match.';e.style.display='block';return}btn.disabled=true;btn.textContent='Saving…';try{await confirmPasswordReset(auth,window._oob,pw1);show('state-reset-done')}catch(err){btn.disabled=false;btn.textContent='Set New Password';e.textContent=err.message||'Something went wrong. Try again.';e.style.display='block'}};
-</script>
-<script>
-function _syncTheme(){
-  var d=document.documentElement.getAttribute('data-theme')==='dark';
-  var m=document.getElementById('ico-moon');
-  var s=document.getElementById('ico-sun');
-  if(m) m.style.display=d?'block':'none';
-  if(s) s.style.display=d?'none':'block';
-}
-_syncTheme();
-window.toggleTheme=function(){
-  var n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
-  document.documentElement.setAttribute('data-theme',n);
-  localStorage.setItem('bf-theme',n);
-  _syncTheme();
-};
-</script>
-<script>
-(function(){
-  var els = document.querySelectorAll('.reveal, .ps');
-  if (!els.length) return;
-  function show(el){ el.classList.add('on'); }
-  function checkAll(){
-    els.forEach(function(el){
-      if(!el.classList.contains('on')){
-        var r=el.getBoundingClientRect();
-        if(r.top < window.innerHeight + 50) show(el);
-      }
-    });
-  }
-  setTimeout(checkAll, 50);
-  document.addEventListener("DOMContentLoaded", checkAll);
-  setTimeout(checkAll, 400);
-  window.addEventListener('scroll', checkAll, {passive:true});
-  if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(e){
-      e.forEach(function(v){ if(v.isIntersecting) show(v.target); });
-    },{threshold:0,rootMargin:'50px'});
-    els.forEach(function(el){ io.observe(el); });
-  }
-})();
 </script>
 </body>
 </html>
