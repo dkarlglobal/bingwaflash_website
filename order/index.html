@@ -386,41 +386,6 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
           <div class="pay-secure">Secured by M-Pesa · Powered by Bingwa Flash</div>
         </div>
 
-        <!-- STK waiting screen — fixed fullscreen overlay -->
-        <div id="stk-screen" role="dialog" aria-modal="true" aria-labelledby="stk-title">
-          <div class="stk-overlay-card" id="stk-waiting">
-            <div class="stk-inner">
-              <div class="wait-orb" aria-hidden="true"><div class="wait-phone"></div></div>
-              <div class="stk-title" id="stk-title">Approve on Your Phone</div>
-              <div class="stk-sender-tag">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 15.92z"/></svg>
-                From: LYCO SERVICES
-              </div>
-              <div class="stk-desc">You'll receive an M-Pesa STK prompt from <strong>LYCO SERVICES</strong>. Enter your PIN to approve — this overlay updates automatically once Safaricom confirms.</div>
-              <div class="stk-status"><span class="stk-status-dot"></span><span>Waiting for confirmation…</span></div>
-              <div class="stk-steps">
-                <div class="stk-step"><div class="step-n">1</div><div>Open the M-Pesa notification from <strong>LYCO SERVICES</strong> on your phone</div></div>
-                <div class="stk-step"><div class="step-n">2</div><div>Enter your M-Pesa PIN to approve the payment</div></div>
-                <div class="stk-step"><div class="step-n">3</div><div>This page updates automatically once Safaricom confirms</div></div>
-              </div>
-            </div>
-            <div class="stk-cancel-row">
-              <button class="stk-cancel-btn" onclick="cancelStkOverlay()">Didn't receive a prompt? Cancel and retry</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Result dialog -->
-        <div class="result-dialog" id="result-dialog" role="dialog" aria-modal="true" aria-labelledby="result-title">
-          <div class="result-card">
-            <div class="result-icon success" id="result-icon" aria-hidden="true"></div>
-            <div class="result-title" id="result-title">Payment Confirmed</div>
-            <div class="result-message" id="result-message">Your payment was received successfully.</div>
-            <div class="result-ref" id="result-ref" style="display:none"></div>
-            <button class="result-ok" onclick="closeResultDialog()">OK</button>
-          </div>
-        </div>
-
         <!-- Contact card -->
         <div class="contact-card" id="contact-card" style="display:none">
           <div class="contact-card-title">Contact Agent</div>
@@ -717,5 +682,42 @@ window.retryOrder=function(){resetStkState();restoreOrderForm();};
 
 init();
 </script>
+<!-- ═══ FULLSCREEN OVERLAYS — must be direct body children so position:fixed isn't clipped ═══ -->
+
+<!-- STK waiting overlay -->
+<div id="stk-screen" role="dialog" aria-modal="true" aria-labelledby="stk-title">
+  <div class="stk-overlay-card" id="stk-waiting">
+    <div class="stk-inner">
+      <div class="wait-orb" aria-hidden="true"><div class="wait-phone"></div></div>
+      <div class="stk-title" id="stk-title">Approve on Your Phone</div>
+      <div class="stk-sender-tag">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 15.92z"/></svg>
+        From: LYCO SERVICES
+      </div>
+      <div class="stk-desc">You'll receive an M-Pesa STK prompt from <strong>LYCO SERVICES</strong>. Enter your PIN to approve — this screen updates automatically once Safaricom confirms.</div>
+      <div class="stk-status"><span class="stk-status-dot"></span><span>Waiting for confirmation…</span></div>
+      <div class="stk-steps">
+        <div class="stk-step"><div class="step-n">1</div><div>Open the M-Pesa notification from <strong>LYCO SERVICES</strong> on your phone</div></div>
+        <div class="stk-step"><div class="step-n">2</div><div>Enter your M-Pesa PIN to approve the payment</div></div>
+        <div class="stk-step"><div class="step-n">3</div><div>This page updates automatically once Safaricom confirms</div></div>
+      </div>
+    </div>
+    <div class="stk-cancel-row">
+      <button class="stk-cancel-btn" onclick="cancelStkOverlay()">Didn't receive a prompt? Cancel and retry</button>
+    </div>
+  </div>
+</div>
+
+<!-- Result dialog overlay -->
+<div class="result-dialog" id="result-dialog" role="dialog" aria-modal="true" aria-labelledby="result-title">
+  <div class="result-card">
+    <div class="result-icon success" id="result-icon" aria-hidden="true"></div>
+    <div class="result-title" id="result-title">Payment Confirmed</div>
+    <div class="result-message" id="result-message">Your payment was received successfully.</div>
+    <div class="result-ref" id="result-ref" style="display:none"></div>
+    <button class="result-ok" onclick="closeResultDialog()">OK</button>
+  </div>
+</div>
+
 </body>
 </html>
