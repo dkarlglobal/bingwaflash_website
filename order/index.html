@@ -638,7 +638,7 @@ async function pollOrderStatus(txId){
     const res=await fetch(`${STATUS_URL}?txId=${encodeURIComponent(txId)}`);
     const data=await res.json();if(!res.ok||data.error)return;
     const status=String(data.status||"pending").toLowerCase();
-    const failReason=data.failReason||data.resultDesc||"Payment failed.";
+    const failReason=data.failReason||"Payment was not completed. No charge was made — please try again.";
     const mpesaRef=data.mpesaRef||data.checkoutRequestID||"";
     if(status==="executed"){showOrderSuccess("Your payment was confirmed successfully. Your order is being processed.",mpesaRef?"M-Pesa Ref: "+mpesaRef:"");return;}
     if(status==="failed"||status==="cancelled"||status==="expired"){showOrderFailure(failReason);return;}
