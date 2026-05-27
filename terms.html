@@ -1,18 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Terms of Service - Bingwa Flash</title>
 <link rel="icon" type="image/png" href="/logo.png">
+<script>
+(function(){
+  var t=localStorage.getItem('bf-theme')||'dark';
+  document.documentElement.setAttribute('data-theme',t);
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--y:#F5C518;--yd:#D97706;--g:#22C55E;--gd:#16A34A;--red:#EF4444;--bg:#0e0e10;--surface:#18181b;--surface2:#232326;--border:#2a2a2e;--text:#f4f4f5;--text2:#a1a1aa;--text3:#71717a;--card:#1c1c1f;--r8:8px;--r12:12px;--r20:20px;--pill:999px;--shadow:0 8px 28px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.06)}
+[data-theme="light"]{--bg:#FFFBEB;--surface:#fff;--surface2:#F9FAFB;--border:#E5E7EB;--text:#111827;--text2:#4B5563;--text3:#9CA3AF;--card:#fff}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.page-theme{position:fixed;right:22px;top:22px;z-index:30;width:40px;height:40px;border-radius:var(--pill);background:var(--surface2);border:2px solid var(--border);color:var(--text2);cursor:pointer;display:grid;place-items:center;transition:border-color .15s,color .15s}.page-theme:hover{border-color:var(--y);color:var(--text)}.page-theme svg{width:15px;height:15px}
 .ft-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}.ft-logo img{width:24px;height:24px;border-radius:6px}
 .wrap{max-width:1060px;margin:0 auto;padding:0 32px}.page-hero{padding:52px 0 36px;border-bottom:2px solid var(--border)}.breadcrumb{font-size:.78rem;font-weight:800;color:var(--text3);margin-bottom:12px}.breadcrumb a{color:var(--text3);text-decoration:none}
 h1{font-family:'Sora',sans-serif;font-size:clamp(2rem,4vw,2.8rem);font-weight:800;letter-spacing:-.02em;margin-bottom:8px}h1 em{font-style:normal;color:var(--gd)}.hero-meta{font-size:.8rem;color:var(--text3);font-weight:800}
@@ -24,6 +32,10 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:22px
 </style>
 </head>
 <body>
+<button class="page-theme" onclick="toggleTheme()" type="button" title="Toggle theme" aria-label="Toggle dark/light mode">
+  <svg id="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+  <svg id="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+</button>
 <!-- Legal pages intentionally open with the document content, without promotional navigation. -->
 <div class="page-hero"><div class="wrap">
   <div class="breadcrumb"><a href="/">Home</a> / Terms of Service</div>
@@ -123,6 +135,10 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:22px
   <div class="ft-copy">&copy; 2026 Bingwa Flash</div>
 </div></footer>
 <script>
+// Preserve theme choice without reintroducing a navigation header.
+function syncThemeIcon(){var d=document.documentElement.getAttribute('data-theme')==='dark';document.getElementById('ico-moon').style.display=d?'block':'none';document.getElementById('ico-sun').style.display=d?'none':'block'}
+function toggleTheme(){var c=document.documentElement.getAttribute('data-theme')||'dark';var n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('bf-theme',n);syncThemeIcon()}
+syncThemeIcon();
 // Keep the compact table-of-contents interaction local to this legal document.
 document.querySelectorAll('.toc-list a').forEach(function(a){a.addEventListener('click',function(){document.querySelectorAll('.toc-list a').forEach(function(x){x.classList.remove('active')});a.classList.add('active')})});
 </script>

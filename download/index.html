@@ -1,28 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
+  <script>
+    (function () {
+      var theme = localStorage.getItem("bf-theme") || "dark";
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Direct Install | Bingwa Flash</title>
   <link rel="icon" type="image/png" href="/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     :root {
-      --bg: #0d100f;
-      --surface: #151a17;
-      --panel: #1b211d;
-      --line: rgba(219, 207, 154, .18);
-      --line-soft: rgba(255, 255, 255, .08);
-      --text: #f4f0e2;
-      --muted: #a8a99d;
-      --gold: #e9bd43;
-      --gold-dark: #9a6814;
-      --leaf: #36bd67;
-      --leaf-dark: #158240;
+      --gold: #F5C518;
+      --gold-dark: #D97706;
+      --leaf: #22C55E;
+      --leaf-dark: #16A34A;
       --radius: 28px;
+    }
+    [data-theme="dark"] {
+      --bg: #0e0e10;
+      --surface: #18181b;
+      --panel: #232326;
+      --line: #2a2a2e;
+      --line-soft: #3a3a3f;
+      --text: #f4f4f5;
+      --muted: #a1a1aa;
+      --gold-glow: rgba(245, 197, 24, .12);
+      --leaf-glow: rgba(34, 197, 94, .09);
+    }
+    [data-theme="light"] {
+      --bg: #FFFBEB;
+      --surface: #FFFFFF;
+      --panel: #F9FAFB;
+      --line: rgba(245, 197, 24, .22);
+      --line-soft: #E5E7EB;
+      --text: #111827;
+      --muted: #4B5563;
+      --gold-glow: rgba(245, 197, 24, .18);
+      --leaf-glow: rgba(34, 197, 94, .13);
     }
     html { scroll-behavior: smooth; }
     body {
@@ -30,11 +51,12 @@
       min-height: 100vh;
       color: var(--text);
       background:
-        radial-gradient(circle at 15% 8%, rgba(233, 189, 67, .14), transparent 33rem),
-        radial-gradient(circle at 90% 50%, rgba(54, 189, 103, .12), transparent 28rem),
+        radial-gradient(circle at 15% 8%, var(--gold-glow), transparent 33rem),
+        radial-gradient(circle at 90% 50%, var(--leaf-glow), transparent 28rem),
         var(--bg);
-      font-family: "Manrope", sans-serif;
+      font-family: "Nunito", sans-serif;
       -webkit-font-smoothing: antialiased;
+      transition: background .25s, color .25s;
     }
     a { color: inherit; }
     .shell { width: min(1040px, calc(100% - 40px)); margin: 0 auto; }
@@ -65,7 +87,7 @@
     }
     h1 {
       margin: 18px 0 10px;
-      font: 700 clamp(2.2rem, 7vw, 3.5rem)/1.05 "Space Grotesk", sans-serif;
+      font: 700 clamp(2.2rem, 7vw, 3.5rem)/1.05 "Sora", sans-serif;
       letter-spacing: -.06em;
     }
     .intro p {
@@ -128,7 +150,7 @@
     .stat strong { font-size: .9rem; }
     h2 {
       margin: 0 0 13px;
-      font: 600 1rem "Space Grotesk", sans-serif;
+      font: 600 1rem "Sora", sans-serif;
     }
     ul {
       display: grid;
@@ -204,6 +226,23 @@
     .footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
     .footer-links a { text-decoration: none; }
     .footer-links a:hover { color: var(--gold); }
+    .page-theme {
+      position: fixed;
+      right: 22px;
+      top: 22px;
+      z-index: 30;
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      border: 2px solid var(--line);
+      background: var(--panel);
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .page-theme:hover { border-color: var(--gold); color: var(--text); }
+    .page-theme svg { width: 15px; height: 15px; }
     @media (max-width: 780px) {
       .shell { width: min(100% - 32px, 560px); }
       .crumb { margin-top: 28px; }
@@ -214,6 +253,10 @@
   </style>
 </head>
 <body>
+  <button class="page-theme" onclick="toggleTheme()" type="button" title="Toggle theme" aria-label="Toggle dark/light mode">
+    <svg id="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    <svg id="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+  </button>
   <div class="shell">
     <a class="crumb" href="/" aria-label="Back to the Bingwa Flash homepage">&larr; Home</a>
     <main>
@@ -271,5 +314,20 @@
       </div>
     </footer>
   </div>
+  <script>
+    // Direct installation remains usable while sharing the site's preferred theme.
+    function syncThemeIcon() {
+      var dark = document.documentElement.getAttribute("data-theme") === "dark";
+      document.getElementById("ico-moon").style.display = dark ? "block" : "none";
+      document.getElementById("ico-sun").style.display = dark ? "none" : "block";
+    }
+    function toggleTheme() {
+      var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("bf-theme", next);
+      syncThemeIcon();
+    }
+    syncThemeIcon();
+  </script>
 </body>
 </html>
