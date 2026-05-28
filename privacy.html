@@ -5,30 +5,55 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Privacy Policy - Bingwa Flash</title>
 <link rel="icon" type="image/png" href="/logo.png">
-<script>
-(function(){
-  var t=localStorage.getItem('bf-theme')||'dark';
-  document.documentElement.setAttribute('data-theme',t);
-})();
-</script>
+<script>(function(){var t=localStorage.getItem('bf-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--y:#F5C518;--yd:#D97706;--g:#22C55E;--gd:#16A34A;--bg:#0e0e10;--surface:#18181b;--surface2:#232326;--border:#2a2a2e;--text:#f4f4f5;--text2:#a1a1aa;--text3:#71717a;--card:#1c1c1f;--r8:8px;--r12:12px;--r20:20px;--pill:999px;--shadow:0 8px 28px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.06)}
-[data-theme="light"]{--bg:#FFFBEB;--surface:#fff;--surface2:#F9FAFB;--border:#E5E7EB;--text:#111827;--text2:#4B5563;--text3:#9CA3AF;--card:#fff}
+:root{--y:#FBBF24;--yd:#F59E0B;--g:#10B981;--gd:#059669;--red:#EF4444;--bg:#0B0F0D;--surface:#111715;--surface2:#18201D;--border:#26302C;--border2:#34423D;--text:#F7FAF8;--text2:#C7D2CC;--text3:#84918A;--card:#141A18;--r8:8px;--r12:12px;--r20:20px;--pill:999px;--shadow:0 8px 28px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.06)}
+[data-theme="light"]{--bg:#FFF8DB;--surface:#FFFFFF;--surface2:#FFFCF2;--border:#F0D889;--border2:#E9D8A7;--text:#18231F;--text2:#3F4A45;--text3:#708078;--card:#FFFFFF}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 600px 500px at -5% -5%,rgba(251,191,36,.08) 0%,transparent 65%),radial-gradient(ellipse 500px 400px at 105% 25%,rgba(16,185,129,.09) 0%,transparent 65%),var(--bg)}
 .page-theme{position:fixed;right:22px;top:22px;z-index:30;width:40px;height:40px;border-radius:var(--pill);background:var(--surface2);border:2px solid var(--border);color:var(--text2);cursor:pointer;display:grid;place-items:center;transition:border-color .15s,color .15s}.page-theme:hover{border-color:var(--y);color:var(--text)}.page-theme svg{width:15px;height:15px}
-.ft-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}.ft-logo img{width:24px;height:24px;border-radius:6px}
-.wrap{max-width:1060px;margin:0 auto;padding:0 32px}.page-hero{padding:52px 0 36px;border-bottom:2px solid var(--border)}.breadcrumb{font-size:.78rem;font-weight:800;color:var(--text3);margin-bottom:12px}.breadcrumb a{color:var(--text3);text-decoration:none}
-h1{font-family:'Sora',sans-serif;font-size:clamp(2rem,4vw,2.8rem);font-weight:800;letter-spacing:-.02em;margin-bottom:8px}h1 em{font-style:normal;color:var(--gd)}.hero-meta{font-size:.8rem;color:var(--text3);font-weight:800}
-.doc-layout{display:grid;grid-template-columns:220px 1fr;gap:32px;padding:40px 0 80px;align-items:start}.toc{position:sticky;top:76px}.toc-label{font-size:.66rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:10px}.toc-list{list-style:none;display:flex;flex-direction:column;gap:2px}.toc-list a{font-size:.8rem;font-weight:800;color:var(--text3);text-decoration:none;padding:6px 12px;border-radius:var(--r12);display:block}.toc-list a:hover,.toc-list a.active{color:var(--yd);background:rgba(245,197,24,.08)}
-.ps{margin-bottom:18px;background:var(--card);border-radius:var(--r20);box-shadow:var(--shadow);border:2px solid var(--border);overflow:hidden}.ps-header{padding:15px 20px 13px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:11px}.ps-num{width:28px;height:28px;border-radius:var(--r8);background:linear-gradient(135deg,var(--y),var(--yd));display:grid;place-items:center;font-family:'Sora',sans-serif;font-size:.65rem;font-weight:900;color:#000}.ps h2{font-family:'Sora',sans-serif;font-size:.95rem;font-weight:800}.ps-body{padding:16px 20px}.ps-body p{font-size:.86rem;color:var(--text2);line-height:1.75;margin-bottom:10px;font-weight:600}.ps-body ul{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:10px}.ps-body li{font-size:.86rem;color:var(--text2);line-height:1.6;padding-left:18px;position:relative;font-weight:600}.ps-body li::before{content:'-';position:absolute;left:0;color:var(--y);font-weight:900}.ps-body a{color:var(--gd);text-decoration:none;font-weight:800}.ps-body strong{color:var(--text)}
-.callout{background:rgba(245,197,24,.08);border:2px solid rgba(245,197,24,.22);border-radius:var(--r12);padding:12px 14px;margin:10px 0}.callout.green{background:rgba(34,197,94,.07);border-color:rgba(34,197,94,.22)}
-footer{background:var(--surface);border-top:2px solid var(--border);padding:22px 32px}.ft-in{max-width:1060px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}.ft-links{display:flex;gap:16px;flex-wrap:wrap}.ft-links a{font-size:.76rem;font-weight:800;color:var(--text3);text-decoration:none}.ft-copy{font-size:.74rem;color:var(--text3);font-weight:700}
-@media(max-width:900px){.doc-layout{grid-template-columns:1fr}.toc{display:none}}@media(max-width:768px){.wrap{padding:0 20px}.ft-in{flex-direction:column;text-align:center}}
+.wrap{max-width:1060px;margin:0 auto;padding:0 32px}
+.page-hero{padding:52px 0 36px;border-bottom:2px solid var(--border)}
+.breadcrumb{font-size:.78rem;font-weight:800;color:var(--text3);margin-bottom:12px}.breadcrumb a{color:var(--text3);text-decoration:none;transition:color .15s}.breadcrumb a:hover{color:var(--yd)}
+h1{font-family:'Sora',sans-serif;font-size:clamp(2rem,4vw,2.8rem);font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+h1 em{font-style:normal;color:var(--gd)}
+.hero-meta{font-size:.8rem;color:var(--text3);font-weight:800}
+.doc-layout{display:grid;grid-template-columns:220px 1fr;gap:32px;padding:40px 0 80px;align-items:start}
+.toc{position:sticky;top:76px}.toc-label{font-size:.66rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:10px}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:2px}
+.toc-list a{font-size:.8rem;font-weight:800;color:var(--text3);text-decoration:none;padding:6px 12px;border-radius:var(--r12);display:block;transition:color .15s,background .15s}
+.toc-list a:hover,.toc-list a.active{color:var(--yd);background:rgba(251,191,36,.08)}
+.ps{margin-bottom:18px;background:var(--card);border-radius:var(--r20);box-shadow:var(--shadow);border:2px solid var(--border);overflow:hidden;transition:border-color .25s}
+.ps-header{padding:15px 20px 13px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:11px}
+.ps-num{width:28px;height:28px;border-radius:var(--r8);background:linear-gradient(135deg,var(--y),var(--yd));display:grid;place-items:center;font-family:'Sora',sans-serif;font-size:.65rem;font-weight:900;color:#000;flex-shrink:0}
+.ps h2{font-family:'Sora',sans-serif;font-size:.95rem;font-weight:800}
+.ps-body{padding:16px 20px}
+.ps-body p{font-size:.86rem;color:var(--text2);line-height:1.75;margin-bottom:10px;font-weight:600}
+.ps-body p:last-child{margin-bottom:0}
+.ps-body ul{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.ps-body li{font-size:.86rem;color:var(--text2);line-height:1.6;padding-left:18px;position:relative;font-weight:600}
+.ps-body li::before{content:'-';position:absolute;left:0;color:var(--y);font-weight:900}
+.ps-body a{color:var(--gd);text-decoration:none;font-weight:800}.ps-body a:hover{text-decoration:underline}
+.ps-body strong{color:var(--text)}
+.callout{background:rgba(251,191,36,.08);border:2px solid rgba(251,191,36,.22);border-radius:var(--r12);padding:12px 14px;margin:10px 0}
+.callout.green{background:rgba(16,185,129,.07);border-color:rgba(16,185,129,.22)}
+.callout.red{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.25)}
+.callout p{margin-bottom:0!important}
+footer{background:var(--surface);border-top:2px solid var(--border);padding:22px 32px;transition:background .25s,border-color .25s}
+.ft-in{max-width:1060px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.ft-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.ft-logo img{width:24px;height:24px;border-radius:6px}
+.ft-logo span{font-family:'Sora',sans-serif;font-size:.85rem;font-weight:700;color:var(--text2)}
+.ft-links{display:flex;gap:16px;flex-wrap:wrap}
+.ft-links a{font-size:.76rem;font-weight:800;color:var(--text3);text-decoration:none;transition:color .15s}.ft-links a:hover{color:var(--yd)}
+.ft-copy{font-size:.74rem;color:var(--text3);font-weight:700}
+@media(max-width:900px){.doc-layout{grid-template-columns:1fr}.toc{display:none}}
+@media(max-width:768px){.wrap{padding:0 20px}.ft-in{flex-direction:column;text-align:center}}
 </style>
 </head>
 <body>
@@ -36,7 +61,7 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:22px
   <svg id="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
   <svg id="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
 </button>
-<!-- Legal pages intentionally open with the document content, without promotional navigation. -->
+
 <div class="page-hero"><div class="wrap">
   <div class="breadcrumb"><a href="/">Home</a> / Privacy Policy</div>
   <h1>Privacy <em>Policy</em></h1>
@@ -47,28 +72,42 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:22px
   <aside class="toc">
     <div class="toc-label">On this page</div>
     <ul class="toc-list">
-      <li><a href="#s1">Overview</a></li><li><a href="#s2">Information We Collect</a></li><li><a href="#s3">SMS and Automation</a></li><li><a href="#s4">Clients and Contacts</a></li><li><a href="#s5">Web Orders</a></li><li><a href="#s6">Relay and Portal</a></li><li><a href="#s7">How We Use Data</a></li><li><a href="#s8">Sharing</a></li><li><a href="#s9">Retention</a></li><li><a href="#s10">Your Choices</a></li><li><a href="#s11">Security</a></li><li><a href="#s12">Contact</a></li>
+      <li><a href="#s1">Overview</a></li>
+      <li><a href="#s2">Information We Collect</a></li>
+      <li><a href="#s3">SMS and Automation</a></li>
+      <li><a href="#s4">Clients and Contacts</a></li>
+      <li><a href="#s5">Web Orders</a></li>
+      <li><a href="#s6">Relay and Portal</a></li>
+      <li><a href="#s7">How We Use Data</a></li>
+      <li><a href="#s8">Sharing</a></li>
+      <li><a href="#s9">Fraud and Disclosure</a></li>
+      <li><a href="#s10">Retention</a></li>
+      <li><a href="#s11">Your Choices</a></li>
+      <li><a href="#s12">Security</a></li>
+      <li><a href="#s13">Contact</a></li>
     </ul>
   </aside>
   <main>
+
     <section class="ps" id="s1"><div class="ps-header"><div class="ps-num">01</div><h2>Overview</h2></div><div class="ps-body">
-      <p>Bingwa Flash helps Bingwa Sokoni agents automate USSD fulfilment after receiving M-Pesa payments. This policy explains what information the app and website use, why it is needed, and how agents and clients can control it.</p>
-      <div class="callout"><p>Bingwa Flash is an agent productivity tool. It is not Safaricom, M-Pesa, or a bank, and it does not control Safaricom services.</p></div>
+      <p>Bingwa Flash helps Bingwa Sokoni agents automate USSD fulfilment after receiving M-Pesa payments. This policy explains what information the app and website use, why it is needed, and how agents and customers can control it.</p>
+      <div class="callout"><p>Bingwa Flash is a payment intermediary and automation tool. It is not Safaricom, M-Pesa, or a bank, and it does not control Safaricom services. Once a payment is confirmed, funds are forwarded to the agent almost immediately. Any product, delivery, or refund issue is between the customer and the agent.</p></div>
     </div></section>
 
     <section class="ps" id="s2"><div class="ps-header"><div class="ps-num">02</div><h2>Information We Collect</h2></div><div class="ps-body">
-      <p>We collect the information needed to run the account, automation, website order page, support, and billing features:</p>
+      <p>We collect only the information needed to run account, automation, order, support, and billing features:</p>
       <ul>
-        <li>Account details such as email address, agent name, business name, phone number, username, till number, and verification status.</li>
-        <li>App settings such as offer configuration, USSD mappings, retry settings, notification templates, relay rules, and web order settings.</li>
-        <li>Transaction records created by the agent device, including customer name or phone when available, amount, offer, status, execution responses, and timestamps.</li>
+        <li>Account details: email address, agent name, business name, phone number, username, till number, and verification status.</li>
+        <li>App settings: offer configuration, USSD mappings, retry settings, notification templates, relay rules, and web order settings.</li>
+        <li>Transaction records: customer name or phone when available, amount, offer, status, execution responses, and timestamps.</li>
         <li>Support messages and diagnostic information needed to resolve errors or abuse.</li>
         <li>Subscription, token, and payment metadata needed to enable paid features.</li>
+        <li>Web order data: paying phone number, receiving phone number, offer selected, M-Pesa reference, and order status.</li>
       </ul>
     </div></section>
 
     <section class="ps" id="s3"><div class="ps-header"><div class="ps-num">03</div><h2>SMS and Automation</h2></div><div class="ps-body">
-      <p>With the agent's permission, the Android app reads relevant SMS messages to detect M-Pesa payment confirmations, Safaricom responses, verifier messages, relay packets, web order SMS, and masked-number lookup responses. The app uses this information to create transactions, run configured USSD steps, update status, send configured auto replies, and recover pending work.</p>
+      <p>With the agent's permission, the Android app reads relevant SMS messages to detect M-Pesa payment confirmations, Safaricom responses, verifier messages, relay packets, web order SMS, and masked-number lookup responses. The app uses this information to create transactions, run configured USSD steps, update status, send configured auto-replies, and recover pending work.</p>
       <p>Accessibility and phone permissions are used only to support automation, observe USSD windows, enter configured steps, and close or recover from USSD sessions. The app may store USSD response text in transaction history so the agent can audit what happened.</p>
       <div class="callout green"><p>SMS parsing and USSD automation are controlled by the agent's settings. Agents remain responsible for the offers, prices, mappings, and SIM choices they configure.</p></div>
     </div></section>
@@ -80,9 +119,9 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:22px
     </div></section>
 
     <section class="ps" id="s5"><div class="ps-header"><div class="ps-num">05</div><h2>Web Orders</h2></div><div class="ps-body">
-      <p>Agents can publish a public order page using their username. Public website pages may show the agent name, business name, phone number, till number, verification badge status, web order availability, and enabled public offers.</p>
-      <p>When a client places a web order, the website may collect the client's phone number, offer choice, M-Pesa reference, and order status. This is used to notify the agent app and complete the order.</p>
-      <p>To reduce Firestore reads, public website pages may read a public mirror document keyed by the agent username. This mirror contains only website-safe public fields and offer data intended for display.</p>
+      <p>Agents can publish a public order page using their username. Public pages may show the agent name, business name, phone number, till number, verification badge status, web order availability, and enabled public offers.</p>
+      <p>When a customer places a web order, we collect the paying phone number, receiving phone number, offer selected, M-Pesa transaction reference, and order status. This data is used to trigger the STK push payment, notify the agent app, and complete the order. Funds collected from the M-Pesa STK push are forwarded to the agent almost immediately after payment confirmation. Bingwa Flash acts as an intermediary only and does not hold funds beyond the time needed to process the transaction.</p>
+      <div class="callout"><p>All product delivery, fulfilment disputes, and refund requests are matters between the customer and the agent. Bingwa Flash may assist with a dispute only if funds are still held at the time of the complaint and the issue is clearly documented.</p></div>
     </div></section>
 
     <section class="ps" id="s6"><div class="ps-header"><div class="ps-num">06</div><h2>Relay and Portal Features</h2></div><div class="ps-body">
@@ -95,36 +134,58 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:22px
         <li>Authenticate agents and protect accounts from unauthorised access.</li>
         <li>Run transaction automation, retries, reschedules, verifications, and fail recovery.</li>
         <li>Show dashboards, commissions, statistics, transaction details, and client history.</li>
-        <li>Publish web order pages and receive website registrations or order events.</li>
+        <li>Publish web order pages, receive web order payments, and forward funds to agents.</li>
         <li>Send configured SMS replies, relay packets, and agent alerts.</li>
         <li>Investigate crashes, abuse, fraud, and support requests.</li>
+        <li>Comply with legal obligations and protect the safety of users and the platform.</li>
       </ul>
     </div></section>
 
     <section class="ps" id="s8"><div class="ps-header"><div class="ps-num">08</div><h2>Sharing and Service Providers</h2></div><div class="ps-body">
-      <p>We do not sell personal information. We use Google Firebase and Google Cloud services for authentication, Firestore, hosting, functions, crash diagnostics, and related infrastructure. We may disclose information when required by law, to prevent abuse, or to protect users and the service.</p>
-    </div></section>
-
-    <section class="ps" id="s9"><div class="ps-header"><div class="ps-num">09</div><h2>Retention</h2></div><div class="ps-body">
-      <p>Local transaction and client history remains on the agent device until the agent deletes it, clears app data, or uninstalls the app. Firestore records are retained only as needed for account, website, relay, portal, billing, support, and abuse-prevention features. Website client inbox data is intended to be short-lived and deleted after app import.</p>
-    </div></section>
-
-    <section class="ps" id="s10"><div class="ps-header"><div class="ps-num">10</div><h2>Your Choices</h2></div><div class="ps-body">
+      <p>We do not sell personal information. We use Google Firebase and Google Cloud services for authentication, Firestore, hosting, functions, crash diagnostics, and related infrastructure.</p>
+      <p>We may share information with third parties only in the following circumstances:</p>
       <ul>
-        <li>Agents can disable automation, relay rules, portal sync, web orders, website registration, verifier matching, alerts, and contact auto-save from app settings.</li>
-        <li>Agents can delete local clients and transaction records from the app.</li>
-        <li>Clients can request removal from an agent's client list through the website flow where available or by contacting the agent.</li>
-        <li>You may request account deletion or data assistance by contacting support.</li>
+        <li>With infrastructure providers (Google Cloud / Firebase) as needed to operate the service.</li>
+        <li>With Safaricom or M-Pesa where required to process payments or resolve payment disputes.</li>
+        <li>As required by applicable law, court order, or regulatory request.</li>
+        <li>Where we reasonably believe disclosure is necessary to prevent fraud, abuse, or harm to users or the platform — see section 09 below.</li>
       </ul>
     </div></section>
 
-    <section class="ps" id="s11"><div class="ps-header"><div class="ps-num">11</div><h2>Security</h2></div><div class="ps-body">
+    <section class="ps" id="s9"><div class="ps-header"><div class="ps-num">09</div><h2>Fraud, Abuse, and Disclosure</h2></div><div class="ps-body">
+      <p>Bingwa Flash takes fraud, abuse, and platform interference seriously. We reserve the right to collect, retain, and disclose the following information to Safaricom, law enforcement, or other relevant authorities when we have reasonable grounds to believe fraud, criminal activity, or serious abuse has occurred:</p>
+      <ul>
+        <li>Phone numbers (paying number, receiving number, agent phone number).</li>
+        <li>M-Pesa transaction references, amounts, timestamps, and order records.</li>
+        <li>Agent account details including name, business name, username, and till number.</li>
+        <li>Device identifiers, IP addresses, and session records where available.</li>
+        <li>Any other information relevant to the investigation of the reported incident.</li>
+      </ul>
+      <div class="callout red"><p><strong>This applies to both customers and agents.</strong> Fraudulent payment reversals (chargebacks), false complaints, use of stolen payment details, SIM swap fraud, and any deliberate attempt to deceive the platform or its users may result in your details being submitted to the relevant authorities without further notice.</p></div>
+      <p>Any attempt to overload, disrupt, scrape, probe, or otherwise interfere with the Bingwa Flash platform — including its website, API endpoints, Firebase resources, or agent order pages — is a violation of our Terms of Service and may be reported to law enforcement. We log and monitor platform activity and may take legal action where warranted.</p>
+    </div></section>
+
+    <section class="ps" id="s10"><div class="ps-header"><div class="ps-num">10</div><h2>Retention</h2></div><div class="ps-body">
+      <p>Local transaction and client history remains on the agent device until the agent deletes it, clears app data, or uninstalls the app. Firestore records are retained only as long as needed for account, website, relay, portal, billing, support, and abuse-prevention features. Website order data is retained long enough to confirm delivery and resolve any disputes. Website client inbox data is intended to be short-lived and deleted after app import.</p>
+    </div></section>
+
+    <section class="ps" id="s11"><div class="ps-header"><div class="ps-num">11</div><h2>Your Choices</h2></div><div class="ps-body">
+      <ul>
+        <li>Agents can disable automation, relay rules, portal sync, web orders, website registration, verifier matching, alerts, and contact auto-save from app settings.</li>
+        <li>Agents can delete local clients and transaction records from the app.</li>
+        <li>Clients can request removal from an agent's client list through the website flow where available, or by contacting the agent.</li>
+        <li>You may request account deletion or data assistance by contacting support at <a href="mailto:support@bingwaflash.co.ke">support@bingwaflash.co.ke</a>.</li>
+      </ul>
+    </div></section>
+
+    <section class="ps" id="s12"><div class="ps-header"><div class="ps-num">12</div><h2>Security</h2></div><div class="ps-body">
       <p>We use Firebase Authentication, Firestore security rules, HTTPS, and app-side access controls to protect data. No system is perfect, so agents should keep their devices locked, avoid sharing credentials, and review automation settings regularly.</p>
     </div></section>
 
-    <section class="ps" id="s12"><div class="ps-header"><div class="ps-num">12</div><h2>Contact</h2></div><div class="ps-body">
-      <p>For privacy questions, account deletion, or support, contact <a href="mailto:support@bingwaflash.co.ke">support@bingwaflash.co.ke</a> or visit <a href="https://bingwaflash.co.ke">bingwaflash.co.ke</a>.</p>
+    <section class="ps" id="s13"><div class="ps-header"><div class="ps-num">13</div><h2>Contact</h2></div><div class="ps-body">
+      <p>For privacy questions, account deletion, fraud reports, or support, contact <a href="mailto:support@bingwaflash.co.ke">support@bingwaflash.co.ke</a> or visit <a href="https://bingwaflash.co.ke">bingwaflash.co.ke</a>.</p>
     </div></section>
+
   </main>
 </div></div>
 
@@ -134,11 +195,9 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:22px
   <div class="ft-copy">&copy; 2026 Bingwa Flash</div>
 </div></footer>
 <script>
-// Preserve theme choice without reintroducing a navigation header.
 function syncThemeIcon(){var d=document.documentElement.getAttribute('data-theme')==='dark';document.getElementById('ico-moon').style.display=d?'block':'none';document.getElementById('ico-sun').style.display=d?'none':'block'}
 function toggleTheme(){var c=document.documentElement.getAttribute('data-theme')||'dark';var n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('bf-theme',n);syncThemeIcon()}
 syncThemeIcon();
-// Keep the compact table-of-contents interaction local to this legal document.
 document.querySelectorAll('.toc-list a').forEach(function(a){a.addEventListener('click',function(){document.querySelectorAll('.toc-list a').forEach(function(x){x.classList.remove('active')});a.classList.add('active')})});
 </script>
 </body>
