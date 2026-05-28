@@ -206,6 +206,12 @@ main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:2
 .pay-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--y),var(--yd));color:#1a1000;font-weight:800;font-size:.9rem;border:none;border-radius:var(--pill);cursor:pointer;box-shadow:var(--cy);transition:transform .15s;margin-bottom:7px;font-family:'Sora',sans-serif}
 .pay-btn:hover{transform:translateY(-2px)} .pay-btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
 .pay-secure{font-size:.69rem;color:var(--text3);text-align:center;font-weight:700}
+.pay-legal{margin-top:12px;padding:12px 14px;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--r12);display:flex;flex-direction:column;gap:7px}
+.pay-legal p{font-size:.67rem;color:var(--text3);line-height:1.6;font-weight:600}
+.pay-legal a{color:var(--gd);text-decoration:none;font-weight:800}
+.pay-legal a:hover{text-decoration:underline}
+.pay-legal p:first-child{font-size:.69rem;font-weight:700;color:var(--text2);text-align:center}
+.pay-legal p+p{padding-top:7px;border-top:1px solid var(--border)}
 
 /* ── STK SCREEN — fixed fullscreen overlay ── */
 #stk-screen{
@@ -384,6 +390,9 @@ footer{background:var(--surface);border-top:2px solid var(--border);padding:18px
           <div id="form-err"></div>
           <button class="pay-btn" id="pay-btn" onclick="submitOrder()">Pay -</button>
           <div class="pay-secure">Secured by M-Pesa · Powered by Bingwa Flash</div>
+          <div class="pay-legal">
+            <p>By continuing you agree to our <a href="https://bingwaflash.co.ke/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="https://bingwaflash.co.ke/terms" target="_blank" rel="noopener">Terms of Service</a>.</p>
+          </div>
         </div>
 
         <!-- Contact card -->
