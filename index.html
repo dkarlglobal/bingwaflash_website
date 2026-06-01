@@ -9,10 +9,10 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Bingwa Flash | Agent Automation, Web Orders and Fulfilment Control</title>
-  <meta name="description" content="Bingwa Flash helps agents process payment-triggered requests through controlled USSD automation, web orders, verification, relays, alerts and reporting.">
-  <meta property="og:title" content="Bingwa Flash | Agent Automation and Fulfilment Control">
-  <meta property="og:description" content="One operations console for USSD automation, customer requests, web orders, relay fulfilment and transaction recovery.">
+  <title>Bingwa Flash | USSD Automation for Safaricom Agents</title>
+  <meta name="description" content="Bingwa Flash helps Safaricom agents match M-Pesa payments to offers, run guarded USSD automation, handle web orders, relay fulfilment, retries, alerts and transaction logs.">
+  <meta property="og:title" content="Bingwa Flash | USSD Automation for Safaricom Agents">
+  <meta property="og:description" content="Payment-triggered USSD automation, web orders, retries, relay tools and audit-ready fulfilment for Safaricom agents.">
   <meta property="og:image" content="https://bingwaflash.co.ke/logo.png">
   <link rel="icon" type="image/png" href="/logo.png">
   <link rel="apple-touch-icon" href="/logo.png">
@@ -22,405 +22,368 @@
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
-      --gold:#F5C518;--gold-2:#D97706;--leaf:#22C55E;--leaf-dark:#16A34A;--danger:#EF4444;
-      --radius:22px;--pill:999px;
-      --shadow:0 6px 0 rgba(0,0,0,.18),0 20px 56px rgba(0,0,0,.2),inset 0 2px 0 rgba(255,255,255,.1);
+      --y:#FBBF24;--yd:#F59E0B;--yp:#FEF3C7;--g:#10B981;--gd:#059669;--gp:#D1FAE5;
+      --red:#EF4444;--r8:8px;--r12:12px;--r16:16px;--r20:20px;--r24:24px;--pill:999px;
+      --cs:0 2px 0 rgba(0,0,0,.15),0 6px 20px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.1);
+      --cm:0 4px 0 rgba(0,0,0,.18),0 12px 32px rgba(0,0,0,.16),inset 0 2px 0 rgba(255,255,255,.1);
+      --cl:0 6px 0 rgba(0,0,0,.2),0 20px 56px rgba(0,0,0,.2),inset 0 2px 0 rgba(255,255,255,.1);
+      --cy:0 4px 0 rgba(160,100,0,.3),0 10px 28px rgba(245,197,24,.25),inset 0 1px 0 rgba(255,240,150,.4);
+      --cg:0 4px 0 rgba(18,100,45,.28),0 10px 28px rgba(34,197,94,.22),inset 0 1px 0 rgba(150,255,200,.4);
     }
     [data-theme="dark"]{
-      --bg:#0e0e10;--panel:#1c1c1f;--panel-2:#232326;--line:#2a2a2e;
-      --ink:#f4f4f5;--muted:#a1a1aa;--muted-2:#71717a;--header:rgba(14,14,16,.9);
-      --blob-gold:rgba(245,197,24,.12);--blob-green:rgba(34,197,94,.09);
+      --bg:#0B0F0D;--surface:#111715;--surface2:#18201D;--border:#26302C;--border2:#34423D;
+      --text:#F7FAF8;--text2:#C7D2CC;--text3:#84918A;--hbg:rgba(9,13,12,.92);--card-bg:#141A18;--card-end:#101613;
+      --section-bg:rgba(255,255,255,.025);--section-border:rgba(255,255,255,.055);--soft-shadow:0 8px 22px rgba(0,0,0,.14);
+      --blob1:rgba(251,191,36,.10);--blob2:rgba(16,185,129,.11);
     }
     [data-theme="light"]{
-      --bg:#FFFBEB;--panel:#FFFFFF;--panel-2:#F9FAFB;--line:#E5E7EB;
-      --ink:#111827;--muted:#4B5563;--muted-2:#9CA3AF;--header:rgba(255,251,235,.9);
-      --blob-gold:rgba(245,197,24,.18);--blob-green:rgba(34,197,94,.13);
+      --bg:#FFF8DB;--surface:#FFFFFF;--surface2:#FFFCF2;--border:#F0D889;--border2:#E9D8A7;
+      --text:#18231F;--text2:#3F4A45;--text3:#708078;--hbg:rgba(255,252,242,.94);--card-bg:#FFFFFF;--card-end:#FFF9E8;
+      --section-bg:linear-gradient(180deg,#FFFFFF,#FFF5CF);--section-border:#EDD47C;--soft-shadow:0 10px 26px rgba(185,128,0,.12);
+      --blob1:rgba(245,158,11,.20);--blob2:rgba(16,185,129,.14);
     }
     html{scroll-behavior:smooth}
     body{
-      color:var(--ink);background:var(--bg);font-family:"Nunito",sans-serif;
-      line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .25s,color .25s;
+      min-height:100vh;background:var(--bg);color:var(--text);font-family:"Nunito",sans-serif;
+      line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s;
     }
     body::before{
-      content:"";position:fixed;z-index:-2;inset:0;
+      content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
       background:
-        radial-gradient(circle at 12% 8%,var(--blob-gold),transparent 36%),
-        radial-gradient(circle at 92% 16%,var(--blob-green),transparent 30%),
+        radial-gradient(ellipse 620px 480px at -8% -8%,var(--blob1) 0%,transparent 66%),
+        radial-gradient(ellipse 560px 430px at 108% 18%,var(--blob2) 0%,transparent 66%),
+        radial-gradient(ellipse 520px 360px at 50% 105%,var(--blob1) 0%,transparent 66%),
         var(--bg);
     }
-    body::after{
-      content:"";position:fixed;z-index:-1;inset:0;pointer-events:none;opacity:.36;
-      background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
-      background-size:52px 52px;
-    }
     a{color:inherit}
-    .wrap{width:min(1180px,calc(100% - 42px));margin:0 auto}
-    .eyebrow{
-      display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(243,197,56,.28);
-      background:rgba(34,197,94,.12);color:var(--leaf-dark);border-radius:var(--pill);
-      padding:7px 13px;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
-    }
-    .eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--leaf)}
+    .wrap{width:min(1120px,calc(100% - 40px));margin:0 auto}
+    .muted{color:var(--text2)}
 
-    /* Public navigation deliberately omits the private distribution route. */
+    /* Shared public-site navigation, matched to the order page header colors. */
     header{
-      position:sticky;top:0;z-index:20;border-bottom:2px solid var(--line);
-      background:var(--header);backdrop-filter:blur(18px);transition:background .25s,border-color .25s;
+      position:sticky;top:0;z-index:50;height:64px;padding:0 32px;background:var(--hbg);
+      backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:2px solid var(--border);
+      display:flex;align-items:center;justify-content:space-between;gap:20px;transition:background .25s,border-color .25s;
     }
-    .nav{
-      min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:20px;
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
+    .logo img{width:36px;height:36px;border-radius:var(--r12);object-fit:contain}
+    .logo-text{font-family:"Sora",sans-serif;font-size:.93rem;font-weight:700;color:var(--text);white-space:nowrap}
+    .logo-text b{color:var(--gd);font-weight:800}
+    nav{display:flex;align-items:center;gap:4px}
+    nav a{font-size:.81rem;font-weight:800;color:var(--text2);text-decoration:none;padding:7px 13px;border-radius:var(--pill);transition:all .15s}
+    nav a:hover,nav a.on{background:rgba(251,191,36,.13);color:var(--text)}
+    .hdr-r{display:flex;align-items:center;gap:8px}
+    .thm{width:36px;height:36px;border-radius:var(--pill);background:var(--surface2);border:2px solid var(--border);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+    .thm:hover{border-color:var(--y);color:var(--text)}
+    .thm svg{width:15px;height:15px}
+    .btn-primary,.btn-secondary,.support-pill{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;border-radius:var(--pill);
+      font-family:"Sora",sans-serif;font-size:.86rem;font-weight:900;transition:transform .15s,box-shadow .15s,border-color .15s;
     }
-    .brand{display:flex;align-items:center;gap:11px;text-decoration:none}
-    .brand img{height:42px;width:42px;border-radius:13px;object-fit:contain}
-    .brand-name{font:700 1rem "Sora",sans-serif;letter-spacing:-.02em}
-    .brand-name span{color:var(--leaf-dark)}
-    nav{display:flex;align-items:center;gap:26px}
-    nav a{font-size:.82rem;text-decoration:none;font-weight:700;color:var(--muted);transition:color .18s}
-    nav a:hover{color:var(--ink)}
-    .hdr-r{display:flex;align-items:center;gap:9px}
-    .theme-toggle{
-      display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:var(--pill);
-      border:2px solid var(--line);background:var(--panel-2);color:var(--muted);cursor:pointer;transition:border-color .18s,color .18s;
-    }
-    .theme-toggle:hover{border-color:var(--gold);color:var(--ink)}
-    .theme-toggle svg{width:16px;height:16px}
-    .support-link{
-      display:inline-flex;align-items:center;border-radius:var(--pill);padding:10px 18px;
-      border:0;text-decoration:none;font-size:.82rem;font-weight:800;color:#fff;
-      background:linear-gradient(135deg,var(--leaf),var(--leaf-dark));box-shadow:0 4px 0 rgba(18,100,45,.28),0 10px 28px rgba(34,197,94,.22);
-      transition:transform .18s;
-    }
-    .support-link:hover{transform:translateY(-2px)}
+    .btn-primary:hover,.btn-secondary:hover,.support-pill:hover{transform:translateY(-2px)}
 
-    /* Hero explains the workflow instead of advertising an installer link. */
-    .hero{padding:84px 0 64px}
-    .hero-grid{display:grid;grid-template-columns:minmax(430px,1.04fr) minmax(360px,.86fr);gap:58px;align-items:center}
+    /* Hero uses the old homepage message, but the visual tokens now match the order page. */
+    .hero{padding:76px 0 66px}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:58px;align-items:center}
+    .pill,.tag{
+      display:inline-flex;align-items:center;gap:8px;border-radius:var(--pill);font-size:.72rem;font-weight:900;
+      letter-spacing:.08em;text-transform:uppercase;
+    }
+    .pill{padding:6px 14px 6px 8px;background:var(--surface);border:2px solid rgba(16,185,129,.26);color:var(--gd);box-shadow:var(--cs)}
+    .tag{padding:6px 13px;background:rgba(16,185,129,.11);border:1.5px solid rgba(16,185,129,.24);color:var(--gd)}
+    .pulse{width:8px;height:8px;border-radius:50%;background:var(--g);box-shadow:0 0 0 4px rgba(16,185,129,.16);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.42}}
     h1{
-      font:700 clamp(2.75rem,5.4vw,4.8rem)/1.02 "Sora",sans-serif;
-      letter-spacing:-.065em;max-width:690px;margin:21px 0 20px;
+      font-family:"Sora",sans-serif;font-size:clamp(2.45rem,5.2vw,4.55rem);font-weight:900;line-height:1.03;
+      letter-spacing:0;color:var(--text);margin:20px 0 18px;max-width:720px;
     }
-    h1 span{color:var(--leaf-dark)}
-    .lead{max-width:610px;color:var(--muted);font-size:1.03rem;line-height:1.78}
-    .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:33px}
-    .action-primary,.action-secondary{
-      display:inline-flex;align-items:center;gap:9px;padding:13px 21px;border-radius:var(--pill);
-      font-weight:800;font-size:.89rem;text-decoration:none;transition:transform .18s,box-shadow .18s;
-    }
-    .action-primary{
-      color:#181207;background:linear-gradient(130deg,var(--gold),#f6dd74);
-      box-shadow:0 12px 30px rgba(243,197,56,.17);
-    }
-    .action-secondary{color:var(--ink);border:1px solid var(--line);background:var(--panel)}
-    .action-primary:hover,.action-secondary:hover{transform:translateY(-2px)}
-    .micro-trust{display:flex;flex-wrap:wrap;gap:16px 24px;margin-top:35px;color:var(--muted-2);font-size:.76rem;font-weight:700}
-    .micro-trust span::before{content:"";display:inline-block;width:6px;height:6px;background:var(--leaf);border-radius:50%;margin-right:9px;vertical-align:middle}
-    .operations{
-      padding:18px;background:linear-gradient(150deg,rgba(243,197,56,.08),rgba(52,201,119,.035));
-      border-radius:31px;border:1px solid rgba(243,197,56,.16);box-shadow:var(--shadow);
-    }
-    .phone{background:#0d110e;border:1px solid var(--line);border-radius:24px;overflow:hidden}
-    .phone-head{padding:20px 20px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
-    .phone-label{font-size:.69rem;text-transform:uppercase;letter-spacing:.11em;color:var(--muted-2);font-weight:800}
-    .live{font-size:.68rem;font-weight:800;color:var(--leaf);display:flex;align-items:center;gap:6px}
-    .live::before{content:"";width:7px;height:7px;background:var(--leaf);border-radius:50%;box-shadow:0 0 0 5px rgba(52,201,119,.12)}
-    .queue{padding:17px;display:grid;gap:10px}
-    .tx{
-      background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:13px 13px 12px;
-      display:grid;grid-template-columns:9px 1fr auto;align-items:center;gap:11px;
-    }
-    .state{width:9px;height:36px;border-radius:8px;background:var(--leaf)}
-    .state.wait{background:var(--gold)}.state.warn{background:var(--danger)}
-    .tx-name{font-size:.84rem;font-weight:800}.tx-meta{font-size:.7rem;color:var(--muted-2);margin-top:2px}
-    .badge{font-size:.63rem;padding:4px 9px;border-radius:var(--pill);font-weight:800;background:rgba(52,201,119,.13);color:var(--leaf)}
-    .badge.pending{color:var(--gold);background:rgba(243,197,56,.12)}
-    .phone-foot{padding:0 17px 17px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-    .mini{background:var(--panel);border-radius:13px;padding:10px;border:1px solid var(--line)}
-    .mini strong{display:block;color:var(--ink);font:700 1rem "Sora",sans-serif}
-    .mini span{font-size:.62rem;color:var(--muted-2);text-transform:uppercase;font-weight:800;letter-spacing:.05em}
+    h1 em,h2 em{font-style:normal;color:var(--gd)}
+    .hero-desc{font-size:1.04rem;color:var(--text2);line-height:1.78;max-width:640px;font-weight:600}
+    .btn-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:31px}
+    .btn-primary{padding:13px 23px;background:linear-gradient(135deg,var(--y),var(--yd));color:#1a1000;box-shadow:var(--cy)}
+    .btn-secondary{padding:12px 22px;background:var(--surface);color:var(--text2);border:2px solid var(--border2);box-shadow:var(--cs)}
+    .trust-row{display:flex;flex-wrap:wrap;gap:12px 22px;margin-top:31px;color:var(--text3);font-size:.78rem;font-weight:800}
+    .trust-row span::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--g);margin-right:8px;vertical-align:middle}
 
-    .bar{border-block:1px solid var(--line);background:rgba(17,22,18,.68)}
+    /* Product preview explains the real transaction states without needing screenshots. */
+    .ops-shell{background:linear-gradient(180deg,var(--card-bg),var(--card-end));border:1.5px solid var(--border);border-radius:24px;box-shadow:var(--cl);overflow:hidden}
+    .ops-head{display:flex;align-items:center;justify-content:space-between;padding:19px 20px;border-bottom:2px solid var(--border);background:rgba(16,185,129,.06)}
+    .ops-title{font-size:.72rem;font-weight:900;color:var(--text3);text-transform:uppercase;letter-spacing:.08em}
+    .ops-live{display:flex;align-items:center;gap:7px;font-size:.72rem;font-weight:900;color:var(--gd)}
+    .ops-live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--g);box-shadow:0 0 0 4px rgba(16,185,129,.13)}
+    .ops-list{padding:16px;display:grid;gap:10px}
+    .tx{display:grid;grid-template-columns:8px 1fr auto;gap:12px;align-items:center;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--r16);padding:12px;box-shadow:var(--soft-shadow)}
+    .state{width:8px;height:36px;border-radius:var(--pill);background:var(--g)}
+    .state.wait{background:var(--y)}.state.fail{background:var(--red)}
+    .tx-name{font-size:.84rem;font-weight:900;color:var(--text)}
+    .tx-meta{font-size:.71rem;font-weight:700;color:var(--text3);margin-top:1px}
+    .chip{font-size:.63rem;font-weight:900;border-radius:var(--pill);padding:4px 9px;white-space:nowrap}
+    .chip.g{background:rgba(16,185,129,.14);color:var(--gd);border:1px solid rgba(16,185,129,.26)}
+    .chip.y{background:rgba(251,191,36,.14);color:var(--yd);border:1px solid rgba(251,191,36,.30)}
+    .ops-foot{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 16px 16px}
+    .mini{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r12);padding:10px}
+    .mini strong{display:block;font-family:"Sora",sans-serif;font-size:.96rem;color:var(--text);line-height:1.1}
+    .mini span{font-size:.62rem;color:var(--text3);text-transform:uppercase;font-weight:900;letter-spacing:.05em}
+
+    /* Compact highlight strip keeps the homepage close to the old fast-read design. */
+    .bar{border-block:2px solid var(--border);background:var(--surface);transition:background .25s,border-color .25s}
     .bar-grid{display:grid;grid-template-columns:repeat(4,1fr)}
-    .bar-item{padding:25px 22px;border-right:1px solid var(--line)}
+    .bar-item{padding:24px 22px;border-right:2px solid var(--border)}
     .bar-item:last-child{border-right:0}
-    .bar-item strong{font:700 1.15rem "Sora",sans-serif;display:block;margin-bottom:4px}
-    .bar-item span{color:var(--muted);font-size:.78rem}
+    .bar-item strong{display:block;font-family:"Sora",sans-serif;font-size:1.05rem;font-weight:900;color:var(--text);margin-bottom:3px}
+    .bar-item span{font-size:.78rem;font-weight:700;color:var(--text2)}
 
-    section{padding:86px 0}
-    .section-head{display:grid;grid-template-columns:.85fr 1fr;gap:42px;align-items:end;margin-bottom:44px}
-    h2{font:700 clamp(2rem,3.5vw,3rem)/1.1 "Sora",sans-serif;letter-spacing:-.055em;margin-top:16px}
-    .section-head p{color:var(--muted);font-size:.94rem;line-height:1.75}
+    section{padding:82px 0}
+    .section-head{display:grid;grid-template-columns:.82fr 1fr;gap:42px;align-items:end;margin-bottom:42px}
+    h2{font-family:"Sora",sans-serif;font-size:clamp(1.9rem,3.5vw,3rem);font-weight:900;line-height:1.12;letter-spacing:0;color:var(--text);margin-top:14px}
+    .section-head p{font-size:.95rem;line-height:1.76;color:var(--text2);font-weight:600}
     .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-    .feature{
-      min-height:213px;background:var(--panel);border:1px solid var(--line);
-      border-radius:var(--radius);padding:24px;transition:transform .18s,border-color .18s;
+    .feature,.step,.who-card,.control-card,.contact-card{
+      background:linear-gradient(180deg,var(--card-bg),var(--card-end));border:1.5px solid var(--border);border-radius:var(--r20);
+      box-shadow:var(--cs);transition:transform .18s,border-color .18s,background .25s;
     }
-    .feature:hover{transform:translateY(-3px);border-color:rgba(243,197,56,.32)}
-    .feature-number{color:var(--leaf-dark);font:700 .72rem "Sora",sans-serif;letter-spacing:.1em;margin-bottom:24px}
-    .feature h3{font:700 1.02rem "Sora",sans-serif;letter-spacing:-.025em;margin-bottom:9px}
-    .feature p{color:var(--muted);font-size:.8rem;line-height:1.7}
+    .feature{min-height:208px;padding:23px 21px}
+    .feature:hover,.who-card:hover,.contact-card:hover{transform:translateY(-3px);border-color:rgba(16,185,129,.38)}
+    .feature-number{font-family:"Sora",sans-serif;font-size:.68rem;font-weight:900;color:var(--gd);letter-spacing:.1em;margin-bottom:20px}
+    .feature h3,.step h3,.who-card h3,.control-card h3{font-family:"Sora",sans-serif;font-size:.96rem;font-weight:900;color:var(--text);margin-bottom:7px}
+    .feature p,.step p,.who-card p,.control-card p{font-size:.8rem;line-height:1.7;color:var(--text2);font-weight:600}
 
-    /* Recovery and execution stages are shown as an operational path. */
-    .workflow{background:rgba(17,22,18,.48);border-block:1px solid var(--line)}
-    .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:11px;margin-top:42px}
-    .step{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px 17px}
-    .step-no{font:700 .68rem "Sora",sans-serif;color:var(--leaf-dark);margin-bottom:15px}
-    .step h3{font-size:.9rem;font-weight:800;margin-bottom:6px}
-    .step p{font-size:.75rem;line-height:1.62;color:var(--muted)}
-    .step:not(:last-child)::after{content:"";position:absolute;right:-12px;top:35px;height:1px;width:12px;background:var(--gold)}
+    /* The workflow section spells out what happens from payment to final response. */
+    .workflow{background:var(--section-bg);border-block:1px solid var(--section-border)}
+    .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:11px}
+    .step{position:relative;padding:19px 16px;min-height:170px}
+    .step-no{font-family:"Sora",sans-serif;font-size:.68rem;font-weight:900;color:var(--gd);letter-spacing:.08em;margin-bottom:13px}
+    .step:not(:last-child)::after{content:"";position:absolute;right:-12px;top:37px;width:12px;height:2px;background:var(--y)}
 
+    /* Audience cards bring back the old "built for" explanation. */
+    .who-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .who-card{display:flex;gap:15px;align-items:flex-start;padding:20px}
+    .who-icon{width:44px;height:44px;flex:0 0 44px;border-radius:var(--r12);background:rgba(16,185,129,.11);display:flex;align-items:center;justify-content:center;color:var(--gd);font-family:"Sora",sans-serif;font-weight:900}
+
+    /* Control copy keeps the public claims honest about permissions and recovery. */
     .control-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    .control-card{
-      border-radius:26px;border:1px solid var(--line);background:var(--panel);
-      padding:32px;min-height:282px;
-    }
-    .control-card.gold{background:linear-gradient(140deg,rgba(243,197,56,.12),var(--panel) 56%)}
-    .control-card.green{background:linear-gradient(140deg,rgba(52,201,119,.11),var(--panel) 56%)}
-    .control-card h3{font:700 1.38rem "Sora",sans-serif;letter-spacing:-.035em;margin:15px 0 13px}
-    .control-card p{font-size:.86rem;color:var(--muted);line-height:1.72;margin-bottom:18px}
-    .check-list{display:grid;gap:9px;list-style:none}
-    .check-list li{font-size:.79rem;font-weight:700;color:var(--ink);display:flex;gap:9px}
-    .check-list li::before{content:"+";color:var(--gold);font-weight:800}
-    .green .check-list li::before{color:var(--leaf)}
+    .control-card{padding:30px;min-height:282px}
+    .control-card.gold{background:linear-gradient(140deg,rgba(251,191,36,.13),var(--card-bg) 58%)}
+    .control-card.green{background:linear-gradient(140deg,rgba(16,185,129,.13),var(--card-bg) 58%)}
+    .check-list{display:grid;gap:9px;list-style:none;margin-top:17px}
+    .check-list li{display:flex;gap:9px;font-size:.8rem;font-weight:800;color:var(--text2)}
+    .check-list li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--y);flex:0 0 8px;margin-top:7px}
+    .green .check-list li::before{background:var(--g)}
 
     .support-box{
-      padding:52px;border-radius:30px;border:1px solid rgba(243,197,56,.22);
-      background:linear-gradient(120deg,rgba(243,197,56,.12),rgba(17,22,18,.86) 44%,rgba(52,201,119,.07));
-      display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center;
+      display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center;padding:48px;border-radius:24px;
+      background:linear-gradient(135deg,rgba(251,191,36,.12),rgba(16,185,129,.08));border:1.5px solid var(--border);box-shadow:var(--cl);
     }
-    .support-box h2{margin:0 0 12px;font-size:clamp(1.65rem,3vw,2.45rem)}
-    .support-box p{max-width:600px;color:var(--muted);font-size:.9rem}
-    .contact-buttons{display:grid;gap:10px;min-width:207px}
-    .contact-buttons a{
-      text-align:center;padding:12px 19px;border-radius:var(--pill);text-decoration:none;font-weight:800;font-size:.82rem;
-      border:1px solid var(--line);background:var(--panel);
-    }
-    .contact-buttons a:first-child{border-color:rgba(52,201,119,.4);color:var(--leaf)}
+    .support-box h2{margin:0 0 10px;font-size:clamp(1.65rem,3vw,2.4rem)}
+    .support-box p{max-width:650px;color:var(--text2);font-size:.9rem;font-weight:600}
+    .contact-actions{display:grid;gap:10px;min-width:210px}
+    .support-pill{padding:12px 18px;border:1.5px solid var(--border);background:var(--surface);color:var(--text2)}
+    .support-pill:first-child{background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;border-color:transparent;box-shadow:var(--cg)}
 
-    footer{border-top:1px solid var(--line);padding:29px 0 34px;margin-top:12px}
-    .footer-grid{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
-    .footer-brand{display:flex;align-items:center;gap:9px;color:var(--muted);font-weight:800;font-size:.82rem}
-    .footer-brand img{width:25px;height:25px;border-radius:7px}
-    .footer-links{display:flex;gap:20px;flex-wrap:wrap}
-    .footer-links a{font-size:.76rem;font-weight:700;color:var(--muted);text-decoration:none}
-    .footer-links a:hover{color:var(--ink)}
-    .copyright{font-size:.72rem;color:var(--muted-2);font-weight:700}
-    .reveal{opacity:0;transform:translateY(15px);transition:opacity .5s ease,transform .5s ease}
-    .reveal.visible{opacity:1;transform:none}
-    @media (max-width:970px){
+    footer{background:var(--surface);border-top:2px solid var(--border);padding:27px 32px;transition:background .25s,border-color .25s}
+    .ft-in{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px}
+    .ft-logo{display:flex;align-items:center;gap:9px;text-decoration:none;color:inherit}
+    .ft-logo img{width:26px;height:26px;border-radius:7px;object-fit:contain}
+    .ft-name{font-family:"Sora",sans-serif;font-size:.82rem;font-weight:800;color:var(--text2)}
+    .ft-links{display:flex;gap:18px;flex-wrap:wrap}
+    .ft-links a{font-size:.76rem;font-weight:800;color:var(--text3);text-decoration:none;transition:color .15s}
+    .ft-links a:hover{color:var(--text2)}
+    .ft-copy{font-size:.72rem;color:var(--text3);font-weight:700}
+    .reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease}
+    .reveal.on{opacity:1;transform:none}
+
+    @media(max-width:980px){
       .hero-grid,.section-head,.support-box{grid-template-columns:1fr}
-      .operations{max-width:510px}.feature-grid{grid-template-columns:repeat(2,1fr)}
+      .ops-shell{max-width:520px}.feature-grid{grid-template-columns:repeat(2,1fr)}
       .steps{grid-template-columns:repeat(2,1fr)}.step::after{display:none}
-      .bar-grid{grid-template-columns:repeat(2,1fr)}.bar-item:nth-child(2){border-right:0}
-      .bar-item:nth-child(-n+2){border-bottom:1px solid var(--line)}
+      .bar-grid{grid-template-columns:repeat(2,1fr)}.bar-item:nth-child(2){border-right:0}.bar-item:nth-child(-n+2){border-bottom:2px solid var(--border)}
     }
-    @media (max-width:690px){
-      .wrap{width:min(100% - 32px,1180px)}.nav{min-height:62px}nav{display:none}
-      .support-link{padding:9px 13px}.brand-name{display:none}.hero{padding:53px 0 47px}
-      .hero-grid{display:flex;flex-direction:column;gap:40px}.lead{font-size:.92rem}
-      .feature-grid,.control-grid,.steps,.bar-grid{grid-template-columns:1fr}
-      .bar-item{border-right:0;border-bottom:1px solid var(--line)!important}
-      .bar-item:last-child{border-bottom:0!important}.phone-foot{grid-template-columns:1fr}
-      section{padding:64px 0}.support-box{padding:33px 23px}.contact-buttons{min-width:0}
-      footer{padding-top:26px}.footer-grid{flex-direction:column;align-items:flex-start}
+    @media(max-width:740px){
+      header{height:60px;padding:0 16px}nav{display:none}.logo-text{font-size:.88rem}
+      .wrap{width:min(100% - 32px,1120px)}.hero{padding:52px 0 48px}.hero-grid{gap:38px}
+      h1{font-size:clamp(2.15rem,12vw,3.2rem)}.hero-desc{font-size:.94rem}
+      .feature-grid,.steps,.who-grid,.control-grid,.bar-grid{grid-template-columns:1fr}
+      .bar-item{border-right:0;border-bottom:2px solid var(--border)}.bar-item:last-child{border-bottom:0}
+      section{padding:62px 0}.control-card{padding:24px}.support-box{padding:31px 22px}.contact-actions{min-width:0}
+      .ops-foot{grid-template-columns:1fr}.ft-in{flex-direction:column;text-align:center}
     }
   </style>
 </head>
 <body>
-  <!-- Main navigation exposes product information and support, not installation distribution. -->
   <header>
-    <div class="wrap nav">
-      <a class="brand" href="/" aria-label="Bingwa Flash home">
-        <img src="/logo.png" alt="Bingwa Flash">
-        <div class="brand-name">Bingwa <span>Flash</span></div>
-      </a>
-      <nav aria-label="Site navigation">
-        <a href="#features">Capabilities</a>
-        <a href="#workflow">Workflow</a>
-        <a href="#control">Control</a>
-        <a href="/privacy.html">Privacy</a>
-        <a href="/terms.html">Terms</a>
-      </nav>
-      <div class="hdr-r">
-        <button class="theme-toggle" onclick="toggleTheme()" type="button" title="Toggle theme" aria-label="Toggle dark/light mode">
-          <svg id="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-          <svg id="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
-        </button>
-        <a class="support-link" href="#support">Get support</a>
-      </div>
+    <a class="logo" href="/" aria-label="Bingwa Flash home">
+      <img src="/logo.png" alt="Bingwa Flash">
+      <span class="logo-text">Bingwa <b>Flash</b></span>
+    </a>
+    <nav aria-label="Site navigation">
+      <a class="on" href="/">Home</a>
+      <a href="#features">Features</a>
+      <a href="#workflow">How it works</a>
+      <a href="/privacy.html">Privacy</a>
+    </nav>
+    <div class="hdr-r">
+      <button class="thm" onclick="toggleTheme()" type="button" title="Toggle theme" aria-label="Toggle dark/light mode">
+        <svg id="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        <svg id="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+      </button>
     </div>
   </header>
 
   <main>
-    <!-- Hero: product positioning for agents handling real fulfilment work. -->
-    <div class="hero">
+    <!-- Hero: the old homepage promise, rewritten to explain the app more clearly. -->
+    <section class="hero">
       <div class="wrap hero-grid">
         <div class="reveal">
-          <div class="eyebrow">Agent operations platform</div>
-          <h1>From payment to fulfilment, with <span>control.</span></h1>
-          <p class="lead">Bingwa Flash helps agents receive requests, match configured offers, run guarded USSD fulfilment, verify outcomes and recover transactions when a phone, token, airtime balance or network needs attention.</p>
-          <div class="actions">
-            <a class="action-primary" href="#features">Explore capabilities <span aria-hidden="true">-&gt;</span></a>
-            <a class="action-secondary" href="#workflow">See the workflow</a>
+          <div class="pill"><span class="pulse"></span>v1.2.9 now available</div>
+          <div style="height:14px"></div>
+          <div class="tag">Safaricom agent automation</div>
+          <h1>Speed that wins. <em>Automation</em> that stays accountable.</h1>
+          <p class="hero-desc">Bingwa Flash helps agents turn paid customer requests into controlled fulfilment. It can read permitted payment and SMS signals, match them to your configured offers, run the correct USSD path, retry safely when allowed, and keep the final response visible in your transaction history.</p>
+          <div class="btn-row">
+            <a class="btn-primary" href="#features">See features</a>
+            <a class="btn-secondary" href="#workflow">How it works</a>
           </div>
-          <div class="micro-trust">
-            <span>Agent-controlled setup</span>
-            <span>Dual SIM ready</span>
-            <span>Auditable statuses</span>
+          <div class="trust-row">
+            <span>Payment-triggered requests</span>
+            <span>Dual SIM offer routing</span>
+            <span>Web order pages</span>
+            <span>Retry and recovery tools</span>
           </div>
         </div>
-        <div class="operations reveal" aria-label="Example transaction activity">
-          <div class="phone">
-            <div class="phone-head">
-              <span class="phone-label">Transaction control</span>
-              <span class="live">Automation on</span>
+        <div class="ops-shell reveal" aria-label="Example Bingwa Flash transaction activity">
+          <div class="ops-head">
+            <span class="ops-title">Live automation feed</span>
+            <span class="ops-live">Automation on</span>
+          </div>
+          <div class="ops-list">
+            <div class="tx">
+              <span class="state"></span>
+              <div><div class="tx-name">KSh 50 airtime</div><div class="tx-meta">M-Pesa matched, USSD response verified</div></div>
+              <span class="chip g">Done</span>
             </div>
-            <div class="queue">
-              <div class="tx">
-                <span class="state"></span>
-                <div><div class="tx-name">Airtime request</div><div class="tx-meta">Verified after USSD response</div></div>
-                <span class="badge">Completed</span>
-              </div>
-              <div class="tx">
-                <span class="state wait"></span>
-                <div><div class="tx-name">Daily bundle</div><div class="tx-meta">Mapped flow running on SIM 1</div></div>
-                <span class="badge pending">Executing</span>
-              </div>
-              <div class="tx">
-                <span class="state warn"></span>
-                <div><div class="tx-name">Queued request</div><div class="tx-meta">Waiting for agent confirmation</div></div>
-                <span class="badge pending">Pending</span>
-              </div>
+            <div class="tx">
+              <span class="state wait"></span>
+              <div><div class="tx-name">Daily bundle</div><div class="tx-meta">Running mapped flow on SIM 1</div></div>
+              <span class="chip y">Executing</span>
             </div>
-            <div class="phone-foot">
-              <div class="mini"><strong>USSD</strong><span>Mapped flows</span></div>
-              <div class="mini"><strong>SMS</strong><span>Detection</span></div>
-              <div class="mini"><strong>Web</strong><span>Orders</span></div>
+            <div class="tx">
+              <span class="state fail"></span>
+              <div><div class="tx-name">Held request</div><div class="tx-meta">Waiting for agent confirmation</div></div>
+              <span class="chip y">Review</span>
             </div>
+          </div>
+          <div class="ops-foot">
+            <div class="mini"><strong>USSD</strong><span>Mapped paths</span></div>
+            <div class="mini"><strong>Web</strong><span>Paid orders</span></div>
+            <div class="mini"><strong>Logs</strong><span>Audit trail</span></div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="bar" aria-label="Platform highlights">
+    <div class="bar" aria-label="Bingwa Flash platform highlights">
       <div class="wrap bar-grid">
-        <div class="bar-item"><strong>Automation</strong><span>USSD execution with controlled mappings</span></div>
-        <div class="bar-item"><strong>Recovery</strong><span>Retries, holds and confirmation prompts</span></div>
-        <div class="bar-item"><strong>Commerce</strong><span>Public offers and client web orders</span></div>
-        <div class="bar-item"><strong>Insight</strong><span>Alerts, commission and airtime tracking</span></div>
+        <div class="bar-item"><strong>Automation</strong><span>Runs configured USSD steps for matched offers</span></div>
+        <div class="bar-item"><strong>Recovery</strong><span>Retries, holds, skips and manual review paths</span></div>
+        <div class="bar-item"><strong>Commerce</strong><span>Public web orders and client registration tools</span></div>
+        <div class="bar-item"><strong>Insight</strong><span>Transaction history, alerts and airtime tracking</span></div>
       </div>
     </div>
 
-    <!-- Feature inventory is aligned with app capabilities and safety controls. -->
+    <!-- Features: old-index breadth restored, grouped around real app behavior. -->
     <section id="features">
       <div class="wrap">
         <div class="section-head reveal">
           <div>
-            <div class="eyebrow">Capabilities</div>
-            <h2>The full agent toolkit.</h2>
+            <div class="tag">Features</div>
+            <h2>Everything an agent needs to <em>serve faster.</em></h2>
           </div>
-          <p>Bingwa Flash is designed around a real transaction lifecycle: detect a request, choose the right fulfilment path, run it once, verify it, and show clearly when agent action is needed.</p>
+          <p>The app is built for the full day-to-day flow: receive payment, match the offer, execute the right path, detect the response, recover from blocks, and keep the customer or agent informed.</p>
         </div>
         <div class="feature-grid">
-          <article class="feature reveal">
-            <div class="feature-number">01 / TRANSACTIONS</div>
-            <h3>Payment-triggered automation</h3>
-            <p>Relevant M-Pesa and configured SMS events can create transactions that progress through pending, executing, verified, completed, scheduled, skipped or failed states.</p>
-          </article>
-          <article class="feature reveal">
-            <div class="feature-number">02 / MAPPING</div>
-            <h3>USSD mappings and tracer</h3>
-            <p>Build simple or advanced menu flows, map offers to SIMs, and use tracer support when carrier menu positions move unexpectedly.</p>
-          </article>
-          <article class="feature reveal">
-            <div class="feature-number">03 / RECOVERY</div>
-            <h3>Retry and alternative USSD</h3>
-            <p>Retriable failures can follow configured retry rules or a selected alternative USSD path, without creating a second execution path.</p>
-          </article>
-          <article class="feature reveal">
-            <div class="feature-number">04 / SAFETY</div>
-            <h3>Verifier and held requests</h3>
-            <p>Verifier messages can confirm completed fulfilment. Requests held by accessibility, automation, tokens or airtime can surface for agent confirmation when ready again.</p>
-          </article>
-          <article class="feature reveal">
-            <div class="feature-number">05 / BALANCES</div>
-            <h3>Airtime and token safeguards</h3>
-            <p>Track airtime usage on completed work, manage token access, and optionally use emergency airtime purchase for an enabled unit-token offer when capacity reaches zero.</p>
-          </article>
-          <article class="feature reveal">
-            <div class="feature-number">06 / WEB ORDERS</div>
-            <h3>Public order pages</h3>
-            <p>Agents can expose selected offers through their public profile, receive paid web requests and route them into the same controlled fulfilment workflow.</p>
-          </article>
-          <article class="feature reveal">
-            <div class="feature-number">07 / CLIENTS</div>
-            <h3>Client tools and lookup</h3>
-            <p>Manage client records, website registration, contact saving, blacklist actions and masked-number resolution where supported by configured messages.</p>
-          </article>
-          <article class="feature reveal">
-            <div class="feature-number">08 / RELAY</div>
-            <h3>Relay and portal workflows</h3>
-            <p>Use enabled sender and receiver rules for relay fulfilment, plus portal controls for authorised multi-device workflows when explicitly switched on.</p>
-          </article>
-          <article class="feature reveal">
-            <div class="feature-number">09 / REPORTING</div>
-            <h3>Alerts and performance</h3>
-            <p>Review transaction history, failures, airtime usage, commission, offer breakdowns and alerts including emergency token purchase events.</p>
-          </article>
+          <article class="feature reveal"><div class="feature-number">01 / PAYMENTS</div><h3>Payment-triggered automation</h3><p>Configured M-Pesa and SMS signals can create requests, match amounts to offers and move work into the right transaction state.</p></article>
+          <article class="feature reveal"><div class="feature-number">02 / USSD</div><h3>Multi-step USSD mappings</h3><p>Build offer flows with specific menu responses, SIM assignment and fallback paths when carrier menus or responses change.</p></article>
+          <article class="feature reveal"><div class="feature-number">03 / WEB ORDERS</div><h3>Agent order pages</h3><p>Agents can expose selected offers online, collect STK payments and route paid web requests into the same fulfilment queue.</p></article>
+          <article class="feature reveal"><div class="feature-number">04 / RETRIES</div><h3>Retry and alternative USSD</h3><p>Failures that are safe to retry can use configured rules or an alternative USSD path while preserving one visible transaction trail.</p></article>
+          <article class="feature reveal"><div class="feature-number">05 / RELAY</div><h3>SMS relay workflows</h3><p>Sender and receiver relay modes help partner agents pass work between devices when that workflow is enabled and configured.</p></article>
+          <article class="feature reveal"><div class="feature-number">06 / CLIENTS</div><h3>Client tools</h3><p>Manage client registration, saved contacts, blacklist actions and customer lookup tools where supported by your messages.</p></article>
+          <article class="feature reveal"><div class="feature-number">07 / ALERTS</div><h3>Agent alerts</h3><p>Important events such as failures, automation interruptions, reversals or low readiness can be surfaced so the agent acts quickly.</p></article>
+          <article class="feature reveal"><div class="feature-number">08 / BALANCES</div><h3>Airtime and token safeguards</h3><p>Track airtime usage, watch token access, and use enabled emergency purchase flows when supported by the configured offer.</p></article>
+          <article class="feature reveal"><div class="feature-number">09 / HISTORY</div><h3>Searchable transaction logs</h3><p>Every important request keeps status, phone details, selected offer, response text, failure reason and recovery action in one place.</p></article>
         </div>
       </div>
     </section>
 
-    <!-- The workflow describes the single controlled execution path. -->
+    <!-- Workflow: this explains the app like the old homepage, but with cleaner state language. -->
     <section class="workflow" id="workflow">
       <div class="wrap">
         <div class="section-head reveal">
           <div>
-            <div class="eyebrow">Workflow</div>
-            <h2>One request. One trail.</h2>
+            <div class="tag">How it works</div>
+            <h2>From customer payment to <em>final response.</em></h2>
           </div>
-          <p>Whether a request starts on the phone, from a web order, or through an enabled relay, the agent can follow its outcome instead of guessing what happened.</p>
+          <p>Bingwa Flash is not just a button that dials USSD. It is a controlled transaction flow that checks readiness, runs the selected path, records the result, and gives the agent a decision when automation should not continue blindly.</p>
         </div>
         <div class="steps">
-          <article class="step reveal"><div class="step-no">STEP 01</div><h3>Detect</h3><p>A payment or approved request is received and matched.</p></article>
-          <article class="step reveal"><div class="step-no">STEP 02</div><h3>Check</h3><p>Offer, SIM, balance, tokens and automation readiness are evaluated.</p></article>
-          <article class="step reveal"><div class="step-no">STEP 03</div><h3>Execute</h3><p>The selected USSD mapping runs through the configured path.</p></article>
-          <article class="step reveal"><div class="step-no">STEP 04</div><h3>Verify</h3><p>Response or verifier confirmation finalises the outcome.</p></article>
-          <article class="step reveal"><div class="step-no">STEP 05</div><h3>Report</h3><p>History, airtime, commission and alerts remain visible.</p></article>
+          <article class="step reveal"><div class="step-no">STEP 01</div><h3>Detect</h3><p>A payment, SMS, web order or relay event is received through enabled permissions and configured rules.</p></article>
+          <article class="step reveal"><div class="step-no">STEP 02</div><h3>Match</h3><p>The amount, offer, SIM, customer and receiver details are matched before execution starts.</p></article>
+          <article class="step reveal"><div class="step-no">STEP 03</div><h3>Execute</h3><p>The mapped USSD flow runs through the selected SIM and captures carrier dialog responses.</p></article>
+          <article class="step reveal"><div class="step-no">STEP 04</div><h3>Recover</h3><p>If blocked, the transaction can fail nicely, wait on hold, retry, skip or ask for agent confirmation.</p></article>
+          <article class="step reveal"><div class="step-no">STEP 05</div><h3>Report</h3><p>The final status, response, airtime impact, commission and alert trail remain auditable.</p></article>
         </div>
       </div>
     </section>
 
-    <!-- Control section makes operational limitations clear and useful. -->
-    <section id="control">
+    <!-- Built-for section restores the practical audience language from the old homepage. -->
+    <section id="built-for">
       <div class="wrap">
         <div class="section-head reveal">
           <div>
-            <div class="eyebrow">Agent control</div>
-            <h2>Automation that stays accountable.</h2>
+            <div class="tag">Built for</div>
+            <h2>The agents who <em>keep moving.</em></h2>
           </div>
-          <p>Safaricom, M-Pesa, network prompts and Android background restrictions remain outside the app's control. Bingwa Flash gives agents tools to configure, inspect and recover work safely.</p>
+          <p>Whether you run a small till, a busy shop, online bundle orders or a partner relay setup, the app is meant to reduce manual work without hiding what happened.</p>
+        </div>
+        <div class="who-grid">
+          <article class="who-card reveal"><div class="who-icon">01</div><div><h3>Safaricom agents</h3><p>Serve airtime and bundle customers faster while keeping final transaction outcomes visible.</p></div></article>
+          <article class="who-card reveal"><div class="who-icon">02</div><div><h3>High-volume till operators</h3><p>Let matched requests queue and execute while you focus on customers who need attention.</p></div></article>
+          <article class="who-card reveal"><div class="who-icon">03</div><div><h3>Web-enabled sellers</h3><p>Receive paid orders from your public link and fulfil them through your configured app setup.</p></div></article>
+          <article class="who-card reveal"><div class="who-icon">04</div><div><h3>Relay networks</h3><p>Use controlled sender and receiver modes where partner fulfilment is part of the workflow.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Control section keeps installation and setup expectations honest. -->
+    <section id="control" class="workflow">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="tag">Agent control</div>
+            <h2>Setup matters. Recovery matters <em>more.</em></h2>
+          </div>
+          <p>Android permissions, Safaricom menus, SIM state, airtime balance and network prompts can change. Bingwa Flash gives the agent clear setup controls and recovery states instead of crashing or silently losing the request.</p>
         </div>
         <div class="control-grid">
           <article class="control-card gold reveal">
-            <div class="eyebrow">Setup essentials</div>
-            <h3>Configure before going live</h3>
-            <p>Reliable execution begins with the right phone state and verified mappings.</p>
+            <div class="tag">Before going live</div>
+            <h3>Configure the phone properly</h3>
+            <p>Reliable automation starts with the right permissions, SIM selection, offer mappings and tested USSD paths.</p>
             <ul class="check-list">
-              <li>Correct SIM and USSD offer mappings</li>
-              <li>Accessibility, SMS and phone permissions enabled</li>
-              <li>Sufficient airtime or token access for the offer</li>
-              <li>Retry, verifier and reply rules reviewed</li>
+              <li>SMS, phone and accessibility permissions enabled</li>
+              <li>Offers mapped to the correct USSD code and SIM</li>
+              <li>Enough airtime or token access for the selected offer</li>
+              <li>Retry, verifier and alert rules reviewed</li>
             </ul>
           </article>
           <article class="control-card green reveal">
-            <div class="eyebrow">When blocked</div>
-            <h3>Recover with a clear decision</h3>
-            <p>When readiness returns after accessibility, automation, token or airtime interruptions, pending work can be reviewed rather than blindly executed.</p>
+            <div class="tag">When something blocks</div>
+            <h3>Fail clearly and recover safely</h3>
+            <p>When execution cannot continue, the app should show why and give the agent a sensible next action.</p>
             <ul class="check-list">
-              <li>Inspect failed and held transaction reasons</li>
-              <li>Choose queue, skip, ignore or retry where offered</li>
-              <li>Use fallback only for configured retriable failures</li>
-              <li>Keep a visible audit trail of final outcomes</li>
+              <li>Held requests remain visible for confirmation</li>
+              <li>Failures keep their response and reason</li>
+              <li>Retry paths stay tied to the same transaction trail</li>
+              <li>Customer-facing web order screens fail gracefully</li>
             </ul>
           </article>
         </div>
@@ -431,12 +394,12 @@
       <div class="wrap">
         <div class="support-box reveal">
           <div>
-            <h2>Need setup or transaction help?</h2>
-            <p>For account assistance, web-order questions, configuration support or privacy requests, reach the Bingwa Flash support team directly.</p>
+            <h2>Ready to install or need setup help?</h2>
+            <p>Contact support if permissions, offers, web orders or transaction recovery need help before your agent phone goes live.</p>
           </div>
-          <div class="contact-buttons">
-            <a href="https://wa.me/254748008585" target="_blank" rel="noopener">WhatsApp support</a>
-            <a href="mailto:support@bingwaflash.co.ke">Email support</a>
+          <div class="contact-actions">
+            <a class="support-pill" href="https://wa.me/254748008585" target="_blank" rel="noopener">WhatsApp support</a>
+            <a class="support-pill" href="mailto:support@bingwaflash.co.ke">Email support</a>
           </div>
         </div>
       </div>
@@ -444,25 +407,27 @@
   </main>
 
   <footer>
-    <div class="wrap footer-grid">
-      <div class="footer-brand"><img src="/logo.png" alt="">Bingwa Flash</div>
-      <div class="footer-links">
-        <a href="#features">Capabilities</a>
-        <a href="#workflow">Workflow</a>
+    <div class="ft-in">
+      <a class="ft-logo" href="/"><img src="/logo.png" alt="Bingwa Flash"><span class="ft-name">Bingwa Flash</span></a>
+      <div class="ft-links">
+        <a href="/">Home</a>
+        <a href="#features">Features</a>
         <a href="/privacy.html">Privacy Policy</a>
-        <a href="/terms.html">Terms of Service</a>
+        <a href="/terms.html">Terms</a>
         <a href="mailto:support@bingwaflash.co.ke">Contact</a>
       </div>
-      <div class="copyright">&copy; 2026 Bingwa Flash</div>
+      <div class="ft-copy">&copy; 2026 Bingwa Flash</div>
     </div>
   </footer>
 
   <script>
-    // Keep a user's light/dark preference across every public Bingwa Flash page.
+    // Keep the public website theme preference in sync with the order page.
     function syncThemeIcon() {
       var dark = document.documentElement.getAttribute("data-theme") === "dark";
-      document.getElementById("ico-moon").style.display = dark ? "block" : "none";
-      document.getElementById("ico-sun").style.display = dark ? "none" : "block";
+      var moon = document.getElementById("ico-moon");
+      var sun = document.getElementById("ico-sun");
+      if (moon) moon.style.display = dark ? "block" : "none";
+      if (sun) sun.style.display = dark ? "none" : "block";
     }
     window.toggleTheme = function () {
       var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
@@ -472,21 +437,22 @@
     };
     syncThemeIcon();
 
-    // Reveal cards only when visible so mobile rendering remains calm and light.
+    // Reveal sections progressively so the long explanatory page still feels light on mobile.
     (function () {
       var items = document.querySelectorAll(".reveal");
+      function show(item) { item.classList.add("on"); }
       if (!("IntersectionObserver" in window)) {
-        items.forEach(function (item) { item.classList.add("visible"); });
+        items.forEach(show);
         return;
       }
       var observer = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
+            show(entry.target);
             observer.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.12 });
+      }, { threshold: 0.08, rootMargin: "40px" });
       items.forEach(function (item) { observer.observe(item); });
     })();
   </script>
